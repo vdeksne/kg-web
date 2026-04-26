@@ -137,26 +137,27 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
         />
       </div>
 
-      <div className="flex w-full flex-col items-end gap-4">
+      <div className="flex w-full flex-col items-start gap-4">
         {status === "sent" ? (
           <p className="text-muted-foreground text-sm">{copy.sent}</p>
         ) : null}
         {status === "error" ? (
           <p className="text-destructive text-sm">{copy.error}</p>
         ) : null}
-        <div className="flex w-full max-w-full flex-wrap items-center justify-end gap-4 sm:gap-8">
+        <div className="flex w-full max-w-full flex-wrap items-center justify-between gap-4 sm:gap-8">
           <Image
             src="/icons/create.svg"
             alt={copy.decorative}
-            width={2400}
-            height={400}
-            className="h-10 w-auto max-h-[4.5rem] max-w-[min(100%,42rem)] shrink object-contain object-right sm:h-14 md:h-[84px]"
+            width={1136}
+            height={41}
+            className="max-w-[min(1135.97px,100%)] shrink object-contain object-left"
+            style={{ height: "41.22px", width: "auto" }}
             unoptimized
           />
           <Button
             type="submit"
             disabled={status === "sending"}
-            className="inline-flex max-w-full shrink-0 items-center justify-center rounded-none bg-[var(--kg-accent)] px-0 py-0 text-xs font-bold tracking-[0.35em] text-[var(--color-brand-foreground)] uppercase hover:brightness-95 !h-[84.706px] !w-[276.956px] !min-h-0"
+            className="inline-flex max-w-full shrink-0 items-center justify-center rounded-none bg-[var(--kg-accent)] px-0 py-0 font-sans text-[16px] font-normal tracking-[0.25em] text-white uppercase hover:brightness-95 !h-[84.706px] !w-[276.956px] !min-h-0"
           >
             {copy.submit}
           </Button>

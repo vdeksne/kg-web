@@ -54,6 +54,12 @@ Open [http://localhost:3000](http://localhost:3000). Unprefixed paths redirect t
 
 Licensed **Gotham** `.woff2` files are expected under `public/fonts/` (see `public/fonts/README.txt`). The CSS falls back to locally installed Gotham names when files are missing.
 
+## Contact form
+
+Submissions post to `POST /api/contact`. Set **`RESEND_API_KEY`** and **`CONTACT_FROM_EMAIL`** (see [Resend](https://resend.com): verify your domain or use their test sender). Optional **`CONTACT_TO_EMAIL`** — comma-separated recipients; defaults to `info@kasparsgroza.lv`.
+
+In **development**, if those variables are missing, the API still returns success and logs the payload to the terminal so you can test the form; **production** returns `503` until Resend is configured.
+
 ## Deploy
 
 Configure the same environment variables on your host (e.g. [Vercel](https://vercel.com)). Run `npm run build` in CI before deploy.

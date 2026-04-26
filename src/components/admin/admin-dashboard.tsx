@@ -25,6 +25,13 @@ const TABS = [
   { id: "contact" as const, label: "Contact" },
 ];
 
+/** Same asset as site footer — combining macron in filename */
+const ADMIN_NEMIZ_SRC = "/images/nemi\u0304z.png";
+const ADMIN_NEMIZ_INTRINSIC_W = 173;
+const ADMIN_NEMIZ_INTRINSIC_H = 98;
+const ADMIN_NEMIZ_DISPLAY_W = 86.45;
+const ADMIN_NEMIZ_DISPLAY_H = 48.52;
+
 const TILE_SIZE_OPTIONS: { value: GalleryTileSizeId; label: string }[] =
   GALLERY_TILE_SIZE_ORDER.map((id) => ({
     value: id,
@@ -222,7 +229,7 @@ export function AdminDashboard() {
   }
 
   return (
-    <div className="relative mx-auto min-h-dvh max-w-6xl px-5 py-10 sm:px-8">
+    <div className="relative mx-auto flex min-h-dvh max-w-6xl flex-col px-5 py-10 sm:px-8">
       <Button
         type="button"
         variant="outline"
@@ -269,7 +276,7 @@ export function AdminDashboard() {
         </div>
       </header>
 
-      <nav className="mt-8 flex gap-1 border-b border-zinc-800/60">
+      <nav className="mt-8 flex shrink-0 gap-1 border-b border-zinc-800/60">
         {TABS.map((t) => (
           <button
             key={t.id}
@@ -299,7 +306,7 @@ export function AdminDashboard() {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -10 }}
           transition={{ duration: 0.28 }}
-          className="mt-10 pb-24"
+          className="mt-10 min-h-0 flex-1 pb-12"
         >
           {tab === "about" ? (
             <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:gap-12">
@@ -960,6 +967,20 @@ export function AdminDashboard() {
           ) : null}
         </motion.div>
       </AnimatePresence>
+
+      <footer className="mt-auto flex shrink-0 justify-center border-t border-zinc-800/50 pt-10 pb-4">
+        <Image
+          src={ADMIN_NEMIZ_SRC}
+          alt="Nemiz"
+          width={ADMIN_NEMIZ_INTRINSIC_W}
+          height={ADMIN_NEMIZ_INTRINSIC_H}
+          className="h-auto object-contain opacity-90 transition-opacity hover:opacity-100"
+          style={{
+            width: `min(100%, ${ADMIN_NEMIZ_DISPLAY_W}px)`,
+            aspectRatio: `${ADMIN_NEMIZ_DISPLAY_W} / ${ADMIN_NEMIZ_DISPLAY_H}`,
+          }}
+        />
+      </footer>
 
       <AnimatePresence>
         {saveState === "ok" ? (
