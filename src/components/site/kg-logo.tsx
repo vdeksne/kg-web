@@ -20,6 +20,7 @@ export function KgLogo({
       height={height}
       className={cn("h-auto w-[5.5rem] max-w-full sm:w-[6.75rem]", className)}
       priority={priority}
+      unoptimized
     />
   );
 }

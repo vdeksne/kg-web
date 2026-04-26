@@ -4,46 +4,41 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Gotham: add licensed .woff2 files under public/fonts (see public/fonts/README.txt). local() uses OS-installed fonts when available. */
+/* Gotham: local() uses OS-installed fonts. For webfonts, add licensed .woff2 under public/fonts and append to each src, e.g. , url("/fonts/Gotham-Light.woff2") format("woff2") — see public/fonts/README.txt. Omitting url() avoids 404s when files are not deployed yet. */
 @font-face {
   font-family: Gotham;
   font-style: normal;
   font-weight: 300;
   font-display: swap;
-  src: local("Gotham Light"), local("Gotham-Light"),
-    url("/fonts/Gotham-Light.woff2") format("woff2");
+  src: local("Gotham Light"), local("Gotham-Light");
 }
 @font-face {
   font-family: Gotham;
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: local("Gotham Book"), local("Gotham-Book"),
-    url("/fonts/Gotham-Book.woff2") format("woff2");
+  src: local("Gotham Book"), local("Gotham-Book");
 }
 @font-face {
   font-family: Gotham;
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: local("Gotham Medium"), local("Gotham-Medium"),
-    url("/fonts/Gotham-Medium.woff2") format("woff2");
+  src: local("Gotham Medium"), local("Gotham-Medium");
 }
 @font-face {
   font-family: Gotham;
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: local("Gotham Bold"), local("Gotham-Bold"),
-    url("/fonts/Gotham-Bold.woff2") format("woff2");
+  src: local("Gotham Bold"), local("Gotham-Bold");
 }
 @font-face {
   font-family: Gotham;
   font-style: normal;
   font-weight: 900;
   font-display: swap;
-  src: local("Gotham Black"), local("Gotham-Black"),
-    url("/fonts/Gotham-Black.woff2") format("woff2");
+  src: local("Gotham Black"), local("Gotham-Black");
 }
 
 @theme inline {

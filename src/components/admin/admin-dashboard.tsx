@@ -703,7 +703,10 @@ export function AdminDashboard() {
                               ? "object-contain object-center"
                               : "object-cover object-top group-hover:scale-[1.03]",
                           )}
-                          unoptimized={item.src.startsWith("/uploads/")}
+                          unoptimized={
+                            item.src.startsWith("/uploads/") ||
+                            item.src.endsWith(".svg")
+                          }
                         />
                       ) : null}
                     </div>

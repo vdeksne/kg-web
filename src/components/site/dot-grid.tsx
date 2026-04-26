@@ -13,6 +13,7 @@ export function DotGrid({ className }: { className?: string }) {
         width={DOTS_W}
         height={DOTS_H}
         className="h-auto w-full"
+        unoptimized
       />
     </div>
   );

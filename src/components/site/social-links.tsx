@@ -43,6 +43,7 @@ export function SocialLinks({ className }: { className?: string }) {
                 width={ICON}
                 height={ICON}
                 className="size-10"
+                unoptimized
               />
             </Link>
           </li>
