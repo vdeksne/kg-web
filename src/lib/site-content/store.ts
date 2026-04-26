@@ -42,7 +42,12 @@ async function loadFromSupabase(): Promise<Partial<SiteContent> | null> {
 export async function getSiteContent(): Promise<SiteContent> {
   const fileLayer = await loadFromFile();
   const dbLayer = await loadFromSupabase();
-  return deepMergeSiteContent(DEFAULT_SITE_CONTENT, fileLayer, dbLayer);
+  const merged = deepMergeSiteContent(
+    DEFAULT_SITE_CONTENT,
+    fileLayer,
+    dbLayer,
+  );
+  return siteContentSchema.parse(merged);
 }
 
 export async function persistSiteContent(content: SiteContent): Promise<void> {

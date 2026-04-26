@@ -32,7 +32,7 @@ export const RowEnglish: Story = {
     nextjs: {
       appDirectory: true,
       navigation: {
-        pathname: "/en/portfolio",
+        pathname: "/en/portfolio/logo",
         segments: [["locale", "en"]],
       },
     },

@@ -8,8 +8,7 @@ const portrait =
 export const DEFAULT_SITE_CONTENT: SiteContent = {
   about: {
     title: { lv: messages.lv.about.title, en: messages.en.about.title },
-    p1: { lv: messages.lv.about.p1, en: messages.en.about.p1 },
-    p2: { lv: messages.lv.about.p2, en: messages.en.about.p2 },
+    body: { lv: messages.lv.about.body, en: messages.en.about.body },
     portraitUrl: portrait,
     portraitAlt: {
       lv: messages.lv.about.portraitAlt,
@@ -25,10 +24,29 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
       lv: messages.lv.portfolio.categoryLogo,
       en: messages.en.portfolio.categoryLogo,
     },
-    tagline: {
-      lv: messages.lv.portfolio.tagline,
-      en: messages.en.portfolio.tagline,
-    },
+    categoryNav: [
+      {
+        slug: "logo",
+        label: {
+          lv: messages.lv.nav.portfolioSub.logo,
+          en: messages.en.nav.portfolioSub.logo,
+        },
+      },
+      {
+        slug: "drukatie",
+        label: {
+          lv: messages.lv.nav.portfolioSub.drukatie,
+          en: messages.en.nav.portfolioSub.drukatie,
+        },
+      },
+      {
+        slug: "dazadi",
+        label: {
+          lv: messages.lv.nav.portfolioSub.dazadi,
+          en: messages.en.nav.portfolioSub.dazadi,
+        },
+      },
+    ],
     items: seedPortfolio.map((item) => ({ ...item })),
   },
   contact: {

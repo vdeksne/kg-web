@@ -4,13 +4,9 @@
       "lv": "Čau, mani sauc Kaspars",
       "en": "Hi, I'm Kaspars"
     },
-    "p1": {
-      "lv": "Imply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-      "en": "Placeholder copy about print and digital design. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
-    },
-    "p2": {
-      "lv": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      "en": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    "body": {
+      "lv": "Imply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.\n\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "en": "Placeholder copy about print and digital design. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.\n\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
     },
     "portraitUrl": "/uploads/cms/54e7d30a-954c-4021-a856-a75084758f88.jpg",
     "portraitAlt": {
@@ -27,64 +23,218 @@
       "lv": "Logo",
       "en": "Logo"
     },
-    "tagline": {
-      "lv": "Logo / Dizains / …",
-      "en": "Logo / Design / …"
-    },
+    "categoryNav": [
+      {
+        "slug": "logo",
+        "label": {
+          "lv": "Logo",
+          "en": "Logo"
+        }
+      },
+      {
+        "slug": "drukatie",
+        "label": {
+          "lv": "Drukātie",
+          "en": "Print"
+        }
+      },
+      {
+        "slug": "dazadi",
+        "label": {
+          "lv": "Dažādi",
+          "en": "Various"
+        }
+      }
+    ],
     "items": [
       {
-        "id": "1",
-        "alt": "Minimal logo study",
-        "src": "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&q=80",
-        "ratioClass": "aspect-[4/5]"
+        "id": "logo-22",
+        "alt": "EE Real Estate",
+        "src": "/images/gallery/ee-real-estate.jpg",
+        "tileSize": "w488h426",
+        "categories": [
+          "logo"
+        ]
       },
       {
-        "id": "2",
-        "alt": "Brand mockup on card",
-        "src": "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=800&q=80",
-        "ratioClass": "aspect-square"
+        "id": "logo-24",
+        "alt": "Gatavo",
+        "src": "/images/gallery/gatavo.jpg",
+        "tileSize": "w487h431",
+        "categories": [
+          "logo",
+          "dazadi"
+        ]
       },
       {
-        "id": "3",
-        "alt": "Poster layout",
-        "src": "https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&q=80",
-        "ratioClass": "aspect-[3/5]"
+        "id": "logo-23",
+        "alt": "eboat.lv",
+        "src": "/images/gallery/eboat-lv.jpg",
+        "tileSize": "w488h249",
+        "categories": [
+          "logo"
+        ]
       },
       {
-        "id": "4",
-        "alt": "Packaging concept",
-        "src": "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80",
-        "ratioClass": "aspect-[5/4]"
+        "id": "logo-26",
+        "alt": "Wake business cards",
+        "src": "/images/gallery/wake-business-cards.jpg",
+        "tileSize": "w488h373",
+        "categories": [
+          "logo"
+        ]
       },
       {
-        "id": "5",
-        "alt": "Studio photography",
-        "src": "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=800&q=80",
-        "ratioClass": "aspect-[4/5]"
+        "id": "logo-25",
+        "alt": "Pērkons",
+        "src": "/images/gallery/perkons.jpg",
+        "tileSize": "w488h254",
+        "categories": [
+          "logo"
+        ]
       },
       {
-        "id": "6",
-        "alt": "Editorial spread",
-        "src": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&q=80",
-        "ratioClass": "aspect-[3/4]"
+        "id": "logo-28",
+        "alt": "Holy Chic",
+        "src": "/images/gallery/holy-chic.jpg",
+        "tileSize": "w488h426",
+        "categories": [
+          "logo"
+        ]
       },
       {
-        "id": "7",
-        "alt": "Lettering detail",
-        "src": "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&q=80",
-        "ratioClass": "aspect-square"
+        "id": "logo-31",
+        "alt": "Āgenskalna Priedes",
+        "src": "/images/gallery/agenskalna-priedes.jpg",
+        "tileSize": "w488h382",
+        "categories": [
+          "logo"
+        ]
       },
       {
-        "id": "8",
-        "alt": "Event branding",
-        "src": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80",
-        "ratioClass": "aspect-[4/6]"
+        "id": "logo-30",
+        "alt": "Rīga 2018",
+        "src": "/images/gallery/riga-2018.jpg",
+        "tileSize": "w488h454",
+        "categories": [
+          "logo"
+        ]
       },
       {
-        "id": "9",
-        "alt": "Identity system",
-        "src": "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80",
-        "ratioClass": "aspect-[5/4]"
+        "id": "logo-29",
+        "alt": "Moto 2017 trip",
+        "src": "/images/gallery/moto-2017-trip.jpg",
+        "tileSize": "w487h488",
+        "categories": [
+          "logo",
+          "dazadi"
+        ]
+      },
+      {
+        "id": "logo-32",
+        "alt": "Business cards",
+        "src": "/images/gallery/business-cards.jpg",
+        "tileSize": "w487h367",
+        "categories": [
+          "logo",
+          "drukatie",
+          "dazadi"
+        ]
+      },
+      {
+        "id": "logo-33",
+        "alt": "Sporta centrs Jugla",
+        "src": "/images/gallery/sporta-centrs-jugla.jpg",
+        "tileSize": "w488h433",
+        "categories": [
+          "logo"
+        ]
+      },
+      {
+        "id": "logo-34",
+        "alt": "Tepat Grupa",
+        "src": "/images/gallery/tepat-grupa.jpg",
+        "tileSize": "w488h409",
+        "categories": [
+          "logo"
+        ]
+      },
+      {
+        "id": "logo-35",
+        "alt": "FG monogram",
+        "src": "/images/gallery/fg-monogram.jpg",
+        "tileSize": "w488h416",
+        "categories": [
+          "logo"
+        ]
+      },
+      {
+        "id": "logo-36",
+        "alt": "Kraft business cards",
+        "src": "/images/gallery/kraft-business-cards.jpg",
+        "tileSize": "w487h354",
+        "categories": [
+          "logo",
+          "drukatie",
+          "dazadi"
+        ]
+      },
+      {
+        "id": "logo-37",
+        "alt": "Wake sēta",
+        "src": "/images/gallery/wake-seta.jpg",
+        "tileSize": "w488h367d3",
+        "categories": [
+          "logo"
+        ]
+      },
+      {
+        "id": "logo-38",
+        "alt": "Asais cepiens 2018",
+        "src": "/images/gallery/asais-cepiens-2018.jpg",
+        "tileSize": "w488h691",
+        "categories": [
+          "logo",
+          "dazadi"
+        ]
+      },
+      {
+        "id": "logo-39",
+        "alt": "Herbal Meadow",
+        "src": "/images/gallery/herbal-meadow.jpg",
+        "tileSize": "w488h488d3",
+        "categories": [
+          "logo"
+        ]
+      },
+      {
+        "id": "logo-40",
+        "alt": "Stamp and ink",
+        "src": "/images/gallery/stamp-and-ink.jpg",
+        "tileSize": "w487h488",
+        "categories": [
+          "logo",
+          "dazadi",
+          "drukatie"
+        ]
+      },
+      {
+        "id": "logo-41",
+        "alt": "A & Z Bedroom",
+        "src": "/images/gallery/az-bedroom.jpg",
+        "tileSize": "w488h359",
+        "categories": [
+          "logo"
+        ]
+      },
+      {
+        "id": "logo-42",
+        "alt": "Fast Motion",
+        "src": "/images/gallery/fast-motion.jpg",
+        "tileSize": "w488h224",
+        "categories": [
+          "logo"
+        ]
       }
     ]
   },

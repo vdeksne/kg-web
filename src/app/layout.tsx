@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   title: "Kaspars Groza",
   description:
     "Graphic design portfolio — identities, branding, and visual communication.",
+  icons: {
+    icon: "/icons/small-logo.svg",
+  },
 };
 
 export default function RootLayout({

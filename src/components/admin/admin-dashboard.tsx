@@ -1,14 +1,21 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { LogOut } from "lucide-react";
+import { ChevronDown, LogOut } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { aspectRatioFromCms } from "@/lib/site-content/aspect";
+import { normalizePortfolioCategorySlugInput } from "@/lib/portfolio-categories";
+import {
+  GALLERY_TILE_PRESETS,
+  GALLERY_TILE_SIZE_ORDER,
+  GALLERY_OBJECT_CONTAIN_IDS,
+  type GalleryTileSizeId,
+  aspectRatioCssFromTileSize,
+} from "@/lib/gallery-tile-sizes";
 import type { LocalizedString, SiteContent } from "@/lib/site-content/types";
 import { cn } from "@/lib/utils";
 
@@ -18,17 +25,20 @@ const TABS = [
   { id: "contact" as const, label: "Contact" },
 ];
 
-const RATIO_OPTIONS = [
-  { value: "aspect-[4/5]", label: "4 × 5" },
-  { value: "aspect-square", label: "1 × 1" },
-  { value: "aspect-[3/5]", label: "3 × 5" },
-  { value: "aspect-[5/4]", label: "5 × 4" },
-  { value: "aspect-[3/4]", label: "3 × 4" },
-  { value: "aspect-[4/6]", label: "4 × 6" },
-] as const;
+const TILE_SIZE_OPTIONS: { value: GalleryTileSizeId; label: string }[] =
+  GALLERY_TILE_SIZE_ORDER.map((id) => ({
+    value: id,
+    label: `${GALLERY_TILE_PRESETS[id].label} px`,
+  }));
 
 const fieldClass =
-  "rounded-md border border-zinc-800 bg-zinc-950 text-zinc-200 placeholder:text-zinc-600 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.03)] outline-none focus-visible:border-zinc-600 focus-visible:ring-2 focus-visible:ring-[var(--kg-accent)]/20";
+  "rounded-md border border-zinc-800 bg-zinc-950 text-zinc-100 placeholder:text-zinc-600 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.03)] outline-none focus-visible:border-zinc-600 focus-visible:ring-2 focus-visible:ring-[var(--kg-accent)]/20";
+
+/** OS-drawn chevron ignores padding; custom icon + appearance-none */
+const gallerySelectClass = cn(
+  fieldClass,
+  "w-full appearance-none py-2 pl-2 pr-10 text-xs text-zinc-300",
+);
 
 function LocalizedTextarea({
   label,
@@ -116,6 +126,7 @@ function LocalizedInput({
 
 export function AdminDashboard() {
   const router = useRouter();
+  const categorySlugAtFocusRef = useRef<Record<number, string>>({});
   const [tab, setTab] = useState<(typeof TABS)[number]["id"]>("about");
   const [content, setContent] = useState<SiteContent | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -221,7 +232,11 @@ export function AdminDashboard() {
         title="Sign out"
         className="fixed top-4 right-4 z-[100] size-11 rounded-none border-zinc-600/80 bg-zinc-950/75 text-zinc-400 shadow-[0_0_0_1px_rgba(255,255,255,0.04)] backdrop-blur-md transition-colors hover:border-zinc-500 hover:bg-zinc-900/90 hover:text-zinc-100 sm:top-5 sm:right-6 sm:size-12"
       >
-        <LogOut className="size-[1.25rem] sm:size-[1.35rem]" strokeWidth={1.65} aria-hidden />
+        <LogOut
+          className="size-[1.25rem] sm:size-[1.35rem]"
+          strokeWidth={1.65}
+          aria-hidden
+        />
       </Button>
 
       <header className="flex flex-col gap-6 border-b border-zinc-800/80 pb-8 pr-14 sm:flex-row sm:items-end sm:justify-between sm:pr-16">
@@ -234,12 +249,10 @@ export function AdminDashboard() {
             Content
           </p>
           <h1 className="mt-1 text-3xl font-semibold tracking-tight text-white">
-            Studio admin
+            Hello, welcome
           </h1>
           <p className="mt-2 max-w-md text-sm text-zinc-500">
-            Edit bilingual copy and media. Images support URL paste or upload
-            (Supabase storage when configured, otherwise{" "}
-            <code className="text-zinc-400">public/uploads/cms</code> locally).
+            Take your time updating the content below.
           </p>
         </motion.div>
         <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
@@ -289,7 +302,7 @@ export function AdminDashboard() {
           className="mt-10 pb-24"
         >
           {tab === "about" ? (
-            <div className="grid gap-10 lg:grid-cols-[1fr_320px]">
+            <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:gap-12">
               <div className="space-y-10">
                 <LocalizedInput
                   label="Title"
@@ -301,24 +314,14 @@ export function AdminDashboard() {
                   }
                 />
                 <LocalizedTextarea
-                  label="Paragraph 1"
-                  value={content.about.p1}
+                  label="Paragraph"
+                  value={content.about.body}
                   onChange={(v) =>
                     setContent((c) =>
-                      c ? { ...c, about: { ...c.about, p1: v } } : c,
+                      c ? { ...c, about: { ...c.about, body: v } } : c,
                     )
                   }
-                  rows={5}
-                />
-                <LocalizedTextarea
-                  label="Paragraph 2"
-                  value={content.about.p2}
-                  onChange={(v) =>
-                    setContent((c) =>
-                      c ? { ...c, about: { ...c.about, p2: v } } : c,
-                    )
-                  }
-                  rows={5}
+                  rows={10}
                 />
                 <LocalizedInput
                   label="Portrait alt text"
@@ -334,22 +337,26 @@ export function AdminDashboard() {
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.08 }}
-                className="space-y-4"
+                className="w-full max-w-[673.749px] space-y-4"
               >
                 <Label className="text-[0.65rem] tracking-[0.2em] text-zinc-500 uppercase">
                   Portrait image
                 </Label>
                 <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/40">
-                  <div className="relative aspect-[3/4] w-full">
+                  <div
+                    className="relative w-full overflow-hidden"
+                    style={{ aspectRatio: "673.749 / 561.1" }}
+                  >
                     {content.about.portraitUrl ? (
                       <Image
                         src={content.about.portraitUrl}
                         alt=""
                         fill
                         className="object-cover"
-                        unoptimized={
-                          content.about.portraitUrl.startsWith("/uploads/")
-                        }
+                        sizes="(max-width: 1024px) 100vw, 674px"
+                        unoptimized={content.about.portraitUrl.startsWith(
+                          "/uploads/",
+                        )}
                       />
                     ) : (
                       <div className="flex h-full items-center justify-center text-sm text-zinc-600">
@@ -405,7 +412,7 @@ export function AdminDashboard() {
 
           {tab === "portfolio" ? (
             <div className="space-y-10">
-              <div className="grid gap-8 md:grid-cols-3">
+              <div className="grid gap-8 md:grid-cols-2">
                 <LocalizedInput
                   label="Breadcrumb label"
                   value={content.portfolio.breadcrumb}
@@ -434,24 +441,205 @@ export function AdminDashboard() {
                     )
                   }
                 />
-                <LocalizedInput
-                  label="Tagline strip"
-                  value={content.portfolio.tagline}
-                  onChange={(v) =>
-                    setContent((c) =>
-                      c
-                        ? { ...c, portfolio: { ...c.portfolio, tagline: v } }
-                        : c,
-                    )
-                  }
-                />
               </div>
+
+              <div className="space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <h2 className="text-lg font-medium text-white">
+                    Gallery categories
+                  </h2>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="rounded-none border-zinc-500 bg-zinc-800 px-6 py-2 text-sm font-medium text-zinc-50 shadow-none hover:bg-zinc-700 hover:text-white dark:border-zinc-500 dark:bg-zinc-800 dark:text-zinc-50 dark:hover:bg-zinc-700"
+                    onClick={() =>
+                      setContent((c) => {
+                        if (!c) return c;
+                        const base = "new-category";
+                        let n = 1;
+                        const taken = new Set(
+                          c.portfolio.categoryNav.map((x) => x.slug),
+                        );
+                        let slug = base;
+                        while (taken.has(slug)) slug = `${base}-${n++}`;
+                        return {
+                          ...c,
+                          portfolio: {
+                            ...c.portfolio,
+                            categoryNav: [
+                              ...c.portfolio.categoryNav,
+                              {
+                                slug,
+                                label: {
+                                  lv: "Jauna sadaļa",
+                                  en: "New section",
+                                },
+                              },
+                            ],
+                          },
+                        };
+                      })
+                    }
+                  >
+                    Add category
+                  </Button>
+                </div>
+                <p className="text-xs text-zinc-500">
+                  Slug becomes the URL segment{" "}
+                  <code className="text-zinc-400">/portfolio/your-slug</code>{" "}
+                  (lowercase, hyphens only).
+                </p>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {content.portfolio.categoryNav.map((cat, catIndex) => (
+                    <div
+                      key={catIndex}
+                      className="space-y-3 rounded-xl border border-zinc-800/90 bg-zinc-900/35 p-4"
+                    >
+                      <div className="flex flex-wrap items-end gap-2">
+                        <div className="min-w-0 flex-1 space-y-1.5">
+                          <span className="text-[0.6rem] tracking-widest text-zinc-600 uppercase">
+                            Slug
+                          </span>
+                          <Input
+                            value={cat.slug}
+                            onFocus={() => {
+                              if (content) {
+                                categorySlugAtFocusRef.current[catIndex] =
+                                  content.portfolio.categoryNav[catIndex]!.slug;
+                              }
+                            }}
+                            onChange={(e) =>
+                              setContent((c) => {
+                                if (!c) return c;
+                                const nav = [...c.portfolio.categoryNav];
+                                nav[catIndex] = {
+                                  ...nav[catIndex]!,
+                                  slug: e.target.value,
+                                };
+                                return {
+                                  ...c,
+                                  portfolio: {
+                                    ...c.portfolio,
+                                    categoryNav: nav,
+                                  },
+                                };
+                              })
+                            }
+                            onBlur={() => {
+                              setContent((c) => {
+                                if (!c) return c;
+                                const start =
+                                  categorySlugAtFocusRef.current[catIndex] ??
+                                  c.portfolio.categoryNav[catIndex]!.slug;
+                                const row = c.portfolio.categoryNav[catIndex]!;
+                                let next = normalizePortfolioCategorySlugInput(
+                                  row.slug,
+                                );
+                                if (!next) next = start;
+                                if (
+                                  c.portfolio.categoryNav.some(
+                                    (x, i) =>
+                                      i !== catIndex && x.slug === next,
+                                  )
+                                ) {
+                                  next = start;
+                                }
+                                const nav = c.portfolio.categoryNav.map((x, i) =>
+                                  i === catIndex ? { ...x, slug: next } : x,
+                                );
+                                const items = c.portfolio.items.map((item) => ({
+                                  ...item,
+                                  categories: item.categories.map((s) =>
+                                    s === start ? next : s,
+                                  ),
+                                }));
+                                return {
+                                  ...c,
+                                  portfolio: {
+                                    ...c.portfolio,
+                                    categoryNav: nav,
+                                    items,
+                                  },
+                                };
+                              });
+                            }}
+                            className={cn(
+                              fieldClass,
+                              "h-9 font-mono text-xs text-zinc-300",
+                            )}
+                            spellCheck={false}
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          className="h-9 shrink-0 rounded-none text-xs text-red-400/90 hover:bg-red-950/40 hover:text-red-300 disabled:opacity-40"
+                          disabled={content.portfolio.categoryNav.length <= 1}
+                          onClick={() =>
+                            setContent((c) => {
+                              if (!c || c.portfolio.categoryNav.length <= 1)
+                                return c;
+                              const removed =
+                                c.portfolio.categoryNav[catIndex]!.slug;
+                              const nextNav = c.portfolio.categoryNav.filter(
+                                (_, i) => i !== catIndex,
+                              );
+                              const fallback = nextNav[0]!.slug;
+                              const items = c.portfolio.items.map((item) => {
+                                const filtered = item.categories.filter(
+                                  (s) => s !== removed,
+                                );
+                                return {
+                                  ...item,
+                                  categories:
+                                    filtered.length > 0
+                                      ? filtered
+                                      : [fallback],
+                                };
+                              });
+                              return {
+                                ...c,
+                                portfolio: {
+                                  ...c.portfolio,
+                                  categoryNav: nextNav,
+                                  items,
+                                },
+                              };
+                            })
+                          }
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                      <LocalizedInput
+                        label="Submenu & breadcrumb title"
+                        value={cat.label}
+                        onChange={(v) =>
+                          setContent((c) => {
+                            if (!c) return c;
+                            const nav = [...c.portfolio.categoryNav];
+                            nav[catIndex] = { ...nav[catIndex]!, label: v };
+                            return {
+                              ...c,
+                              portfolio: {
+                                ...c.portfolio,
+                                categoryNav: nav,
+                              },
+                            };
+                          })
+                        }
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               <div className="flex items-center justify-between gap-4">
                 <h2 className="text-lg font-medium text-white">Gallery</h2>
                 <Button
                   type="button"
                   variant="outline"
-                  className="rounded-none border-zinc-700 px-8 text-zinc-300"
+                  className="rounded-none border-zinc-500 bg-zinc-800 px-8 py-2 text-sm font-medium text-zinc-50 shadow-none hover:bg-zinc-700 hover:text-white dark:border-zinc-500 dark:bg-zinc-800 dark:text-zinc-50 dark:hover:bg-zinc-700"
                   onClick={() =>
                     setContent((c) =>
                       c
@@ -465,7 +653,11 @@ export function AdminDashboard() {
                                   id: crypto.randomUUID(),
                                   alt: "New piece",
                                   src: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&q=80",
-                                  ratioClass: "aspect-square",
+                                  tileSize: "w488h426",
+                                  categories: [
+                                    c.portfolio.categoryNav[0]?.slug ??
+                                      "logo",
+                                  ],
                                 },
                               ],
                             },
@@ -490,7 +682,7 @@ export function AdminDashboard() {
                     <div
                       className="relative mb-4 w-full overflow-hidden rounded-lg bg-zinc-950"
                       style={{
-                        aspectRatio: aspectRatioFromCms(item.ratioClass),
+                        aspectRatio: aspectRatioCssFromTileSize(item.tileSize),
                       }}
                     >
                       {item.src ? (
@@ -498,7 +690,12 @@ export function AdminDashboard() {
                           src={item.src}
                           alt=""
                           fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                          className={cn(
+                            "transition-transform duration-500",
+                            GALLERY_OBJECT_CONTAIN_IDS.has(item.id)
+                              ? "object-contain object-center"
+                              : "object-cover object-top group-hover:scale-[1.03]",
+                          )}
                           unoptimized={item.src.startsWith("/uploads/")}
                         />
                       ) : null}
@@ -545,33 +742,81 @@ export function AdminDashboard() {
                         )}
                         placeholder="Image URL"
                       />
-                      <select
-                        value={item.ratioClass}
-                        onChange={(e) =>
-                          setContent((c) => {
-                            if (!c) return c;
-                            const items = [...c.portfolio.items];
-                            items[index] = {
-                              ...items[index],
-                              ratioClass: e.target.value,
-                            };
-                            return {
-                              ...c,
-                              portfolio: { ...c.portfolio, items },
-                            };
-                          })
-                        }
-                        className={cn(
-                          fieldClass,
-                          "w-full px-2 py-2 text-xs text-zinc-300",
-                        )}
-                      >
-                        {RATIO_OPTIONS.map((o) => (
-                          <option key={o.value} value={o.value}>
-                            {o.label}
-                          </option>
-                        ))}
-                      </select>
+                      <div className="space-y-2">
+                        <p className="text-[0.6rem] font-medium tracking-wider text-zinc-500 uppercase">
+                          Sections
+                        </p>
+                        <div className="flex flex-col gap-2.5">
+                          {content.portfolio.categoryNav.map((o) => (
+                            <label
+                              key={o.slug}
+                              className="flex cursor-pointer items-center gap-2.5 text-xs text-zinc-300"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={item.categories.includes(o.slug)}
+                                onChange={(e) => {
+                                  const on = e.target.checked;
+                                  setContent((c) => {
+                                    if (!c) return c;
+                                    const items = [...c.portfolio.items];
+                                    const cur = items[index]!;
+                                    const set = new Set(cur.categories);
+                                    if (on) set.add(o.slug);
+                                    else set.delete(o.slug);
+                                    const categories = Array.from(set);
+                                    if (categories.length === 0) return c;
+                                    items[index] = { ...cur, categories };
+                                    return {
+                                      ...c,
+                                      portfolio: { ...c.portfolio, items },
+                                    };
+                                  });
+                                }}
+                                className="size-3.5 shrink-0 rounded border border-zinc-600 bg-zinc-950 accent-[var(--kg-accent)]"
+                              />
+                              <span>
+                                {o.label.en}
+                                <span className="text-zinc-600">
+                                  {" "}
+                                  ({o.slug})
+                                </span>
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="relative w-full">
+                        <select
+                          value={item.tileSize}
+                          onChange={(e) =>
+                            setContent((c) => {
+                              if (!c) return c;
+                              const items = [...c.portfolio.items];
+                              items[index] = {
+                                ...items[index],
+                                tileSize: e.target.value as GalleryTileSizeId,
+                              };
+                              return {
+                                ...c,
+                                portfolio: { ...c.portfolio, items },
+                              };
+                            })
+                          }
+                          className={gallerySelectClass}
+                        >
+                          {TILE_SIZE_OPTIONS.map((o) => (
+                            <option key={o.value} value={o.value}>
+                              {o.label}
+                            </option>
+                          ))}
+                        </select>
+                        <ChevronDown
+                          aria-hidden
+                          className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-zinc-500"
+                          strokeWidth={2}
+                        />
+                      </div>
                       <label className="block text-center text-[0.7rem] text-zinc-500">
                         <span className="cursor-pointer text-[var(--kg-accent)] hover:underline">
                           Upload

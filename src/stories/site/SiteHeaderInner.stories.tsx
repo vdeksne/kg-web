@@ -14,3 +14,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+export const About: Story = {
+  args: {
+    variant: "about",
+    locale: "lv",
+  },
+};

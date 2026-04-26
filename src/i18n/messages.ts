@@ -10,6 +10,11 @@ export type Messages = {
     about: string;
     portfolio: string;
     contact: string;
+    portfolioSub: {
+      logo: string;
+      drukatie: string;
+      dazadi: string;
+    };
   };
   home: {
     heroImageAlt: string;
@@ -17,14 +22,12 @@ export type Messages = {
   };
   about: {
     title: string;
-    p1: string;
-    p2: string;
+    body: string;
     portraitAlt: string;
   };
   portfolio: {
     breadcrumb: string;
     categoryLogo: string;
-    tagline: string;
   };
   contact: {
     decorative: string;
@@ -53,6 +56,11 @@ const messagesLv: Messages = {
     about: "Par mani",
     portfolio: "Darbi",
     contact: "Kontakti",
+    portfolioSub: {
+      logo: "Logo",
+      drukatie: "Drukātie",
+      dazadi: "Dažādi",
+    },
   },
   home: {
     heroImageAlt: "Kaspars Groza — portfolio",
@@ -60,14 +68,12 @@ const messagesLv: Messages = {
   },
   about: {
     title: "Čau, mani sauc Kaspars",
-    p1: "Imply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-    p2: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+    body: "Imply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.\n\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     portraitAlt: "Kaspars Groza",
   },
   portfolio: {
     breadcrumb: "Darbi",
     categoryLogo: "Logo",
-    tagline: "Logo / Dizains / …",
   },
   contact: {
     decorative: "Kopā varam radīt kaut ko īpašu",
@@ -96,6 +102,11 @@ const messagesEn: Messages = {
     about: "About",
     portfolio: "Work",
     contact: "Contact",
+    portfolioSub: {
+      logo: "Logo",
+      drukatie: "Print",
+      dazadi: "Various",
+    },
   },
   home: {
     heroImageAlt: "Kaspars Groza — portfolio",
@@ -103,14 +114,12 @@ const messagesEn: Messages = {
   },
   about: {
     title: "Hi, I'm Kaspars",
-    p1: "Placeholder copy about print and digital design. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-    p2: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+    body: "Placeholder copy about print and digital design. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.\n\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     portraitAlt: "Kaspars Groza",
   },
   portfolio: {
     breadcrumb: "Work",
     categoryLogo: "Logo",
-    tagline: "Logo / Design / …",
   },
   contact: {
     decorative: "Let's create something together",

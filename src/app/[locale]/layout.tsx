@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LocaleHtmlLang } from "@/components/i18n/locale-html-lang";
+import { PortfolioNavProvider } from "@/components/site/portfolio-nav-provider";
 import { defaultLocale, isLocale, locales } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
+import { getSiteContent } from "@/lib/site-content/store";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -35,10 +37,14 @@ export default async function LocaleLayout({
   const { locale: raw } = await params;
   if (!isLocale(raw)) notFound();
 
+  const site = await getSiteContent();
+
   return (
     <>
       <LocaleHtmlLang locale={raw} />
-      {children}
+      <PortfolioNavProvider categories={site.portfolio.categoryNav}>
+        {children}
+      </PortfolioNavProvider>
     </>
   );
 }

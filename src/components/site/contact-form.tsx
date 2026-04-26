@@ -1,10 +1,46 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { Messages } from "@/i18n/messages";
+
+/** Contact main heading — Figma */
+const contactHeadingStyle: React.CSSProperties = {
+  color: "#000",
+  fontFamily: 'Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif',
+  fontSize: "67.05px",
+  fontStyle: "normal",
+  fontWeight: 700,
+  lineHeight: "normal",
+  textTransform: "uppercase",
+};
+
+/** Email + phone beside the main heading — Figma */
+const contactHeaderAsideStyle: React.CSSProperties = {
+  color: "#000",
+  fontFamily: 'Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif',
+  fontSize: "19px",
+  fontStyle: "normal",
+  fontWeight: 300,
+  lineHeight: "24px",
+  letterSpacing: "0.074px",
+  textTransform: "uppercase",
+};
+
+/** Name / email / message labels */
+const contactFieldLabelStyle: React.CSSProperties = {
+  color: "#000",
+  fontFamily:
+    '"Gotham Light", Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif',
+  fontSize: "19.01px",
+  fontStyle: "normal",
+  fontWeight: 500,
+  lineHeight: "normal",
+  textTransform: "uppercase",
+};
 
 export function ContactForm({ copy }: { copy: Messages["contact"] }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
@@ -38,31 +74,34 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
       </p>
 
       <div className="grid gap-10 md:grid-cols-[1fr_auto] md:items-end">
-        <h2 className="max-w-xl text-3xl font-bold tracking-tight sm:text-4xl">
-          {copy.heading}
-        </h2>
-        <div className="text-muted-foreground flex items-center gap-4 text-xs tracking-wide uppercase">
+        <div className="max-w-full min-w-0 overflow-x-auto">
+          <h2 className="whitespace-nowrap" style={contactHeadingStyle}>
+            {copy.heading}
+          </h2>
+        </div>
+        <div
+          className="flex min-w-0 max-w-full flex-nowrap items-center gap-4"
+          style={contactHeaderAsideStyle}
+        >
+          <a
+            href="mailto:info@kasparsgroza.lv"
+            className="text-inherit shrink-0 transition-opacity hover:opacity-80"
+          >
+            info@kasparsgroza.lv
+          </a>
           <div
             className="h-10 w-px shrink-0 bg-[var(--kg-accent)]"
             aria-hidden
           />
-          <div className="space-y-1 normal-case tracking-normal">
-            <a
-              href="mailto:info@kasparsgroza.lv"
-              className="hover:text-foreground block transition-colors"
-            >
-              info@kasparsgroza.lv
-            </a>
-            <p>
-              {copy.phoneLabel} +371 20370077
-            </p>
-          </div>
+          <span className="shrink-0 whitespace-nowrap">
+            {copy.phoneLabel} +371 20370077
+          </span>
         </div>
       </div>
 
       <div className="grid gap-10 md:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="name" className="text-xs tracking-[0.2em] uppercase">
+          <Label htmlFor="name" className="p-0" style={contactFieldLabelStyle}>
             {copy.nameLabel}
           </Label>
           <Input
@@ -73,7 +112,7 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="email" className="text-xs tracking-[0.2em] uppercase">
+          <Label htmlFor="email" className="p-0" style={contactFieldLabelStyle}>
             {copy.emailLabel}
           </Label>
           <Input
@@ -87,7 +126,7 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="message" className="text-xs tracking-[0.2em] uppercase">
+        <Label htmlFor="message" className="p-0" style={contactFieldLabelStyle}>
           {copy.messageLabel}
         </Label>
         <textarea
@@ -98,20 +137,30 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
         />
       </div>
 
-      <div className="flex flex-wrap items-center justify-end gap-4">
+      <div className="flex w-full flex-col items-end gap-4">
         {status === "sent" ? (
           <p className="text-muted-foreground text-sm">{copy.sent}</p>
         ) : null}
         {status === "error" ? (
           <p className="text-destructive text-sm">{copy.error}</p>
         ) : null}
-        <Button
-          type="submit"
-          disabled={status === "sending"}
-          className="rounded-none bg-[var(--kg-accent)] px-10 py-6 text-xs font-bold tracking-[0.35em] text-[var(--color-brand-foreground)] uppercase hover:brightness-95"
-        >
-          {copy.submit}
-        </Button>
+        <div className="flex w-full max-w-full flex-wrap items-center justify-end gap-4 sm:gap-8">
+          <Image
+            src="/icons/create.svg"
+            alt={copy.decorative}
+            width={2400}
+            height={400}
+            className="h-10 w-auto max-h-[4.5rem] max-w-[min(100%,42rem)] shrink object-contain object-right sm:h-14 md:h-[84px]"
+            unoptimized
+          />
+          <Button
+            type="submit"
+            disabled={status === "sending"}
+            className="inline-flex max-w-full shrink-0 items-center justify-center rounded-none bg-[var(--kg-accent)] px-0 py-0 text-xs font-bold tracking-[0.35em] text-[var(--color-brand-foreground)] uppercase hover:brightness-95 !h-[84.706px] !w-[276.956px] !min-h-0"
+          >
+            {copy.submit}
+          </Button>
+        </div>
       </div>
     </form>
   );
