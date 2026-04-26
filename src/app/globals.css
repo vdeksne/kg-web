@@ -4,48 +4,77 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Gotham: local() uses OS-installed fonts. For webfonts, add licensed .woff2 under public/fonts and append to each src, e.g. , url("/fonts/Gotham-Light.woff2") format("woff2") — see public/fonts/README.txt. Omitting url() avoids 404s when files are not deployed yet. */
+/* Gotham: licensed files in public/fonts (hyphenated names). local() for dev machines with the family installed. */
 @font-face {
   font-family: Gotham;
   font-style: normal;
   font-weight: 300;
   font-display: swap;
-  src: local("Gotham Light"), local("Gotham-Light");
+  src:
+    local("Gotham Light"),
+    local("Gotham-Light"),
+    url("/fonts/Gotham-Light.woff2") format("woff2"),
+    url("/fonts/Gotham-Light.woff") format("woff");
 }
 @font-face {
   font-family: Gotham;
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: local("Gotham Book"), local("Gotham-Book");
+  src:
+    local("Gotham Book"),
+    local("Gotham-Book"),
+    url("/fonts/Gotham-Book.woff2") format("woff2"),
+    url("/fonts/Gotham-Book.woff") format("woff");
 }
 @font-face {
   font-family: Gotham;
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: local("Gotham Medium"), local("Gotham-Medium");
+  src:
+    local("Gotham Medium"),
+    local("Gotham-Medium"),
+    url("/fonts/Gotham-Medium.woff2") format("woff2"),
+    url("/fonts/Gotham-Medium.woff") format("woff");
 }
 @font-face {
   font-family: Gotham;
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: local("Gotham Bold"), local("Gotham-Bold");
+  src:
+    local("Gotham Bold"),
+    local("Gotham-Bold"),
+    url("/fonts/Gotham-Bold.woff2") format("woff2"),
+    url("/fonts/Gotham-Bold.woff") format("woff");
 }
 @font-face {
   font-family: Gotham;
   font-style: normal;
   font-weight: 900;
   font-display: swap;
-  src: local("Gotham Black"), local("Gotham-Black");
+  src:
+    local("Gotham Black"),
+    local("Gotham-Black"),
+    url("/fonts/Gotham-Black.woff2") format("woff2"),
+    url("/fonts/Gotham-Black.woff") format("woff");
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(
+    --font-geist-mono,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Liberation Mono",
+    monospace
+  );
   --font-heading: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
   --color-brand: var(--kg-accent);
   --color-brand-foreground: #0a0a0a;

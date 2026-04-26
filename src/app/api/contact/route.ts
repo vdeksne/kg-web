@@ -42,10 +42,12 @@ export async function POST(req: Request) {
   try {
     await sendContactEmail(body);
   } catch (err) {
-    console.error("[contact] Send failed:", err);
+    const detail = err instanceof Error ? err.message : String(err);
+    console.error("[contact] Send failed:", detail);
+    // Resend misconfiguration (domain, from address, API key) — check Vercel env and Resend dashboard.
     return NextResponse.json(
       { error: "Could not send your message. Please try again later." },
-      { status: 502 },
+      { status: 503 },
     );
   }
 

@@ -18,8 +18,7 @@ const FOOTER_LOGO_H = 22.6;
 
 const FOOTER_BG = "/images/footer-bg.png";
 
-/** Filename uses NFD (i + combining macron) to match `public/images`. */
-const NEMIZ_SRC = "/images/nemi\u0304z.png";
+const NEMIZ_SRC = "/icons/nemiz.svg";
 const NEMIZ_W = 173;
 const NEMIZ_H = 98;
 const NEMIZ_DISPLAY_W = 86.45;
@@ -129,6 +128,7 @@ export function SiteFooter() {
                   width: `min(100%, ${NEMIZ_DISPLAY_W}px)`,
                   aspectRatio: `${NEMIZ_DISPLAY_W} / ${NEMIZ_DISPLAY_H}`,
                 }}
+                unoptimized
               />
             </div>
           </div>
@@ -192,6 +192,7 @@ export function SiteFooter() {
                   width: `min(100%, ${NEMIZ_DISPLAY_W}px)`,
                   aspectRatio: `${NEMIZ_DISPLAY_W} / ${NEMIZ_DISPLAY_H}`,
                 }}
+                unoptimized
               />
             </div>
           </div>

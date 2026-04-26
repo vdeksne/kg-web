@@ -150,8 +150,11 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
             alt={copy.decorative}
             width={1136}
             height={41}
-            className="max-w-[min(1135.97px,100%)] shrink object-contain object-left"
-            style={{ height: "41.22px", width: "auto" }}
+            className="shrink object-contain object-left"
+            style={{
+              width: "min(1135.97px, 100%)",
+              height: "auto",
+            }}
             unoptimized
           />
           <Button

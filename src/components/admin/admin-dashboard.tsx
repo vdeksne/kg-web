@@ -26,7 +26,7 @@ const TABS = [
 ];
 
 /** Same asset as site footer — combining macron in filename */
-const ADMIN_NEMIZ_SRC = "/images/nemi\u0304z.png";
+const ADMIN_NEMIZ_SRC = "/icons/nemiz.svg";
 const ADMIN_NEMIZ_INTRINSIC_W = 173;
 const ADMIN_NEMIZ_INTRINSIC_H = 98;
 const ADMIN_NEMIZ_DISPLAY_W = 86.45;
@@ -982,6 +982,7 @@ export function AdminDashboard() {
             width: `min(100%, ${ADMIN_NEMIZ_DISPLAY_W}px)`,
             aspectRatio: `${ADMIN_NEMIZ_DISPLAY_W} / ${ADMIN_NEMIZ_DISPLAY_H}`,
           }}
+          unoptimized
         />
       </footer>
 
