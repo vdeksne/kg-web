@@ -74,11 +74,11 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
       style={heroViewportCssVars}
     >
       {/*
-        Mobile raster (≤430px): contain within viewport (no crop); bottom + horizontal
-        center keeps signature / type readable; safe-area inset avoids home indicator.
+        Mobile raster (≤430px): always cover full viewport (no letterboxing). Bottom
+        anchor keeps ground/signature; edges may crop on extreme aspect ratios.
       */}
       <div
-        className="pointer-events-none fixed inset-0 z-1 hidden max-[430px]:block min-h-dvh w-full overflow-hidden bg-white pb-[env(safe-area-inset-bottom)]"
+        className="pointer-events-none fixed inset-0 z-1 hidden max-[430px]:block min-h-dvh w-full min-w-full overflow-hidden bg-white"
         aria-hidden
       >
         <Image
@@ -86,7 +86,7 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
           alt=""
           fill
           sizes="100vw"
-          className="object-contain object-bottom"
+          className="object-cover object-bottom"
           priority
         />
       </div>
