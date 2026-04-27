@@ -8,7 +8,7 @@ import { messages } from "@/i18n/messages";
 import { withLocale } from "@/lib/i18n-path";
 import {
   GoldStrike,
-  MAIN_NAV_GOLD_STRIKE_EXTEND_PX,
+  MAIN_NAV_GOLD_STRIKE_EXTEND_EM,
 } from "@/components/site/gold-strike";
 import { usePortfolioNavCategories } from "@/components/site/portfolio-nav-provider";
 import {
@@ -95,7 +95,8 @@ export function NavPortfolioItem({
           <GoldStrike
             active={portfolioActive}
             trackingTrimEm={compact ? 0.16 : 0.15}
-            strikeExtendPx={MAIN_NAV_GOLD_STRIKE_EXTEND_PX}
+            strikeExtendEm={MAIN_NAV_GOLD_STRIKE_EXTEND_EM}
+            strikeThickness="fluid"
           >
             <span>{t.portfolio}</span>
           </GoldStrike>
@@ -144,7 +145,8 @@ export function NavPortfolioItem({
         <GoldStrike
           active={portfolioActive}
           trackingTrimEm={0.25}
-          strikeExtendPx={MAIN_NAV_GOLD_STRIKE_EXTEND_PX}
+          strikeExtendEm={MAIN_NAV_GOLD_STRIKE_EXTEND_EM}
+          strikeThickness="fluid"
         >
           <span>{t.portfolio}</span>
         </GoldStrike>

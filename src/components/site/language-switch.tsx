@@ -2,7 +2,11 @@
 
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { GoldStrike } from "@/components/site/gold-strike";
+import {
+  GoldStrike,
+  LANG_GOLD_STRIKE_EXTEND_EM,
+  LANG_GOLD_STRIKE_NUDGE_EM,
+} from "@/components/site/gold-strike";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
 import {
   fluidAboutDesktopLang,
@@ -13,10 +17,6 @@ import {
 } from "@/lib/fluid-type";
 import { replaceLocaleInPath } from "@/lib/i18n-path";
 import { cn } from "@/lib/utils";
-
-const HOME_MOBILE_LANG_STRIKE_NUDGE_PX = 1;
-/** Gold strike extends past LV / ENG by this many px on each side */
-const LANG_STRIKE_EXTEND_EACH_SIDE_PX = 1.5;
 
 export function LanguageSwitch({
   className,
@@ -55,10 +55,9 @@ export function LanguageSwitch({
         <GoldStrike
           active={active === "lv"}
           trackingTrimEm={variant === "homeMobile" ? 0.18 : 0.21}
-          strikeExtendPx={LANG_STRIKE_EXTEND_EACH_SIDE_PX}
-          strikeCenterNudgePx={
-            variant === "homeMobile" ? HOME_MOBILE_LANG_STRIKE_NUDGE_PX : undefined
-          }
+          strikeExtendEm={LANG_GOLD_STRIKE_EXTEND_EM}
+          strikeCenterNudgeEm={LANG_GOLD_STRIKE_NUDGE_EM}
+          strikeThickness="fluid"
         >
           <span>LV</span>
         </GoldStrike>
@@ -73,10 +72,9 @@ export function LanguageSwitch({
         <GoldStrike
           active={active === "en"}
           trackingTrimEm={variant === "homeMobile" ? 0.18 : 0.21}
-          strikeExtendPx={LANG_STRIKE_EXTEND_EACH_SIDE_PX}
-          strikeCenterNudgePx={
-            variant === "homeMobile" ? HOME_MOBILE_LANG_STRIKE_NUDGE_PX : undefined
-          }
+          strikeExtendEm={LANG_GOLD_STRIKE_EXTEND_EM}
+          strikeCenterNudgeEm={LANG_GOLD_STRIKE_NUDGE_EM}
+          strikeThickness="fluid"
         >
           <span>ENG</span>
         </GoldStrike>

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import {
   GoldStrike,
-  MAIN_NAV_GOLD_STRIKE_EXTEND_PX,
+  MAIN_NAV_GOLD_STRIKE_EXTEND_EM,
 } from "@/components/site/gold-strike";
 import { NavPortfolioItem } from "@/components/site/nav-portfolio-item";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
@@ -62,7 +62,8 @@ export function SiteNav({
             <GoldStrike
               active={pathname === aboutHref}
               trackingTrimEm={strikeTrimEm}
-              strikeExtendPx={MAIN_NAV_GOLD_STRIKE_EXTEND_PX}
+              strikeExtendEm={MAIN_NAV_GOLD_STRIKE_EXTEND_EM}
+              strikeThickness="fluid"
             >
               <span>{t.about}</span>
             </GoldStrike>
@@ -84,7 +85,8 @@ export function SiteNav({
             <GoldStrike
               active={pathname === contactHref}
               trackingTrimEm={strikeTrimEm}
-              strikeExtendPx={MAIN_NAV_GOLD_STRIKE_EXTEND_PX}
+              strikeExtendEm={MAIN_NAV_GOLD_STRIKE_EXTEND_EM}
+              strikeThickness="fluid"
             >
               <span>{t.contact}</span>
             </GoldStrike>
