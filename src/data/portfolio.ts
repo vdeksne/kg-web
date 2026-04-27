@@ -3,6 +3,7 @@ import {
   type GalleryTileSizeId,
 } from "@/lib/gallery-tile-sizes";
 import type { PortfolioItem } from "@/lib/site-content/types";
+import { PORTFOLIO_ITEM_MOCK_DESCRIPTION } from "@/data/portfolio-mock-descriptions";
 
 /** Row 1: col1, col2 = 487.746×431, col3 = 488.046×248.6 */
 const LOGO_FIRST_ROW_TILES: readonly GalleryTileSizeId[] = [
@@ -163,13 +164,23 @@ const LOGO_GALLERY_ORDER: ReadonlyArray<{
   { num: "42", alt: "Fast Motion", file: "fast-motion" },
 ];
 
-const logoItems: PortfolioItem[] = LOGO_GALLERY_ORDER.map((row, index) => ({
-  id: `logo-${row.num}`,
-  alt: row.alt,
-  src: `/images/gallery/${row.file}.jpg`,
-  tileSize: logoTileSize(index),
-  categories: ["logo"],
-}));
+const emptyDescription = (): PortfolioItem["description"] => ({
+  lv: "",
+  en: "",
+});
+
+const logoItems: PortfolioItem[] = LOGO_GALLERY_ORDER.map((row, index) => {
+  const id = `logo-${row.num}`;
+  return {
+    id,
+    alt: row.alt,
+    src: `/images/gallery/${row.file}.jpg`,
+    tileSize: logoTileSize(index),
+    categories: ["logo"],
+    description:
+      PORTFOLIO_ITEM_MOCK_DESCRIPTION[id] ?? emptyDescription(),
+  };
+});
 
 const drukatieItems: PortfolioItem[] = [
   {
@@ -178,6 +189,8 @@ const drukatieItems: PortfolioItem[] = [
     src: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80",
     tileSize: "w488h426",
     categories: ["drukatie"],
+    description:
+      PORTFOLIO_ITEM_MOCK_DESCRIPTION["drukatie-1"] ?? emptyDescription(),
   },
   {
     id: "drukatie-2",
@@ -185,6 +198,8 @@ const drukatieItems: PortfolioItem[] = [
     src: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=800&q=80",
     tileSize: "w488h249",
     categories: ["drukatie"],
+    description:
+      PORTFOLIO_ITEM_MOCK_DESCRIPTION["drukatie-2"] ?? emptyDescription(),
   },
   {
     id: "drukatie-3",
@@ -192,6 +207,8 @@ const drukatieItems: PortfolioItem[] = [
     src: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&q=80",
     tileSize: "w488h373",
     categories: ["drukatie"],
+    description:
+      PORTFOLIO_ITEM_MOCK_DESCRIPTION["drukatie-3"] ?? emptyDescription(),
   },
 ];
 
@@ -202,6 +219,8 @@ const dazadiItems: PortfolioItem[] = [
     src: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&q=80",
     tileSize: "w488h691",
     categories: ["dazadi"],
+    description:
+      PORTFOLIO_ITEM_MOCK_DESCRIPTION["dazadi-1"] ?? emptyDescription(),
   },
   {
     id: "dazadi-2",
@@ -209,6 +228,8 @@ const dazadiItems: PortfolioItem[] = [
     src: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80",
     tileSize: "w488h426",
     categories: ["dazadi"],
+    description:
+      PORTFOLIO_ITEM_MOCK_DESCRIPTION["dazadi-2"] ?? emptyDescription(),
   },
   {
     id: "dazadi-3",
@@ -216,6 +237,8 @@ const dazadiItems: PortfolioItem[] = [
     src: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80",
     tileSize: "w488h249",
     categories: ["dazadi"],
+    description:
+      PORTFOLIO_ITEM_MOCK_DESCRIPTION["dazadi-3"] ?? emptyDescription(),
   },
 ];
 

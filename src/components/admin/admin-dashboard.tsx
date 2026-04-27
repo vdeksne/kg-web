@@ -665,6 +665,7 @@ export function AdminDashboard() {
                                     c.portfolio.categoryNav[0]?.slug ??
                                       "logo",
                                   ],
+                                  description: { lv: "", en: "" },
                                 },
                               ],
                             },
@@ -730,6 +731,65 @@ export function AdminDashboard() {
                         placeholder="Alt text"
                         className={cn(fieldClass, "h-9 px-2 text-xs")}
                       />
+                      <div className="space-y-1.5">
+                        <p className="text-[0.6rem] font-medium tracking-wider text-zinc-500 uppercase">
+                          Project note (lightbox)
+                        </p>
+                        <textarea
+                          value={item.description.lv}
+                          onChange={(e) =>
+                            setContent((c) => {
+                              if (!c) return c;
+                              const items = [...c.portfolio.items];
+                              const cur = items[index]!;
+                              items[index] = {
+                                ...cur,
+                                description: {
+                                  ...cur.description,
+                                  lv: e.target.value,
+                                },
+                              };
+                              return {
+                                ...c,
+                                portfolio: { ...c.portfolio, items },
+                              };
+                            })
+                          }
+                          placeholder="LV — e.g. Adobe Illustrator, print prep…"
+                          rows={2}
+                          className={cn(
+                            fieldClass,
+                            "min-h-0 w-full resize-y px-2 py-1.5 text-xs",
+                          )}
+                        />
+                        <textarea
+                          value={item.description.en}
+                          onChange={(e) =>
+                            setContent((c) => {
+                              if (!c) return c;
+                              const items = [...c.portfolio.items];
+                              const cur = items[index]!;
+                              items[index] = {
+                                ...cur,
+                                description: {
+                                  ...cur.description,
+                                  en: e.target.value,
+                                },
+                              };
+                              return {
+                                ...c,
+                                portfolio: { ...c.portfolio, items },
+                              };
+                            })
+                          }
+                          placeholder="EN — tools, software, production notes…"
+                          rows={2}
+                          className={cn(
+                            fieldClass,
+                            "min-h-0 w-full resize-y px-2 py-1.5 text-xs",
+                          )}
+                        />
+                      </div>
                       <Input
                         value={item.src}
                         onChange={(e) =>

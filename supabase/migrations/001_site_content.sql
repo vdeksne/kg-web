@@ -1,5 +1,9 @@
 -- Run in Supabase SQL editor or via CLI. Then create a public storage bucket named "cms"
 -- (Storage → New bucket → name: cms → public).
+--
+-- Do NOT paste content/site-content.json here — JSON is not valid SQL. To load CMS data
+-- into `payload`, use: npx tsx scripts/seed-supabase-site-content.ts (with service role in .env.local)
+-- or save once from the site admin UI.
 
 create table if not exists public.site_content (
   id smallint primary key default 1,

@@ -33,6 +33,8 @@ export const portfolioItemSchema = z
     tileSize: galleryTileSizeSchema,
     categories: z.array(portfolioCategorySlugSchema).optional(),
     category: portfolioCategorySlugSchema.optional(),
+    /** Short project note (tools, process) — shown in the gallery lightbox. */
+    description: localizedStringSchema.optional(),
   })
   .transform((data) => {
     const raw =
@@ -48,6 +50,7 @@ export const portfolioItemSchema = z
       src: data.src,
       tileSize: data.tileSize,
       categories,
+      description: data.description ?? { lv: "", en: "" },
     };
   });
 

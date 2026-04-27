@@ -52,189 +52,220 @@
         "alt": "EE Real Estate",
         "src": "/images/gallery/ee-real-estate.jpg",
         "tileSize": "w488h426",
-        "categories": [
-          "logo"
-        ]
+        "categories": ["logo"],
+        "description": {
+          "lv": "Zīmola zīme — Adobe Illustrator, vektors, CMYK sagatave drukai.",
+          "en": "Brand mark — Adobe Illustrator, vector build, CMYK print prep."
+        }
       },
       {
         "id": "logo-24",
         "alt": "Gatavo",
         "src": "/images/gallery/gatavo.jpg",
         "tileSize": "w487h431",
-        "categories": [
-          "logo",
-          "dazadi"
-        ]
+        "categories": ["logo", "dazadi"],
+        "description": {
+          "lv": "Logotipa sistēma. Rīki: Illustrator + neliela korekcija Photoshop.",
+          "en": "Logo system. Tools: Illustrator with light refinement in Photoshop."
+        }
       },
       {
         "id": "logo-23",
         "alt": "eboat.lv",
         "src": "/images/gallery/eboat-lv.jpg",
         "tileSize": "w488h249",
-        "categories": [
-          "logo"
-        ]
+        "categories": ["logo"],
+        "description": {
+          "lv": "Web orientēts logo — vektors, eksports SVG/PNG.",
+          "en": "Web-first logotype — vector source, SVG/PNG exports."
+        }
       },
       {
         "id": "logo-26",
         "alt": "Wake business cards",
         "src": "/images/gallery/wake-business-cards.jpg",
         "tileSize": "w488h373",
-        "categories": [
-          "logo"
-        ]
+        "categories": ["logo"],
+        "description": {
+          "lv": "Vizītkartes makets — InDesign, 85×55 mm, sagatave tipogrāfijai.",
+          "en": "Business card layout — InDesign, 85×55 mm, press-ready PDF."
+        }
       },
       {
         "id": "logo-25",
         "alt": "Pērkons",
         "src": "/images/gallery/perkons.jpg",
         "tileSize": "w488h254",
-        "categories": [
-          "logo"
-        ]
+        "categories": ["logo"],
+        "description": {
+          "lv": "Simbols un tips — Illustrator, pielāgots mazam formātam.",
+          "en": "Symbol and type — Illustrator, tuned for small sizes."
+        }
       },
       {
         "id": "logo-28",
         "alt": "Holy Chic",
         "src": "/images/gallery/holy-chic.jpg",
         "tileSize": "w488h426",
-        "categories": [
-          "logo"
-        ]
+        "categories": ["logo"],
+        "description": {
+          "lv": "Estētisks logo — zīmējums Illustrator, krāsu profils drukai.",
+          "en": "Editorial-style mark — drawn in Illustrator, print colour profile."
+        }
       },
       {
         "id": "logo-31",
         "alt": "Āgenskalna Priedes",
         "src": "/images/gallery/agenskalna-priedes.jpg",
         "tileSize": "w488h382",
-        "categories": [
-          "logo"
-        ]
+        "categories": ["logo"],
+        "description": {
+          "lv": "Nekustamā īpašuma zīmols — vektors, vadlīnijas klientam.",
+          "en": "Property branding — vector lockup plus basic usage guidelines."
+        }
       },
       {
         "id": "logo-30",
         "alt": "Rīga 2018",
         "src": "/images/gallery/riga-2018.jpg",
         "tileSize": "w488h454",
-        "categories": [
-          "logo"
-        ]
+        "categories": ["logo"],
+        "description": {
+          "lv": "Pasākuma grafika — Illustrator, materiāli drukai un sociālajiem medijiem.",
+          "en": "Event graphics — Illustrator; assets for print and social."
+        }
       },
       {
         "id": "logo-29",
         "alt": "Moto 2017 trip",
         "src": "/images/gallery/moto-2017-trip.jpg",
         "tileSize": "w487h488",
-        "categories": [
-          "logo",
-          "dazadi"
-        ]
+        "categories": ["logo", "dazadi"],
+        "description": {
+          "lv": "Ceļojuma projekta emblēma — Illustrator, rastra korekcija Photoshop.",
+          "en": "Trip badge concept — Illustrator with raster touch-up in Photoshop."
+        }
       },
       {
         "id": "logo-32",
         "alt": "Business cards",
         "src": "/images/gallery/business-cards.jpg",
         "tileSize": "w487h367",
-        "categories": [
-          "logo",
-          "drukatie",
-          "dazadi"
-        ]
+        "categories": ["logo", "drukatie", "dazadi"],
+        "description": {
+          "lv": "Vizītkartes — InDesign + logo no Illustrator, CMYK PDF.",
+          "en": "Cards — InDesign composition, Illustrator logo, CMYK PDF to press."
+        }
       },
       {
         "id": "logo-33",
         "alt": "Sporta centrs Jugla",
         "src": "/images/gallery/sporta-centrs-jugla.jpg",
         "tileSize": "w488h433",
-        "categories": [
-          "logo"
-        ]
+        "categories": ["logo"],
+        "description": {
+          "lv": "Sporta zīmola zīme — vektors, vienkāršotas versijas zālēm.",
+          "en": "Sports venue mark — vector with simplified variants for signage."
+        }
       },
       {
         "id": "logo-34",
         "alt": "Tepat Grupa",
         "src": "/images/gallery/tepat-grupa.jpg",
         "tileSize": "w488h409",
-        "categories": [
-          "logo"
-        ]
+        "categories": ["logo"],
+        "description": {
+          "lv": "Korporatīvais logo — Illustrator, horizontālais un vertikālais variants.",
+          "en": "Corporate lockup — Illustrator; horizontal and stacked versions."
+        }
       },
       {
         "id": "logo-35",
         "alt": "FG monogram",
         "src": "/images/gallery/fg-monogram.jpg",
         "tileSize": "w488h416",
-        "categories": [
-          "logo"
-        ]
+        "categories": ["logo"],
+        "description": {
+          "lv": "Monogramma — tīrs vektors Illustrator, zelta/sudraba drukas simulācija.",
+          "en": "Monogram — clean Illustrator vectors, foil print simulation."
+        }
       },
       {
         "id": "logo-36",
         "alt": "Kraft business cards",
         "src": "/images/gallery/kraft-business-cards.jpg",
         "tileSize": "w487h354",
-        "categories": [
-          "logo",
-          "drukatie",
-          "dazadi"
-        ]
+        "categories": ["logo", "drukatie", "dazadi"],
+        "description": {
+          "lv": "Kraft papīrs — InDesign makets, 1 krāsa + dabisks fons.",
+          "en": "Kraft stock — InDesign layout, one ink on uncoated board."
+        }
       },
       {
         "id": "logo-37",
         "alt": "Wake sēta",
         "src": "/images/gallery/wake-seta.jpg",
         "tileSize": "w488h367d3",
-        "categories": [
-          "logo"
-        ]
+        "categories": ["logo"],
+        "description": {
+          "lv": "Āra zīmola zīme — Illustrator, izturīgas uzlīmes eksportam.",
+          "en": "Outdoor mark — Illustrator; export for durable vinyl applications."
+        }
       },
       {
         "id": "logo-38",
         "alt": "Asais cepiens 2018",
         "src": "/images/gallery/asais-cepiens-2018.jpg",
         "tileSize": "w488h691",
-        "categories": [
-          "logo",
-          "dazadi"
-        ]
+        "categories": ["logo", "dazadi"],
+        "description": {
+          "lv": "Iepakojuma grafika — Illustrator + InDesign, pārtikas drukas spec.",
+          "en": "Packaging art — Illustrator + InDesign, food-safe print specs."
+        }
       },
       {
         "id": "logo-39",
         "alt": "Herbal Meadow",
         "src": "/images/gallery/herbal-meadow.jpg",
         "tileSize": "w488h488d3",
-        "categories": [
-          "logo"
-        ]
+        "categories": ["logo"],
+        "description": {
+          "lv": "Dabīgas kosmētikas zīmols — organiskas formas, Illustrator.",
+          "en": "Natural cosmetics brand — organic shapes built in Illustrator."
+        }
       },
       {
         "id": "logo-40",
         "alt": "Stamp and ink",
         "src": "/images/gallery/stamp-and-ink.jpg",
         "tileSize": "w487h488",
-        "categories": [
-          "logo",
-          "dazadi",
-          "drukatie"
-        ]
+        "categories": ["logo", "dazadi", "drukatie"],
+        "description": {
+          "lv": "Zīmoga estētika — vektors + tekstūra Photoshop, melnbalta druka.",
+          "en": "Stamp aesthetic — vector base, Photoshop texture, letterpress-ready BW."
+        }
       },
       {
         "id": "logo-41",
         "alt": "A & Z Bedroom",
         "src": "/images/gallery/az-bedroom.jpg",
         "tileSize": "w488h359",
-        "categories": [
-          "logo"
-        ]
+        "categories": ["logo"],
+        "description": {
+          "lv": "Interjera zīmola zīme — Illustrator, izmantošana iekštelpu zīmēs.",
+          "en": "Interior brand mark — Illustrator; usage for in-room signage."
+        }
       },
       {
         "id": "logo-42",
         "alt": "Fast Motion",
         "src": "/images/gallery/fast-motion.jpg",
         "tileSize": "w488h224",
-        "categories": [
-          "logo"
-        ]
+        "categories": ["logo"],
+        "description": {
+          "lv": "Dinamisks logo — Illustrator, kustības sajūta bez rastra.",
+          "en": "Dynamic logotype — Illustrator; motion feel while staying vector."
+        }
       }
     ]
   },
