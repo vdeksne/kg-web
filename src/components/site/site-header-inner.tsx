@@ -20,10 +20,6 @@ const MOBILE_SUBPAGE_HEADER_SRC = "/images/mobite - header.png";
 const MOBILE_SUBPAGE_HEADER_W = 720;
 const MOBILE_SUBPAGE_HEADER_H = 260;
 
-/** Mobile header raster frame 360×130 @ 360px ref; scales with row width. */
-const MOBILE_SUBPAGE_REF_W = 360;
-const MOBILE_SUBPAGE_LOGO_W = 360;
-
 export function SiteHeaderInner({
   variant = "default",
   locale = defaultLocale,
@@ -68,7 +64,7 @@ export function SiteHeaderInner({
         className={cn(
           "relative z-10 mx-auto flex w-full flex-col",
           isAbout
-            ? "max-[700px]:gap-4 min-[701px]:gap-[clamp(32px,calc(107.5*100vw/1920),107.5px)]"
+            ? "max-[700px]:gap-7 min-[701px]:gap-[clamp(32px,calc(107.5*100vw/1920),107.5px)]"
             : "gap-6",
           isAbout
             ? "max-w-[1920px] px-[clamp(1.5rem,calc(100vw*202/1920),202px)] max-[700px]:px-[22px]"
@@ -90,22 +86,27 @@ export function SiteHeaderInner({
       >
         {isAbout ? (
           <>
-            <div className="relative hidden w-full max-[700px]:block pt-[env(safe-area-inset-top)]">
+            <div
+              className={cn(
+                "relative hidden w-full max-[700px]:block max-[700px]:mx-[-22px] max-[700px]:w-[calc(100%+44px)]",
+                "pt-0",
+              )}
+            >
               <Link
                 href={withLocale("/", locale)}
-                className="block aspect-360/130 w-full max-w-full outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                className="relative block w-full max-w-none rounded-none border-0 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 <Image
                   src={MOBILE_SUBPAGE_HEADER_SRC}
                   alt="Kaspars Groza — portfolio"
                   width={MOBILE_SUBPAGE_HEADER_W}
                   height={MOBILE_SUBPAGE_HEADER_H}
-                  className="h-full w-full object-contain object-left"
-                  sizes={`(max-width: ${SUBPAGE_HEADER_MOBILE_MAX_PX}px) ${Math.round((MOBILE_SUBPAGE_LOGO_W / MOBILE_SUBPAGE_REF_W) * SUBPAGE_HEADER_MOBILE_MAX_PX)}px, 400px`}
+                  className="h-auto w-full object-contain object-left"
+                  sizes={`(max-width: ${SUBPAGE_HEADER_MOBILE_MAX_PX}px) 100vw, 400px`}
                   priority
                 />
               </Link>
-              <div className="pointer-events-none absolute top-[calc(52px+env(safe-area-inset-top))] right-0">
+              <div className="pointer-events-none absolute top-[calc(48px+env(safe-area-inset-top))] right-[22px]">
                 <div className="pointer-events-auto">
                   <LanguageSwitch variant="homeMobile" className="shrink-0" />
                 </div>

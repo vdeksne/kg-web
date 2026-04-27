@@ -24,25 +24,25 @@ export const fluidAboutDesktopLang =
 export const fluidAboutDesktopLangGap =
   "gap-[clamp(6px,calc(100vw*11.52/1920),11.52px)]";
 
-/** Home mobile header: smaller LV | ENG than `fluidPrimaryText`. */
+/** Home mobile header: LV | ENG (compact chrome); tuned for ≤430px. */
 export const fluidHomeMobileLang =
-  "text-[clamp(10px,calc(10px+(100vw-320px)*0.001),12px)] gap-[clamp(4px,calc(4px+(100vw-320px)*0.005),7px)]";
+  "text-[clamp(10px,calc(10px+(100vw-320px)*0.001),12px)] gap-[clamp(4px,calc(4px+(100vw-320px)*0.0045),6.5px)]";
 
 /** Home mobile burger drawer: primary nav links. */
 export const fluidHomeMobileMenu =
-  "gap-5 font-normal leading-snug text-[clamp(17px,calc(17px+(100vw-320px)*0.00175),21px)] tracking-[0.16em]";
+  "gap-4 font-normal leading-snug text-[clamp(15px,calc(15px+(100vw-320px)*0.00145),18px)] tracking-[0.16em]";
 
 /** Home mobile drawer: portfolio sub-links. */
 export const fluidHomeMobileNavSub =
-  "leading-normal text-[clamp(15px,calc(15px+(100vw-320px)*0.00125),18px)] tracking-[0.14em]";
+  "leading-normal text-[clamp(13px,calc(13px+(100vw-320px)*0.00105),15.5px)] tracking-[0.14em]";
 
 /** Portfolio column sub-links: 10px → 11.2px */
 export const fluidNavSubText =
   "text-[clamp(10px,calc(10px+(100vw-320px)*0.00075),11.2px)]";
 
-/** Yellow dropdown row labels: 16px → 20px */
+/** Yellow dropdown row labels: 14px → 18px */
 export const fluidDropdownText =
-  "text-[clamp(16px,calc(16px+(100vw-320px)*0.001875),20px)]";
+  "text-[clamp(14px,calc(14px+(100vw-320px)*0.001875),18px)]";
 
 /** About page title: ~32px @ 320 → 65.55px @ 1920 */
 export const fluidAboutTitle =

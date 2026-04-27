@@ -22,7 +22,7 @@ const DROPDOWN_FILL = "#F3C02D";
 const DROPDOWN_MIN_W = 139.43;
 const DROPDOWN_H = 100.1;
 const DROPDOWN_PAD_X = 17.09;
-const DROPDOWN_FONT_PX = 20;
+const DROPDOWN_FONT_PX = 18;
 const DROPDOWN_ROW_GAP = 10;
 
 export function NavPortfolioItem({
