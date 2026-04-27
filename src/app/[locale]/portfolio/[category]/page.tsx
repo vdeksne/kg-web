@@ -24,7 +24,7 @@ function PortfolioGalleryTile({ item }: { item: PortfolioItem }) {
   const isContain = GALLERY_OBJECT_CONTAIN_IDS.has(item.id);
   return (
     <article
-      className="group w-full overflow-hidden bg-neutral-100"
+      className="group w-full max-md:self-center overflow-hidden bg-neutral-100"
       style={{ maxWidth: `${frame.width}px` }}
     >
       <div
@@ -37,7 +37,7 @@ function PortfolioGalleryTile({ item }: { item: PortfolioItem }) {
           src={item.src}
           alt={item.alt}
           fill
-          sizes="(max-width: 1024px) 100vw, 33vw"
+          sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
           className={cn(
             galleryImageHover,
             isContain
@@ -80,6 +80,11 @@ export default async function PortfolioCategoryPage({
       ? { logoBottomRowEmptyFirstColumn: true }
       : undefined,
   );
+  const tabletColumnCount = items.length <= 1 ? 1 : 2;
+  const tabletColumns = distributePortfolioItemsToColumns(
+    items,
+    tabletColumnCount,
+  );
 
   return (
     <div className="bg-background flex min-h-dvh flex-col">
@@ -88,19 +93,38 @@ export default async function PortfolioCategoryPage({
         locale={locale}
         contentGapBelowNavPx={0}
       />
-      <main className="mx-auto w-full max-w-[1920px] flex-1 px-[clamp(1.5rem,calc(100vw*202/1920),202px)] pb-12 pt-[76px]">
-        <div className="text-muted-foreground mb-[35.01px] flex flex-wrap items-center gap-x-1 gap-y-1 text-xs tracking-[0.18em] uppercase">
+      <main
+        className={cn(
+          "mx-auto w-full max-w-[1920px] flex-1 pb-12 pt-[76px]",
+          "max-[700px]:px-[22px] min-[701px]:px-[clamp(1.5rem,calc(100vw*202/1920),202px)]",
+        )}
+      >
+        <div className="text-muted-foreground mb-[35.01px] hidden min-[701px]:flex flex-wrap items-center gap-x-1 gap-y-1 text-xs tracking-[0.18em] uppercase">
           <span>{portfolio.breadcrumb[locale]}</span>
           <span>/</span>
           <span>{categoryTitle}</span>
         </div>
 
-        {/* Below lg: document order. lg+: three Figma-style stacks (no shared row height). */}
-        <div className="flex flex-col gap-4 lg:hidden">
+        {/* Mobile: one column, document order. */}
+        <div className="flex flex-col items-center gap-4 md:hidden">
           {items.map((item) => (
             <PortfolioGalleryTile key={item.id} item={item} />
           ))}
         </div>
+        {/* Tablet: two masonry columns (md–lg). */}
+        <div className="hidden gap-[23px] md:flex lg:hidden md:items-start">
+          {tabletColumns.map((colItems, colIndex) => (
+            <div
+              key={colIndex}
+              className="flex min-w-0 flex-1 flex-col gap-[23px]"
+            >
+              {colItems.map((item) => (
+                <PortfolioGalleryTile key={item.id} item={item} />
+              ))}
+            </div>
+          ))}
+        </div>
+        {/* Desktop lg+: Figma-style three stacks (or fewer if few items). */}
         <div className="hidden gap-[23px] lg:flex lg:items-start">
           {desktopColumns.map((colItems, colIndex) => (
             <div

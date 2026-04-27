@@ -2,6 +2,11 @@ import { Resend } from "resend";
 
 const DEFAULT_TO = "info@kasparsgroza.lv";
 
+/** Env files sometimes wrap or break lines; Resend rejects addr-spec with CR/LF. */
+function normalizeMailHeaderValue(value: string): string {
+  return value.replace(/[\r\n]+/g, "").trim();
+}
+
 function escapeHtml(text: string): string {
   return text
     .replace(/&/g, "&amp;")
@@ -33,8 +38,10 @@ export async function sendContactEmail(data: {
   email: string;
   message: string;
 }): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.CONTACT_FROM_EMAIL;
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  const from = process.env.CONTACT_FROM_EMAIL
+    ? normalizeMailHeaderValue(process.env.CONTACT_FROM_EMAIL)
+    : "";
 
   if (!apiKey) {
     throw new Error("RESEND_API_KEY is not configured");
@@ -48,16 +55,18 @@ export async function sendContactEmail(data: {
     rawTo != null && rawTo.trim() !== ""
       ? rawTo
           .split(",")
-          .map((s) => s.trim())
+          .map((s) => normalizeMailHeaderValue(s))
           .filter(Boolean)
       : [DEFAULT_TO];
+
+  const replyTo = normalizeMailHeaderValue(data.email);
 
   const resend = new Resend(apiKey);
   const { error } = await resend.emails.send({
     from,
     to,
     subject: `Portfolio contact — ${data.name}`,
-    replyTo: data.email,
+    replyTo,
     html: buildHtml(data),
     text: `Name: ${data.name}\nEmail: ${data.email}\n\n${data.message}`,
   });

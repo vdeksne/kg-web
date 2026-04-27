@@ -54,10 +54,8 @@ export function SiteFooter() {
           sizes="100vw"
         />
       </div>
-      <div
-        className="relative z-10 mx-auto flex w-full max-w-[min(100%,1515.211px)] flex-col px-6 pt-16 sm:px-10 md:min-h-[250px]"
-      >
-        <div className="flex w-full flex-col items-center md:mt-auto">
+      <div className="relative z-10 mx-auto flex w-full max-w-[min(100%,1515.211px)] flex-col px-6 pt-16 sm:px-10 min-[1267px]:min-h-[250px]">
+        <div className="flex w-full flex-col items-center min-[1267px]:mt-auto">
           <Link
             href={withLocale("/", locale)}
             className="shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -67,11 +65,9 @@ export function SiteFooter() {
               alt="Kaspars Groza"
               width={LOGO_BOTTOM_INTRINSIC_W}
               height={LOGO_BOTTOM_INTRINSIC_H}
-              className="mx-auto max-w-full object-contain"
+              className="mx-auto h-auto w-[min(100%,220px)] max-w-full object-contain md:w-[min(100%,263.063px)]"
               style={{
-                width: `min(100%, ${FOOTER_LOGO_W}px)`,
                 aspectRatio: `${FOOTER_LOGO_W} / ${FOOTER_LOGO_H}`,
-                height: "auto",
               }}
             />
           </Link>
@@ -80,7 +76,7 @@ export function SiteFooter() {
             style={{ paddingBottom: FOOTER_ROW_FROM_BOTTOM }}
           >
           {/* Mobile: stacked */}
-          <div className="flex flex-col items-center gap-6 md:hidden">
+          <div className="flex flex-col items-center gap-6 min-[1267px]:hidden">
             <nav className="w-full">
               <ul className="flex flex-wrap justify-center gap-6">
                 <li>
@@ -102,8 +98,8 @@ export function SiteFooter() {
                 </li>
               </ul>
             </nav>
-            <SocialLinks className="[&_ul]:gap-[20.09px]!" />
-            <div className="flex flex-wrap items-center justify-center gap-y-2">
+            <SocialLinks className="flex w-full justify-center [&_ul]:gap-[20.09px]!" />
+            <div className="flex w-full max-w-full flex-wrap items-center justify-center gap-x-[27.19px] gap-y-3 text-center">
               <a
                 href="mailto:info@kasparsgroza.lv"
                 className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
@@ -113,7 +109,6 @@ export function SiteFooter() {
               <a
                 href="tel:+37120370077"
                 className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
-                style={{ marginInlineStart: GAP_EMAIL_TO_PHONE }}
               >
                 +371 20370077
               </a>
@@ -122,9 +117,8 @@ export function SiteFooter() {
                 alt={t.footer.tagline}
                 width={NEMIZ_W}
                 height={NEMIZ_H}
-                className="h-auto shrink-0 object-contain"
+                className="h-auto shrink-0 object-contain brightness-0 invert"
                 style={{
-                  marginInlineStart: GAP_PHONE_TO_NEMIZ,
                   width: `min(100%, ${NEMIZ_DISPLAY_W}px)`,
                   aspectRatio: `${NEMIZ_DISPLAY_W} / ${NEMIZ_DISPLAY_H}`,
                 }}
@@ -133,8 +127,8 @@ export function SiteFooter() {
             </div>
           </div>
 
-          {/* md+: icons fixed to true horizontal center; sides anchor inward */}
-          <div className="hidden min-h-[40px] w-full items-center md:flex">
+          {/* Wide (≥1267px): icons fixed to true horizontal center; sides anchor inward */}
+          <div className="hidden min-h-[40px] w-full items-center min-[1267px]:flex">
             <div
               className="flex min-h-0 min-w-0 flex-1 justify-end"
               style={{ paddingInlineEnd: GAP_SIDE_TO_ICONS }}

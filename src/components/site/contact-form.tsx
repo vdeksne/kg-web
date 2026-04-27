@@ -7,26 +7,42 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { Messages } from "@/i18n/messages";
 
-/** Contact main heading — Figma */
+/** 320px → 1920px viewport — matches site fluid type ramps */
+const CONTACT_HEADING_MIN_PX = 28;
+const CONTACT_HEADING_MAX_PX = 67.05;
+const CONTACT_HEADING_SLOPE =
+  (CONTACT_HEADING_MAX_PX - CONTACT_HEADING_MIN_PX) / 1600;
+
+const CONTACT_ASIDE_FS_MIN = 12;
+const CONTACT_ASIDE_FS_MAX = 19;
+const CONTACT_ASIDE_FS_SLOPE =
+  (CONTACT_ASIDE_FS_MAX - CONTACT_ASIDE_FS_MIN) / 1600;
+
+const CONTACT_ASIDE_LH_MIN = 16;
+const CONTACT_ASIDE_LH_MAX = 24;
+const CONTACT_ASIDE_LH_SLOPE =
+  (CONTACT_ASIDE_LH_MAX - CONTACT_ASIDE_LH_MIN) / 1600;
+
+/** Contact main heading — Figma max, fluid down to narrow viewports */
 const contactHeadingStyle: React.CSSProperties = {
   color: "#000",
   fontFamily: 'Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif',
-  fontSize: "67.05px",
+  fontSize: `clamp(${CONTACT_HEADING_MIN_PX}px, calc(${CONTACT_HEADING_MIN_PX}px + (100vw - 320px) * ${CONTACT_HEADING_SLOPE}), ${CONTACT_HEADING_MAX_PX}px)`,
   fontStyle: "normal",
   fontWeight: 700,
   lineHeight: "normal",
   textTransform: "uppercase",
 };
 
-/** Email + phone beside the main heading — Figma */
+/** Email + phone beside the main heading — Figma max, fluid */
 const contactHeaderAsideStyle: React.CSSProperties = {
   color: "#000",
   fontFamily: 'Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif',
-  fontSize: "19px",
+  fontSize: `clamp(${CONTACT_ASIDE_FS_MIN}px, calc(${CONTACT_ASIDE_FS_MIN}px + (100vw - 320px) * ${CONTACT_ASIDE_FS_SLOPE}), ${CONTACT_ASIDE_FS_MAX}px)`,
   fontStyle: "normal",
   fontWeight: 300,
-  lineHeight: "24px",
-  letterSpacing: "0.074px",
+  lineHeight: `clamp(${CONTACT_ASIDE_LH_MIN}px, calc(${CONTACT_ASIDE_LH_MIN}px + (100vw - 320px) * ${CONTACT_ASIDE_LH_SLOPE}), ${CONTACT_ASIDE_LH_MAX}px)`,
+  letterSpacing: "0.05em",
   textTransform: "uppercase",
 };
 
@@ -73,14 +89,17 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
         {copy.decorative}
       </p>
 
-      <div className="grid gap-10 md:grid-cols-[1fr_auto] md:items-end">
-        <div className="max-w-full min-w-0 overflow-x-auto">
-          <h2 className="whitespace-nowrap" style={contactHeadingStyle}>
+      <div className="flex flex-col gap-6 sm:gap-8 min-[1439px]:flex-row min-[1439px]:items-end min-[1439px]:justify-between min-[1439px]:gap-10">
+        <div className="min-w-0 max-w-full min-[1439px]:min-w-0 min-[1439px]:flex-1">
+          <h2
+            className="max-w-full hyphens-auto wrap-break-word min-[1439px]:whitespace-nowrap"
+            style={contactHeadingStyle}
+          >
             {copy.heading}
           </h2>
         </div>
         <div
-          className="flex min-w-0 max-w-full flex-nowrap items-center gap-4"
+          className="flex min-w-0 max-w-full shrink-0 flex-wrap items-center gap-x-4 gap-y-2 sm:flex-nowrap"
           style={contactHeaderAsideStyle}
         >
           <a

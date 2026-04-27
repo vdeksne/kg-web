@@ -11,6 +11,25 @@ function isConfigured(): boolean {
   );
 }
 
+/** `next dev` only; `next start` uses NODE_ENV=production. */
+function isLocalRequest(req: Request): boolean {
+  const host = (req.headers.get("host") ?? "").toLowerCase();
+  return (
+    host.startsWith("localhost:") ||
+    host.startsWith("127.0.0.1:") ||
+    host === "localhost" ||
+    host === "127.0.0.1" ||
+    host.endsWith(".local")
+  );
+}
+
+function allowMockWithoutResend(req: Request): boolean {
+  if (process.env.NODE_ENV === "development") return true;
+  if (process.env.CONTACT_ALLOW_MOCK_WITHOUT_RESEND === "1") return true;
+  if (isLocalRequest(req)) return true;
+  return false;
+}
+
 export async function POST(req: Request) {
   const raw = await req.json().catch(() => null);
   const parsed = contactFormPayloadSchema.safeParse(raw);
@@ -23,9 +42,9 @@ export async function POST(req: Request) {
   const body: ContactFormPayload = parsed.data;
 
   if (!isConfigured()) {
-    if (process.env.NODE_ENV === "development") {
+    if (allowMockWithoutResend(req)) {
       console.warn(
-        "[contact] Resend not configured — email not sent. Add RESEND_API_KEY and CONTACT_FROM_EMAIL to .env.local. Payload:",
+        "[contact] Resend not configured — email not sent. Set RESEND_API_KEY and CONTACT_FROM_EMAIL in .env.local (see .env.example). Payload:",
         body,
       );
       return NextResponse.json({ ok: true, dev: true });

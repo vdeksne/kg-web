@@ -32,7 +32,7 @@ export function HeaderBannerLogo({
         height={HEIGHT}
         className="object-contain"
         style={{
-          width: `min(100%, ${DISPLAY_W}px)`,
+          width: `min(100%, ${DISPLAY_W}px, calc(${DISPLAY_W}px * 100vw / 1920))`,
           aspectRatio: `${DISPLAY_W} / ${DISPLAY_H}`,
           height: "auto",
         }}

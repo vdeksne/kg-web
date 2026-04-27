@@ -6,14 +6,22 @@ import { GoldStrike } from "@/components/site/gold-strike";
 import { NavPortfolioItem } from "@/components/site/nav-portfolio-item";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
 import { messages } from "@/i18n/messages";
+import {
+  fluidHomeMobileMenu,
+  fluidPrimaryNavGap,
+  fluidPrimaryText,
+} from "@/lib/fluid-type";
 import { withLocale } from "@/lib/i18n-path";
 
 export function SiteNav({
   className,
   layout = "row",
+  compact = false,
 }: {
   className?: string;
   layout?: "row" | "col";
+  /** Smaller type (home mobile drawer). */
+  compact?: boolean;
 }) {
   const pathname = usePathname();
   const params = useParams();
@@ -30,8 +38,10 @@ export function SiteNav({
       <ul
         className={
           layout === "row"
-            ? "flex flex-wrap items-center gap-8 text-[16px] font-normal tracking-[0.25em] uppercase"
-            : "flex flex-col gap-4 text-[16px] font-normal tracking-[0.15em] uppercase"
+            ? `flex flex-wrap items-center font-normal tracking-[0.25em] uppercase ${fluidPrimaryNavGap} ${fluidPrimaryText}`
+            : compact
+              ? `flex flex-col uppercase ${fluidHomeMobileMenu}`
+              : `flex flex-col gap-4 font-normal tracking-[0.15em] uppercase ${fluidPrimaryText}`
         }
       >
         <li>
@@ -44,7 +54,11 @@ export function SiteNav({
             </GoldStrike>
           </Link>
         </li>
-        <NavPortfolioItem locale={locale} layout={layout} />
+        <NavPortfolioItem
+          locale={locale}
+          layout={layout}
+          compact={compact}
+        />
         <li>
           <Link
             href={contactHref}

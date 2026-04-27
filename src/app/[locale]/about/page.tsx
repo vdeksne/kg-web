@@ -2,7 +2,9 @@ import Image from "next/image";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeaderInner } from "@/components/site/site-header-inner";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
+import { fluidAboutBody, fluidAboutTitle } from "@/lib/fluid-type";
 import { getSiteContent } from "@/lib/site-content/store";
+import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -19,37 +21,42 @@ export default async function AboutPage({
 
   return (
     <div className="bg-background relative flex min-h-dvh flex-col">
-      <div className="pointer-events-none absolute bottom-32 -left-20 h-72 w-72 rounded-[35%] bg-neutral-200/40 blur-3xl" />
+      <div
+        className="pointer-events-none absolute bottom-24 -left-16 h-56 w-56 rounded-[35%] bg-neutral-200/40 blur-3xl sm:bottom-32 sm:-left-20 sm:h-72 sm:w-72"
+        aria-hidden
+      />
 
       <SiteHeaderInner variant="about" locale={locale} />
-      <main className="mx-auto w-full max-w-[1920px] flex-1 px-[clamp(1.5rem,calc(100vw*202/1920),202px)] pb-16 pt-0">
-        <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
-          <div className="space-y-8">
-            <h1 className="font-sans text-[65.55px] leading-normal font-bold not-italic text-black max-w-full">
-              {about.title[locale]}
-            </h1>
+      <main
+        className={cn(
+          "mx-auto w-full max-w-[1920px] flex-1 pb-16 pt-6 sm:pt-8 lg:pt-2",
+          "max-[700px]:px-[22px] min-[701px]:px-[clamp(1.5rem,calc(100vw*202/1920),202px)]",
+        )}
+      >
+        <div
+          className={cn(
+            "flex flex-col gap-8 sm:gap-10",
+            "lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:items-start lg:gap-x-12 lg:gap-y-6",
+          )}
+        >
+          <h1
+            className={cn(
+              "order-1 font-sans font-bold not-italic leading-[1.08] tracking-tight text-balance text-foreground lg:order-0",
+              fluidAboutTitle,
+              "lg:col-start-1 lg:row-start-1 lg:max-w-none lg:self-start",
+            )}
+          >
+            {about.title[locale]}
+          </h1>
+
+          <div
+            className={cn(
+              "relative order-2 mx-auto w-full max-w-[min(100%,673.749px)] shrink-0 lg:order-0 lg:mx-0",
+              "lg:col-start-2 lg:row-start-1 lg:row-span-3 lg:self-start",
+            )}
+          >
             <div
-              className="w-[789px] max-w-full shrink-0 space-y-6 text-justify font-sans text-[20.01px] font-light leading-[179%] text-black not-italic"
-            >
-              {about.body[locale]
-                .split(/\n\n+/)
-                .map((block) => block.trim())
-                .filter(Boolean)
-                .map((text, i) => (
-                  <p key={i}>{text}</p>
-                ))}
-            </div>
-            <Image
-              src="/images/Signature.png"
-              alt={about.portraitAlt[locale]}
-              width={210}
-              height={142}
-              className="ml-auto block h-auto w-[210px] max-w-full"
-            />
-          </div>
-          <div className="relative mx-auto w-full max-w-[673.749px] shrink-0 lg:mx-0">
-            <div
-              className="relative w-full overflow-hidden rounded-sm bg-neutral-900 shadow-2xl"
+              className="relative w-full overflow-hidden rounded-2xl bg-neutral-900 shadow-xl ring-1 ring-black/5 lg:rounded-sm lg:shadow-2xl lg:ring-0"
               style={{ aspectRatio: "673.749 / 561.1" }}
             >
               <Image
@@ -65,6 +72,35 @@ export default async function AboutPage({
               />
             </div>
           </div>
+
+          <div
+            className={cn(
+              "order-3 max-w-full space-y-5 sm:max-w-[789px] sm:space-y-6 lg:order-0",
+              "text-left lg:text-justify",
+              "font-sans font-light not-italic text-foreground",
+              fluidAboutBody,
+              "leading-[1.65] lg:leading-[179%]",
+              "lg:col-start-1 lg:row-start-2",
+            )}
+          >
+            {about.body[locale]
+              .split(/\n\n+/)
+              .map((block) => block.trim())
+              .filter(Boolean)
+              .map((text, i) => (
+                <p key={i} className="text-pretty">
+                  {text}
+                </p>
+              ))}
+          </div>
+
+          <Image
+            src="/images/Signature.png"
+            alt=""
+            width={210}
+            height={142}
+            className="order-4 mx-auto block h-auto w-[min(210px,72vw)] max-w-full sm:w-[200px] lg:col-start-1 lg:row-start-3 lg:order-0 lg:ml-auto lg:mr-0 lg:w-[210px] lg:self-end"
+          />
         </div>
       </main>
       <SiteFooter />

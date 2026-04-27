@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 const items = [
   {
@@ -26,23 +27,42 @@ const items = [
 
 const ICON = 40;
 
-export function SocialLinks({ className }: { className?: string }) {
+export function SocialLinks({
+  className,
+  /** Scale icon hit-area and gaps with 1920 reference (about-header desktop). */
+  fluid = false,
+}: {
+  className?: string;
+  fluid?: boolean;
+}) {
+  const gap = fluid
+    ? "gap-[clamp(10px,calc(22*100vw/1920),22px)]"
+    : "gap-[22px]";
+  const iconBox = fluid
+    ? "size-[clamp(28px,calc(40*100vw/1920),40px)]"
+    : "size-10";
+
   return (
     <div className={className}>
-      <ul className="flex items-center gap-[22px]">
+      <ul className={cn("flex items-center", gap)}>
         {items.map(({ href, label, src }) => (
           <li key={label}>
             <Link
               href={href}
               aria-label={label}
-              className="flex size-10 shrink-0 items-center justify-center transition-opacity hover:opacity-75"
+              className={cn(
+                "flex shrink-0 items-center justify-center transition-opacity hover:opacity-75",
+                iconBox,
+              )}
             >
               <Image
                 src={src}
                 alt=""
                 width={ICON}
                 height={ICON}
-                className="size-10"
+                className={cn(
+                  fluid ? "h-full w-full object-contain" : "size-10",
+                )}
                 unoptimized
               />
             </Link>
