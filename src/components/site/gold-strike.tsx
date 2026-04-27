@@ -4,11 +4,6 @@ import { cn } from "@/lib/utils";
 /** ~5px each side at 16px cap — scales with primary nav `font-size`. */
 export const MAIN_NAV_GOLD_STRIKE_EXTEND_EM = 5 / 16;
 
-/** ~1.5px each side at 16px cap — scales with LV | ENG fluid `font-size`. */
-export const LANG_GOLD_STRIKE_EXTEND_EM = 1.5 / 16;
-/** ~1px vertical nudge at 16px for compact lang chrome. */
-export const LANG_GOLD_STRIKE_NUDGE_EM = 1 / 16;
-
 export function GoldStrike({
   children,
   active,
@@ -71,10 +66,11 @@ export function GoldStrike({
       typeof strikeCenterNudgeEm === "number" ? strikeCenterNudgeEm : 0;
     const nudgePx =
       typeof strikeCenterNudgePx === "number" ? strikeCenterNudgePx : 0;
+    /* 50% of the relative wrapper (label box), not 0.5lh on the empty strike — lh is inconsistent for AP spans. */
     strikeStyle.top =
       nudgeEm > 0
-        ? `calc(0.5lh + ${nudgeEm}em)`
-        : `calc(0.5lh + ${nudgePx}px)`;
+        ? `calc(50% + ${nudgeEm}em)`
+        : `calc(50% + ${nudgePx}px)`;
 
     if (strikeThickness === "fluid") {
       strikeStyle.height = "clamp(2px, 0.15em, 3px)";
@@ -101,7 +97,7 @@ export function GoldStrike({
     <span
       className={cn(
         "relative inline-block leading-none",
-        /* Tight line box so the strike sits on the cap midline, not below it */
+        /* Tight line box; strike uses top:50% of this box (not lh on the empty strike). */
         className,
       )}
     >

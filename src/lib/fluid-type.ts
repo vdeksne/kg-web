@@ -12,9 +12,9 @@ export const fluidPrimaryText =
 export const fluidPrimaryNavGap =
   "gap-[clamp(16px,calc(16px+(100vw-320px)*0.01),32px)]";
 
-/** LV | ENG spacing: ~7px → ~11.5px */
+/** LV / ENG spacing between icon slots */
 export const fluidLangGap =
-  "gap-[clamp(7px,calc(7px+(100vw-320px)*0.002825),11.52px)]";
+  "gap-[clamp(8.5px,calc(8.5px+(100vw-320px)*0.003125),13.5px)]";
 
 /** About-header desktop (≥701): lang size tracks 1920 artboard, 12px–16px */
 export const fluidAboutDesktopLang =
@@ -26,7 +26,7 @@ export const fluidAboutDesktopLangGap =
 
 /** Home mobile header: LV | ENG (compact chrome); tuned for ≤430px. */
 export const fluidHomeMobileLang =
-  "text-[clamp(10px,calc(10px+(100vw-320px)*0.001),12px)] gap-[clamp(4px,calc(4px+(100vw-320px)*0.0045),6.5px)]";
+  "text-[clamp(10px,calc(10px+(100vw-320px)*0.001),12px)] gap-[clamp(5px,calc(5px+(100vw-320px)*0.0045),8px)]";
 
 /** Home mobile burger drawer: primary nav links. */
 export const fluidHomeMobileMenu =

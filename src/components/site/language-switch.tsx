@@ -2,11 +2,7 @@
 
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import {
-  GoldStrike,
-  LANG_GOLD_STRIKE_EXTEND_EM,
-  LANG_GOLD_STRIKE_NUDGE_EM,
-} from "@/components/site/gold-strike";
+import { LanguageEngIcon, LanguageLvIcon } from "@/components/site/language-icons";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
 import {
   fluidAboutDesktopLang,
@@ -32,52 +28,46 @@ export function LanguageSwitch({
   const active: Locale =
     typeof raw === "string" && isLocale(raw) ? raw : defaultLocale;
 
+  const rowClass =
+    variant === "homeMobile"
+      ? fluidHomeMobileLang
+      : variant === "aboutDesktop"
+        ? cn(fluidAboutDesktopLangGap, fluidAboutDesktopLang)
+        : cn(fluidLangGap, fluidPrimaryText);
+
   return (
     <div
       className={cn(
-        "flex items-center font-normal text-muted-foreground uppercase tabular-nums",
-        variant === "homeMobile"
-          ? ["tracking-[0.18em]", fluidHomeMobileLang]
-          : variant === "aboutDesktop"
-            ? [
-                "tracking-[0.21em]",
-                fluidAboutDesktopLangGap,
-                fluidAboutDesktopLang,
-              ]
-            : ["tracking-[0.21em]", fluidLangGap, fluidPrimaryText],
+        "flex items-center font-normal leading-none",
+        rowClass,
         className,
       )}
     >
       <Link
         href={replaceLocaleInPath(pathname, "lv")}
-        className="text-muted-foreground transition-colors hover:text-foreground"
+        aria-label="Latviešu"
+        aria-current={active === "lv" ? "true" : undefined}
+        className={cn(
+          "inline-flex items-center leading-none transition-colors",
+          active === "lv"
+            ? "text-foreground"
+            : "text-muted-foreground hover:text-foreground",
+        )}
       >
-        <GoldStrike
-          active={active === "lv"}
-          trackingTrimEm={variant === "homeMobile" ? 0.18 : 0.21}
-          strikeExtendEm={LANG_GOLD_STRIKE_EXTEND_EM}
-          strikeCenterNudgeEm={LANG_GOLD_STRIKE_NUDGE_EM}
-          strikeThickness="fluid"
-        >
-          <span>LV</span>
-        </GoldStrike>
+        <LanguageLvIcon selected={active === "lv"} />
       </Link>
-      <span className="text-muted-foreground/50 select-none" aria-hidden>
-        |
-      </span>
       <Link
         href={replaceLocaleInPath(pathname, "en")}
-        className="text-muted-foreground transition-colors hover:text-foreground"
+        aria-label="English"
+        aria-current={active === "en" ? "true" : undefined}
+        className={cn(
+          "inline-flex items-center leading-none transition-colors",
+          active === "en"
+            ? "text-foreground"
+            : "text-muted-foreground hover:text-foreground",
+        )}
       >
-        <GoldStrike
-          active={active === "en"}
-          trackingTrimEm={variant === "homeMobile" ? 0.18 : 0.21}
-          strikeExtendEm={LANG_GOLD_STRIKE_EXTEND_EM}
-          strikeCenterNudgeEm={LANG_GOLD_STRIKE_NUDGE_EM}
-          strikeThickness="fluid"
-        >
-          <span>ENG</span>
-        </GoldStrike>
+        <LanguageEngIcon selected={active === "en"} />
       </Link>
     </div>
   );
