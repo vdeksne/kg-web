@@ -8,11 +8,7 @@ import { messages } from "@/i18n/messages";
 import { withLocale } from "@/lib/i18n-path";
 import { MainNavPortfolioIcon } from "@/components/site/menu-nav-icons";
 import { usePortfolioNavCategories } from "@/components/site/portfolio-nav-provider";
-import {
-  fluidDropdownText,
-  fluidHomeMobileNavSub,
-  fluidNavSubText,
-} from "@/lib/fluid-type";
+import { fluidDropdownText } from "@/lib/fluid-type";
 import { cn } from "@/lib/utils";
 
 /** Darbi submenu — layout from design spec (px) */
@@ -31,6 +27,9 @@ export function NavPortfolioItem({
   compact = false,
   aboutBanner = false,
   dropdownOpenUp = false,
+  labelStyle = "icon",
+  dropdown = true,
+  showActiveState = true,
 }: {
   locale: Locale;
   layout?: "row" | "col";
@@ -38,14 +37,21 @@ export function NavPortfolioItem({
   aboutBanner?: boolean;
   /** Footer (etc.): open submenu above the label so it stays in view. */
   dropdownOpenUp?: boolean;
+  /** `text`: show `nav.portfolio` string instead of SVG (e.g. desktop footer). */
+  labelStyle?: "icon" | "text";
+  /** `false`: single link to default portfolio category (no hover/tap submenu). */
+  dropdown?: boolean;
+  /** `false`: never use stronger color / selected SVG for current route (e.g. footer). */
+  showActiveState?: boolean;
 }) {
   const categories = usePortfolioNavCategories();
   const pathname = usePathname();
   const t = messages[locale].nav;
   const portfolioPrefix = withLocale("/portfolio", locale);
-  const portfolioActive =
+  const portfolioRouteActive =
     pathname === portfolioPrefix ||
     categories.some((c) => pathname === `${portfolioPrefix}/${c.slug}`);
+  const portfolioActive = showActiveState && portfolioRouteActive;
   const activeSlug =
     categories.find((c) => pathname === `${portfolioPrefix}/${c.slug}`)?.slug ??
     categories[0]?.slug ??
@@ -86,7 +92,6 @@ export function NavPortfolioItem({
   const close = useCallback(() => setOpen(false), []);
 
   if (layout === "col") {
-    const subText = compact ? fluidHomeMobileNavSub : fluidNavSubText;
     return (
       <li className={cn("flex flex-col", compact ? "gap-2.5" : "gap-2")}>
         <Link
@@ -100,35 +105,78 @@ export function NavPortfolioItem({
           )}
           onClick={close}
         >
-          <MainNavPortfolioIcon
-            locale={locale}
-            selected={portfolioActive}
-          />
+          <MainNavPortfolioIcon locale={locale} selected={portfolioActive} />
         </Link>
         <ul
           className={cn(
-            "border-border flex flex-col border-l-2",
-            compact ? "gap-1.5 pl-4" : "gap-1 pl-4",
+            "box-border flex w-full max-w-full flex-col items-stretch justify-center gap-[10px] py-3",
+          )}
+          style={{
+            backgroundColor: DROPDOWN_FILL,
+            paddingLeft: DROPDOWN_PAD_X,
+            paddingRight: DROPDOWN_PAD_X,
+            minHeight: rowDropdownMinH,
+          }}
+        >
+          {categories.map((c) => {
+            const subActive = pathname === `${portfolioPrefix}/${c.slug}`;
+            return (
+              <li key={c.slug}>
+                <Link
+                  href={`${portfolioPrefix}/${c.slug}`}
+                  className={cn(
+                    "group/sub block w-full whitespace-nowrap text-left leading-tight font-light tracking-[0.2em] text-white uppercase outline-none",
+                    fluidDropdownText,
+                  )}
+                  onClick={close}
+                >
+                  <span className="relative inline-block">
+                    <span
+                      className={cn(
+                        "pointer-events-none absolute top-1/2 right-0 left-0 z-0 h-px -translate-y-1/2 bg-muted-foreground transition-opacity duration-150 ease-out",
+                        subActive
+                          ? "opacity-100"
+                          : "opacity-0 group-hover/sub:opacity-100 group-focus-visible/sub:opacity-100",
+                      )}
+                      aria-hidden
+                    />
+                    <span className="relative z-10">{c.label[locale]}</span>
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </li>
+    );
+  }
+
+  if (!dropdown) {
+    return (
+      <li>
+        <Link
+          href={`${portfolioPrefix}/${activeSlug}`}
+          aria-label={labelStyle === "icon" ? t.portfolio : undefined}
+          className={cn(
+            "inline-flex items-center transition-colors",
+            labelStyle === "text"
+              ? "shrink-0 whitespace-nowrap"
+              : "leading-none",
+            portfolioActive
+              ? "text-foreground"
+              : "text-muted-foreground hover:text-foreground",
           )}
         >
-          {categories.map((c) => (
-            <li key={c.slug}>
-              <Link
-                href={`${portfolioPrefix}/${c.slug}`}
-                className={cn(
-                  "hover:text-foreground text-muted-foreground block py-1 transition-colors",
-                  compact ? "tracking-[0.14em]" : "tracking-[0.18em]",
-                  subText,
-                  pathname === `${portfolioPrefix}/${c.slug}` &&
-                    "text-foreground font-medium",
-                )}
-                onClick={close}
-              >
-                {c.label[locale]}
-              </Link>
-            </li>
-          ))}
-        </ul>
+          {labelStyle === "text" ? (
+            t.portfolio
+          ) : (
+            <MainNavPortfolioIcon
+              locale={locale}
+              selected={portfolioActive}
+              aboutBanner={aboutBanner}
+            />
+          )}
+        </Link>
       </li>
     );
   }
@@ -137,11 +185,14 @@ export function NavPortfolioItem({
     <li ref={wrapRef} className="group relative">
       <Link
         href={`${portfolioPrefix}/${activeSlug}`}
-        aria-label={t.portfolio}
+        aria-label={labelStyle === "icon" ? t.portfolio : undefined}
         aria-expanded={isMobileRowNav ? open : undefined}
         aria-controls={isMobileRowNav ? menuId : undefined}
         className={cn(
-          "inline-flex items-center leading-none transition-colors",
+          "inline-flex items-center transition-colors",
+          labelStyle === "text"
+            ? "shrink-0 whitespace-nowrap"
+            : "leading-none",
           portfolioActive
             ? "text-foreground"
             : "text-muted-foreground hover:text-foreground",
@@ -152,11 +203,15 @@ export function NavPortfolioItem({
           setOpen((v) => !v);
         }}
       >
-        <MainNavPortfolioIcon
-          locale={locale}
-          selected={portfolioActive}
-          aboutBanner={aboutBanner}
-        />
+        {labelStyle === "text" ? (
+          t.portfolio
+        ) : (
+          <MainNavPortfolioIcon
+            locale={locale}
+            selected={portfolioActive}
+            aboutBanner={aboutBanner}
+          />
+        )}
       </Link>
       <ul
         id={menuId}

@@ -74,23 +74,23 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
       style={heroViewportCssVars}
     >
       {/*
-        Mobile raster (compact home): full image always visible, scaled to fit viewport;
-        bottom-aligned so ground/signature stay anchored (letterboxing above if needed).
+        Mobile raster (compact home): cover + bottom so width is edge-to-edge (no L/R gutters);
+        top may crop slightly vs contain — avoids letterboxing on tall narrow phones.
       */}
       <div
         className="pointer-events-none fixed inset-0 z-1 box-border hidden max-[480px]:block bg-white pb-[env(safe-area-inset-bottom)]"
         aria-hidden
       >
         {/*
-          No overflow-hidden: it can clip object-contain by a subpixel. overflow-x-clip is handled on the hero root.
-          Bottom safe-area inset shrinks the paint box so the full raster stays above the home indicator.
+          No overflow-hidden: subpixel clip risk. overflow-x-clip is on the hero root.
+          Bottom safe-area inset shrinks the paint box above the home indicator.
         */}
         <Image
           src={HERO_BG_MOBILE_SRC}
           alt=""
           fill
           sizes="100vw"
-          className="object-contain object-bottom"
+          className="object-cover object-bottom"
           priority
         />
       </div>

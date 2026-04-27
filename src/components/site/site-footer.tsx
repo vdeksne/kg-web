@@ -42,10 +42,7 @@ export function SiteFooter() {
 
   return (
     <footer className="relative mt-24 overflow-x-clip">
-      <div
-        className="pointer-events-none absolute inset-0 z-0"
-        aria-hidden
-      >
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
         <Image
           src={FOOTER_BG}
           alt=""
@@ -75,130 +72,107 @@ export function SiteFooter() {
             className="text-muted-foreground mt-[29.7px] w-full text-xs tracking-[0.2em] uppercase"
             style={{ paddingBottom: FOOTER_ROW_FROM_BOTTOM }}
           >
-          {/* Mobile: stacked */}
-          <div className="flex flex-col items-center gap-6 min-[1267px]:hidden">
-            <nav className="w-full">
-              <ul className="flex flex-wrap justify-center gap-6">
-                <li>
-                  <Link
-                    href={aboutHref}
-                    className="hover:text-foreground transition-colors"
-                  >
-                    {nav.about}
-                  </Link>
-                </li>
-                <NavPortfolioItem
-                  locale={locale}
-                  layout="row"
-                  dropdownOpenUp
+            {/* Mobile: stacked */}
+            <div className="flex flex-col items-center gap-6 min-[1267px]:hidden">
+              <SocialLinks className="flex w-full justify-center [&_ul]:gap-[20.09px]!" />
+              <div className="flex w-full max-w-full flex-wrap items-center justify-center gap-x-[27.19px] gap-y-3 text-center">
+                <a
+                  href="mailto:info@kasparsgroza.lv"
+                  className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
+                >
+                  info@kasparsgroza.lv
+                </a>
+                <a
+                  href="tel:+37120370077"
+                  className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
+                >
+                  +371 20370077
+                </a>
+                <Image
+                  src={NEMIZ_SRC}
+                  alt={t.footer.tagline}
+                  width={NEMIZ_W}
+                  height={NEMIZ_H}
+                  className="h-auto shrink-0 object-contain brightness-0 invert"
+                  style={{
+                    width: `min(100%, ${NEMIZ_DISPLAY_W}px)`,
+                    aspectRatio: `${NEMIZ_DISPLAY_W} / ${NEMIZ_DISPLAY_H}`,
+                  }}
+                  unoptimized
                 />
-                <li>
-                  <Link
-                    href={contactHref}
-                    className="hover:text-foreground transition-colors"
-                  >
-                    {nav.contact}
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-            <SocialLinks className="flex w-full justify-center [&_ul]:gap-[20.09px]!" />
-            <div className="flex w-full max-w-full flex-wrap items-center justify-center gap-x-[27.19px] gap-y-3 text-center">
-              <a
-                href="mailto:info@kasparsgroza.lv"
-                className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
-              >
-                info@kasparsgroza.lv
-              </a>
-              <a
-                href="tel:+37120370077"
-                className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
-              >
-                +371 20370077
-              </a>
-              <Image
-                src={NEMIZ_SRC}
-                alt={t.footer.tagline}
-                width={NEMIZ_W}
-                height={NEMIZ_H}
-                className="h-auto shrink-0 object-contain brightness-0 invert"
-                style={{
-                  width: `min(100%, ${NEMIZ_DISPLAY_W}px)`,
-                  aspectRatio: `${NEMIZ_DISPLAY_W} / ${NEMIZ_DISPLAY_H}`,
-                }}
-                unoptimized
-              />
+              </div>
             </div>
-          </div>
 
-          {/* Wide (≥1267px): icons fixed to true horizontal center; sides anchor inward */}
-          <div className="hidden min-h-[40px] w-full items-center min-[1267px]:flex">
-            <div
-              className="flex min-h-0 min-w-0 flex-1 justify-end"
-              style={{ paddingInlineEnd: GAP_SIDE_TO_ICONS }}
-            >
-              <nav className="shrink-0">
-                <ul className="flex flex-nowrap [&>li:nth-child(2)]:ms-[49.87px] [&>li:nth-child(3)]:ms-[49.97px]">
-                  <li>
-                    <Link
-                      href={aboutHref}
-                      className="hover:text-foreground transition-colors"
-                    >
-                      {nav.about}
-                    </Link>
-                  </li>
-                  <NavPortfolioItem
-                    locale={locale}
-                    layout="row"
-                    dropdownOpenUp
-                  />
-                  <li>
-                    <Link
-                      href={contactHref}
-                      className="hover:text-foreground transition-colors"
-                    >
-                      {nav.contact}
-                    </Link>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-            <div className="shrink-0">
-              <SocialLinks className="[&_ul]:gap-[20.09px]!" />
-            </div>
-            <div
-              className="flex min-h-0 min-w-0 flex-1 flex-nowrap items-center"
-              style={{ paddingInlineStart: GAP_SIDE_TO_ICONS }}
-            >
-              <a
-                href="mailto:info@kasparsgroza.lv"
-                className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
+            {/* Wide (≥1267px): icons fixed to true horizontal center; sides anchor inward */}
+            <div className="hidden min-h-[40px] w-full items-center min-[1267px]:flex">
+              <div
+                className="flex min-h-0 min-w-0 flex-1 justify-end"
+                style={{ paddingInlineEnd: GAP_SIDE_TO_ICONS }}
               >
-                info@kasparsgroza.lv
-              </a>
-              <a
-                href="tel:+37120370077"
-                className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
-                style={{ marginInlineStart: GAP_EMAIL_TO_PHONE }}
+                <nav className="shrink-0">
+                  <ul className="flex flex-nowrap [&>li:nth-child(2)]:ms-[49.87px] [&>li:nth-child(3)]:ms-[49.97px]">
+                    <li>
+                      <Link
+                        href={aboutHref}
+                        className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
+                      >
+                        {nav.about}
+                      </Link>
+                    </li>
+                    <NavPortfolioItem
+                      locale={locale}
+                      layout="row"
+                      labelStyle="text"
+                      dropdown={false}
+                      showActiveState={false}
+                    />
+                    <li>
+                      <Link
+                        href={contactHref}
+                        className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
+                      >
+                        {nav.contact}
+                      </Link>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+              <div className="shrink-0">
+                <SocialLinks className="[&_ul]:gap-[20.09px]!" />
+              </div>
+              <div
+                className="flex min-h-0 min-w-0 flex-1 flex-nowrap items-center"
+                style={{ paddingInlineStart: GAP_SIDE_TO_ICONS }}
               >
-                +371 20370077
-              </a>
-              <Image
-                src={NEMIZ_SRC}
-                alt={t.footer.tagline}
-                width={NEMIZ_W}
-                height={NEMIZ_H}
-                className="h-auto shrink-0 object-contain"
-                style={{
-                  marginInlineStart: GAP_PHONE_TO_NEMIZ,
-                  width: `min(100%, ${NEMIZ_DISPLAY_W}px)`,
-                  aspectRatio: `${NEMIZ_DISPLAY_W} / ${NEMIZ_DISPLAY_H}`,
-                }}
-                unoptimized
-              />
+                <a
+                  href="mailto:info@kasparsgroza.lv"
+                  className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
+                >
+                  info@kasparsgroza.lv
+                </a>
+                <a
+                  href="tel:+37120370077"
+                  className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
+                  style={{ marginInlineStart: GAP_EMAIL_TO_PHONE }}
+                >
+                  +371 20370077
+                </a>
+                <Image
+                  src={NEMIZ_SRC}
+                  alt={t.footer.tagline}
+                  width={NEMIZ_W}
+                  height={NEMIZ_H}
+                  className="h-auto shrink-0 object-contain"
+                  style={{
+                    marginInlineStart: GAP_PHONE_TO_NEMIZ,
+                    width: `min(100%, ${NEMIZ_DISPLAY_W}px)`,
+                    aspectRatio: `${NEMIZ_DISPLAY_W} / ${NEMIZ_DISPLAY_H}`,
+                  }}
+                  unoptimized
+                />
+              </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
     </footer>

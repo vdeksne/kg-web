@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LanguageSwitch } from "@/components/site/language-switch";
 import { SiteNav } from "@/components/site/site-nav";
-import { SocialLinks } from "@/components/site/social-links";
 import { HOME_WIDE_MIN_PX } from "@/lib/site-breakpoints";
 import { cn } from "@/lib/utils";
 
@@ -33,12 +32,7 @@ export function HomeHeroMobileHeader({ className }: { className?: string }) {
       if (e.key === "Escape") setOpen(false);
     };
     document.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
+    return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
   return (
@@ -52,55 +46,66 @@ export function HomeHeroMobileHeader({ className }: { className?: string }) {
       >
         <div className="pointer-events-auto flex flex-col items-end gap-1">
           <LanguageSwitch variant="homeMobile" className="shrink-0" />
-          <button
-            type="button"
-            className="text-foreground hover:text-muted-foreground inline-flex h-9 min-h-9 items-center justify-end rounded-md py-0 pr-0 pl-3 transition-colors"
-            aria-expanded={open}
-            aria-controls="home-mobile-nav-panel"
-            aria-label="Open menu"
-            onClick={() => setOpen(true)}
-          >
-            <Image
-              src="/icons/burger.svg"
-              alt=""
-              width={30}
-              height={18}
-              className="pointer-events-none h-4.5 w-auto"
-              aria-hidden
-              unoptimized
-            />
-          </button>
-        </div>
-      </header>
-
-      {open ? (
-        <div
-          id="home-mobile-nav-panel"
-          className="fixed inset-0 z-110 flex max-[480px]:flex min-[481px]:hidden flex-col bg-white pt-[env(safe-area-inset-top)]"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Site navigation"
-        >
-          <div className="flex shrink-0 items-center justify-end px-3 pt-1.5 pb-0.5">
+          <div className="relative">
             <button
               type="button"
-              className="text-foreground hover:text-muted-foreground flex size-10 items-center justify-center rounded-md transition-colors"
-              aria-label="Close menu"
-              onClick={() => setOpen(false)}
+              className="text-foreground hover:text-muted-foreground inline-flex h-9 min-h-9 items-center justify-end rounded-md py-0 pr-0 pl-3 transition-colors"
+              aria-expanded={open}
+              aria-controls="home-mobile-nav-panel"
+              aria-label={open ? "Close menu" : "Open menu"}
+              onClick={() => setOpen((v) => !v)}
             >
-              <X className="size-6" strokeWidth={1.5} aria-hidden />
+              <Image
+                src="/icons/burger.svg"
+                alt=""
+                width={30}
+                height={18}
+                className="pointer-events-none h-4.5 w-auto"
+                aria-hidden
+                unoptimized
+              />
             </button>
-          </div>
-          <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-            <div className="flex min-h-0 flex-1 flex-col justify-center overflow-y-auto overscroll-contain px-3 py-3 min-[380px]:px-4">
-              <SiteNav layout="col" compact className="w-full" />
-            </div>
-          </div>
-          <div className="mt-auto shrink-0 border-t border-border/40 px-3 pt-2 pb-[max(0.875rem,env(safe-area-inset-bottom))] min-[380px]:px-4">
-            <SocialLinks className="[&_ul]:max-w-full [&_ul]:flex-wrap [&_ul]:justify-center [&_ul]:gap-[clamp(10px,calc(100vw*14/480),20px)] [&_a]:size-[clamp(2.35rem,calc(100vw*44/480),2.85rem)] [&_img]:size-full!" />
+
+            {open ? (
+              <>
+                <button
+                  type="button"
+                  className="fixed inset-0 z-105 cursor-default max-[480px]:block min-[481px]:hidden"
+                  aria-hidden
+                  tabIndex={-1}
+                  onClick={() => setOpen(false)}
+                />
+                <div
+                  id="home-mobile-nav-panel"
+                  className={cn(
+                    "absolute top-[9px] right-0 z-110 flex max-h-[min(85dvh,calc(100dvh-6rem))] w-[min(calc(100vw-1.5rem),20rem)] flex-col overflow-hidden bg-brand text-[#231F20] shadow-xl",
+                    "max-[480px]:flex min-[481px]:hidden",
+                  )}
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label="Site navigation"
+                >
+                  <div className="flex shrink-0 items-center justify-end px-2 py-1.5">
+                    <button
+                      type="button"
+                      className="flex size-10 items-center justify-center rounded-md text-[#231F20] transition-colors hover:text-[#231F20]/75"
+                      aria-label="Close menu"
+                      onClick={() => setOpen(false)}
+                    >
+                      <X className="size-6" strokeWidth={1.5} aria-hidden />
+                    </button>
+                  </div>
+                  <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+                    <div className="flex min-h-0 flex-1 flex-col justify-center overflow-y-auto overscroll-contain px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] min-[380px]:px-4">
+                      <SiteNav layout="col" compact className="w-full" />
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : null}
           </div>
         </div>
-      ) : null}
+      </header>
     </>
   );
 }
