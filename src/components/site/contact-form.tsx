@@ -109,7 +109,7 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
             info@kasparsgroza.lv
           </a>
           <div
-            className="h-10 w-px shrink-0 bg-[var(--kg-accent)]"
+            className="hidden h-10 w-px shrink-0 bg-[var(--kg-accent)] min-[701px]:block"
             aria-hidden
           />
           <span className="shrink-0 whitespace-nowrap">
