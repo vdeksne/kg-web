@@ -30,19 +30,19 @@ export const fluidHomeMobileLang =
 
 /** Home mobile burger drawer: primary nav links. */
 export const fluidHomeMobileMenu =
-  "gap-3 font-normal text-[clamp(10px,calc(10px+(100vw-320px)*0.001),12px)] tracking-[0.16em]";
+  "gap-5 font-normal leading-snug text-[clamp(17px,calc(17px+(100vw-320px)*0.00175),21px)] tracking-[0.16em]";
 
 /** Home mobile drawer: portfolio sub-links. */
 export const fluidHomeMobileNavSub =
-  "text-[clamp(9px,calc(9px+(100vw-320px)*0.0005),10.5px)] tracking-[0.14em]";
+  "leading-normal text-[clamp(15px,calc(15px+(100vw-320px)*0.00125),18px)] tracking-[0.14em]";
 
 /** Portfolio column sub-links: 10px → 11.2px */
 export const fluidNavSubText =
   "text-[clamp(10px,calc(10px+(100vw-320px)*0.00075),11.2px)]";
 
-/** Yellow dropdown row labels: 11px → 14px */
+/** Yellow dropdown row labels: 16px → 20px */
 export const fluidDropdownText =
-  "text-[clamp(11px,calc(11px+(100vw-320px)*0.001875),14px)]";
+  "text-[clamp(16px,calc(16px+(100vw-320px)*0.001875),20px)]";
 
 /** About page title: ~32px @ 320 → 65.55px @ 1920 */
 export const fluidAboutTitle =

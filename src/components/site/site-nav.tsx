@@ -12,6 +12,7 @@ import {
   fluidPrimaryText,
 } from "@/lib/fluid-type";
 import { withLocale } from "@/lib/i18n-path";
+import { cn } from "@/lib/utils";
 
 export function SiteNav({
   className,
@@ -47,7 +48,10 @@ export function SiteNav({
         <li>
           <Link
             href={aboutHref}
-            className="text-muted-foreground hover:text-foreground transition-colors"
+            className={cn(
+              "text-muted-foreground hover:text-foreground transition-colors",
+              compact && "block w-full py-1",
+            )}
           >
             <GoldStrike active={pathname === aboutHref}>
               <span>{t.about}</span>
@@ -62,7 +66,10 @@ export function SiteNav({
         <li>
           <Link
             href={contactHref}
-            className="text-muted-foreground hover:text-foreground transition-colors"
+            className={cn(
+              "text-muted-foreground hover:text-foreground transition-colors",
+              compact && "block w-full py-1",
+            )}
           >
             <GoldStrike active={pathname === contactHref}>
               <span>{t.contact}</span>

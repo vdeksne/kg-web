@@ -22,7 +22,7 @@ const DROPDOWN_FILL = "#F3C02D";
 const DROPDOWN_MIN_W = 139.43;
 const DROPDOWN_H = 100.1;
 const DROPDOWN_PAD_X = 17.09;
-const DROPDOWN_FONT_PX = 14;
+const DROPDOWN_FONT_PX = 20;
 const DROPDOWN_ROW_GAP = 10;
 
 export function NavPortfolioItem({
@@ -42,8 +42,9 @@ export function NavPortfolioItem({
     pathname === portfolioPrefix ||
     categories.some((c) => pathname === `${portfolioPrefix}/${c.slug}`);
   const activeSlug =
-    categories.find((c) => pathname === `${portfolioPrefix}/${c.slug}`)
-      ?.slug ?? categories[0]?.slug ?? "logo";
+    categories.find((c) => pathname === `${portfolioPrefix}/${c.slug}`)?.slug ??
+    categories[0]?.slug ??
+    "logo";
 
   const rowDropdownMinH = Math.max(
     DROPDOWN_H,
@@ -82,10 +83,10 @@ export function NavPortfolioItem({
   if (layout === "col") {
     const subText = compact ? fluidHomeMobileNavSub : fluidNavSubText;
     return (
-      <li className={cn("flex flex-col", compact ? "gap-1.5" : "gap-2")}>
+      <li className={cn("flex flex-col", compact ? "gap-2.5" : "gap-2")}>
         <Link
           href={`${portfolioPrefix}/${activeSlug}`}
-          className="text-muted-foreground hover:text-foreground w-fit transition-colors"
+          className="text-muted-foreground hover:text-foreground block w-full py-1 transition-colors"
           onClick={close}
         >
           <GoldStrike active={portfolioActive}>
@@ -95,7 +96,7 @@ export function NavPortfolioItem({
         <ul
           className={cn(
             "border-border flex flex-col border-l-2",
-            compact ? "gap-0.5 pl-3" : "gap-1 pl-4",
+            compact ? "gap-1.5 pl-4" : "gap-1 pl-4",
           )}
         >
           {categories.map((c) => (
@@ -103,7 +104,7 @@ export function NavPortfolioItem({
               <Link
                 href={`${portfolioPrefix}/${c.slug}`}
                 className={cn(
-                  "hover:text-foreground text-muted-foreground block transition-colors",
+                  "hover:text-foreground text-muted-foreground block py-1 transition-colors",
                   compact ? "tracking-[0.14em]" : "tracking-[0.18em]",
                   subText,
                   pathname === `${portfolioPrefix}/${c.slug}` &&

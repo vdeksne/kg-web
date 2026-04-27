@@ -74,19 +74,22 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
       style={heroViewportCssVars}
     >
       {/*
-        Mobile raster: width = 100% (no horizontal crop), height follows aspect ratio,
-        pinned left + bottom so layout matches art across 320–400px widths. Excess height
-        clips above the viewport instead of shaving the left (cover + narrow screens).
+        Mobile raster (≤400px): cover viewport height/width, anchored bottom-left so
+        art stays grounded on short/tall phones; Next/Image supplies responsive srcset.
       */}
       <div
-        className="pointer-events-none fixed inset-0 z-1 hidden min-h-dvh w-full max-[400px]:block overflow-hidden bg-no-repeat"
-        style={{
-          backgroundImage: `url('${HERO_BG_MOBILE_SRC}')`,
-          backgroundSize: "100% auto",
-          backgroundPosition: "left bottom",
-        }}
+        className="pointer-events-none fixed inset-0 z-1 hidden max-[400px]:block min-h-dvh w-full overflow-hidden"
         aria-hidden
-      />
+      >
+        <Image
+          src={HERO_BG_MOBILE_SRC}
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover object-bottom-left"
+          priority
+        />
+      </div>
       <HomeHeroMobileHeader />
       {/*
         Clip box size = scaled design size (transform does not affect layout).
@@ -122,7 +125,7 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
           />
           <div className="relative z-10 flex h-full min-h-0 w-full flex-col max-[400px]:pt-[calc(50px+3.5rem+env(safe-area-inset-top))] px-[clamp(1.5rem,calc(var(--hero-vw)*202/1920),202px)]">
             <span className="sr-only">{home.heroImageAlt}</span>
-            <DotGrid className="pointer-events-none absolute z-20 w-[clamp(140px,calc(231.48*var(--hero-vw)/1920),231.48px)] max-[400px]:top-24 max-[400px]:right-auto max-[400px]:left-3 min-[401px]:top-[calc(33*var(--hero-vw)/1920)] min-[401px]:right-[calc(369*var(--hero-vw)/1920)] min-[401px]:left-auto" />
+            <DotGrid className="pointer-events-none absolute z-20 hidden min-[401px]:block w-[clamp(140px,calc(231.48*var(--hero-vw)/1920),231.48px)] min-[401px]:top-[calc(33*var(--hero-vw)/1920)] min-[401px]:right-[calc(369*var(--hero-vw)/1920)] min-[401px]:left-auto" />
             <div
               className="hidden min-[401px]:flex min-[401px]:items-start min-[401px]:justify-end"
               style={{ paddingTop: HERO_ALIGN_TOP_PX }}

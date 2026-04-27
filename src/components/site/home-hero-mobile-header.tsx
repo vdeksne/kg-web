@@ -71,21 +71,23 @@ export function HomeHeroMobileHeader({ className }: { className?: string }) {
           aria-modal="true"
           aria-label="Site navigation"
         >
-          <div className="flex items-center justify-end px-4 py-2">
+          <div className="flex shrink-0 items-center justify-end px-4 pt-2 pb-1">
             <button
               type="button"
-              className="text-foreground hover:text-muted-foreground flex size-10 items-center justify-center rounded-md transition-colors"
+              className="text-foreground hover:text-muted-foreground flex size-11 items-center justify-center rounded-md transition-colors"
               aria-label="Close menu"
               onClick={() => setOpen(false)}
             >
-              <X className="size-6" strokeWidth={1.5} aria-hidden />
+              <X className="size-7" strokeWidth={1.5} aria-hidden />
             </button>
           </div>
-          <div className="min-h-0 flex-1 overflow-y-auto px-5 pt-2 pb-6">
-            <SiteNav layout="col" compact className="w-full" />
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+            <div className="flex min-h-0 flex-1 flex-col justify-center overflow-y-auto overscroll-contain px-4 py-4 min-[360px]:px-5">
+              <SiteNav layout="col" compact className="w-full" />
+            </div>
           </div>
-          <div className="mt-auto shrink-0 px-[clamp(1rem,4vw,1.5rem)] pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
-            <SocialLinks className="[&_ul]:max-w-full [&_ul]:flex-wrap [&_ul]:justify-center [&_ul]:gap-[clamp(10px,calc(100vw*14/400),22px)] [&_a]:size-[clamp(2.5rem,calc(100vw*48/400),3rem)] [&_img]:size-full!" />
+          <div className="mt-auto shrink-0 border-t border-border/40 px-4 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] min-[360px]:px-5">
+            <SocialLinks className="[&_ul]:max-w-full [&_ul]:flex-wrap [&_ul]:justify-center [&_ul]:gap-[clamp(12px,calc(100vw*16/400),24px)] [&_a]:size-[clamp(2.75rem,calc(100vw*52/400),3.25rem)] [&_img]:size-full!" />
           </div>
         </div>
       ) : null}
