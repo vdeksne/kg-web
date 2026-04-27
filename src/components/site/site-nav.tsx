@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { GoldStrike } from "@/components/site/gold-strike";
+import {
+  GoldStrike,
+  MAIN_NAV_GOLD_STRIKE_EXTEND_PX,
+} from "@/components/site/gold-strike";
 import { NavPortfolioItem } from "@/components/site/nav-portfolio-item";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
 import { messages } from "@/i18n/messages";
@@ -34,6 +37,9 @@ export function SiteNav({
   const aboutHref = withLocale("/about", locale);
   const contactHref = withLocale("/contact", locale);
 
+  const strikeTrimEm =
+    layout === "row" ? 0.25 : compact ? 0.16 : 0.15;
+
   return (
     <nav className={className}>
       <ul
@@ -53,7 +59,11 @@ export function SiteNav({
               compact && "block w-full py-1",
             )}
           >
-            <GoldStrike active={pathname === aboutHref}>
+            <GoldStrike
+              active={pathname === aboutHref}
+              trackingTrimEm={strikeTrimEm}
+              strikeExtendPx={MAIN_NAV_GOLD_STRIKE_EXTEND_PX}
+            >
               <span>{t.about}</span>
             </GoldStrike>
           </Link>
@@ -71,7 +81,11 @@ export function SiteNav({
               compact && "block w-full py-1",
             )}
           >
-            <GoldStrike active={pathname === contactHref}>
+            <GoldStrike
+              active={pathname === contactHref}
+              trackingTrimEm={strikeTrimEm}
+              strikeExtendPx={MAIN_NAV_GOLD_STRIKE_EXTEND_PX}
+            >
               <span>{t.contact}</span>
             </GoldStrike>
           </Link>

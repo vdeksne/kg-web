@@ -14,6 +14,10 @@ import {
 import { replaceLocaleInPath } from "@/lib/i18n-path";
 import { cn } from "@/lib/utils";
 
+const HOME_MOBILE_LANG_STRIKE_NUDGE_PX = 1;
+/** Gold strike extends past LV / ENG by this many px on each side */
+const LANG_STRIKE_EXTEND_EACH_SIDE_PX = 1.5;
+
 export function LanguageSwitch({
   className,
   variant = "default",
@@ -35,7 +39,11 @@ export function LanguageSwitch({
         variant === "homeMobile"
           ? ["tracking-[0.18em]", fluidHomeMobileLang]
           : variant === "aboutDesktop"
-            ? ["tracking-[0.21em]", fluidAboutDesktopLangGap, fluidAboutDesktopLang]
+            ? [
+                "tracking-[0.21em]",
+                fluidAboutDesktopLangGap,
+                fluidAboutDesktopLang,
+              ]
             : ["tracking-[0.21em]", fluidLangGap, fluidPrimaryText],
         className,
       )}
@@ -44,7 +52,14 @@ export function LanguageSwitch({
         href={replaceLocaleInPath(pathname, "lv")}
         className="text-muted-foreground transition-colors hover:text-foreground"
       >
-        <GoldStrike active={active === "lv"}>
+        <GoldStrike
+          active={active === "lv"}
+          trackingTrimEm={variant === "homeMobile" ? 0.18 : 0.21}
+          strikeExtendPx={LANG_STRIKE_EXTEND_EACH_SIDE_PX}
+          strikeCenterNudgePx={
+            variant === "homeMobile" ? HOME_MOBILE_LANG_STRIKE_NUDGE_PX : undefined
+          }
+        >
           <span>LV</span>
         </GoldStrike>
       </Link>
@@ -55,7 +70,14 @@ export function LanguageSwitch({
         href={replaceLocaleInPath(pathname, "en")}
         className="text-muted-foreground transition-colors hover:text-foreground"
       >
-        <GoldStrike active={active === "en"}>
+        <GoldStrike
+          active={active === "en"}
+          trackingTrimEm={variant === "homeMobile" ? 0.18 : 0.21}
+          strikeExtendPx={LANG_STRIKE_EXTEND_EACH_SIDE_PX}
+          strikeCenterNudgePx={
+            variant === "homeMobile" ? HOME_MOBILE_LANG_STRIKE_NUDGE_PX : undefined
+          }
+        >
           <span>ENG</span>
         </GoldStrike>
       </Link>
