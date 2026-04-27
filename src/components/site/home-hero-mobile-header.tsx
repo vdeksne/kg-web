@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LanguageSwitch } from "@/components/site/language-switch";
 import { SiteNav } from "@/components/site/site-nav";
-import { HOME_WIDE_MIN_PX } from "@/lib/site-breakpoints";
+import { HOME_WIDE_MIN_PX, MOBILE_HOME_LANG_TOP_CLASS } from "@/lib/site-breakpoints";
 import { cn } from "@/lib/utils";
 
 export function HomeHeroMobileHeader({ className }: { className?: string }) {
@@ -39,14 +39,20 @@ export function HomeHeroMobileHeader({ className }: { className?: string }) {
     <>
       <header
         className={cn(
-          "fixed top-0 right-0 left-0 z-100 hidden max-[480px]:flex max-[480px]:justify-end max-[480px]:px-3",
-          "pointer-events-none pt-[calc(44px+env(safe-area-inset-top))] pb-1.5",
+          "fixed top-0 right-0 left-0 z-100 hidden max-[480px]:block",
+          "pointer-events-none",
           className,
         )}
       >
-        <div className="pointer-events-auto flex flex-col items-end gap-1">
+        <div
+          className={cn(
+            "pointer-events-auto absolute right-[22px] z-10",
+            MOBILE_HOME_LANG_TOP_CLASS,
+            "flex w-max max-w-full flex-col items-end gap-3",
+          )}
+        >
           <LanguageSwitch variant="homeMobile" className="shrink-0" />
-          <div className="relative">
+          <div className="relative shrink-0">
             <button
               type="button"
               className="text-foreground hover:text-muted-foreground inline-flex h-9 min-h-9 items-center justify-end rounded-md py-0 pr-0 pl-3 transition-colors"
@@ -78,7 +84,7 @@ export function HomeHeroMobileHeader({ className }: { className?: string }) {
                 <div
                   id="home-mobile-nav-panel"
                   className={cn(
-                    "absolute top-[9px] right-0 z-110 flex max-h-[min(85dvh,calc(100dvh-6rem))] w-[min(calc(100vw-1.5rem),20rem)] flex-col overflow-hidden bg-brand text-[#231F20] shadow-xl",
+                    "absolute top-[9px] right-0 z-110 flex max-h-[min(85dvh,calc(100dvh-6rem))] w-[min(calc(100vw-2rem),16rem)] flex-col overflow-hidden bg-brand text-[#231F20] shadow-xl",
                     "max-[480px]:flex min-[481px]:hidden",
                   )}
                   role="dialog"

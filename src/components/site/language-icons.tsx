@@ -102,10 +102,7 @@ export function LanguageEngIcon({ selected, className }: IconProps) {
   );
 
   return (
-    <IconSlot
-      widthExpr={ENG_SLOT_W}
-      className={cn("-translate-y-px md:translate-y-[-0.5px]", className)}
-    >
+    <IconSlot widthExpr={ENG_SLOT_W} className={className}>
       {svg}
     </IconSlot>
   );
