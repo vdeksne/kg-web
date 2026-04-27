@@ -5,11 +5,11 @@ import { useParams, usePathname } from "next/navigation";
 import { LanguageEngIcon, LanguageLvIcon } from "@/components/site/language-icons";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
 import {
-  fluidAboutDesktopLang,
   fluidAboutDesktopLangGap,
   fluidHomeMobileLang,
   fluidLangGap,
-  fluidPrimaryText,
+  fluidLangIconAboutDesktop,
+  fluidLangIconText,
 } from "@/lib/fluid-type";
 import { replaceLocaleInPath } from "@/lib/i18n-path";
 import { cn } from "@/lib/utils";
@@ -32,13 +32,13 @@ export function LanguageSwitch({
     variant === "homeMobile"
       ? fluidHomeMobileLang
       : variant === "aboutDesktop"
-        ? cn(fluidAboutDesktopLangGap, fluidAboutDesktopLang)
-        : cn(fluidLangGap, fluidPrimaryText);
+        ? cn(fluidAboutDesktopLangGap, fluidLangIconAboutDesktop)
+        : cn(fluidLangGap, fluidLangIconText);
 
   return (
     <div
       className={cn(
-        "flex items-center font-normal leading-none",
+        "inline-flex h-[1em] w-max max-w-full shrink-0 items-center font-normal leading-none",
         rowClass,
         className,
       )}
@@ -48,7 +48,7 @@ export function LanguageSwitch({
         aria-label="Latviešu"
         aria-current={active === "lv" ? "true" : undefined}
         className={cn(
-          "inline-flex items-center leading-none transition-colors",
+          "inline-flex shrink-0 items-center justify-center leading-none transition-colors",
           active === "lv"
             ? "text-foreground"
             : "text-muted-foreground hover:text-foreground",
@@ -61,7 +61,7 @@ export function LanguageSwitch({
         aria-label="English"
         aria-current={active === "en" ? "true" : undefined}
         className={cn(
-          "inline-flex items-center leading-none transition-colors",
+          "inline-flex shrink-0 items-center justify-center leading-none transition-colors",
           active === "en"
             ? "text-foreground"
             : "text-muted-foreground hover:text-foreground",

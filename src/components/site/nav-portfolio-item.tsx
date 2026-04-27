@@ -6,10 +6,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { messages } from "@/i18n/messages";
 import { withLocale } from "@/lib/i18n-path";
-import {
-  GoldStrike,
-  MAIN_NAV_GOLD_STRIKE_EXTEND_EM,
-} from "@/components/site/gold-strike";
+import { MainNavPortfolioIcon } from "@/components/site/menu-nav-icons";
 import { usePortfolioNavCategories } from "@/components/site/portfolio-nav-provider";
 import {
   fluidDropdownText,
@@ -32,10 +29,15 @@ export function NavPortfolioItem({
   locale,
   layout = "row",
   compact = false,
+  aboutBanner = false,
+  dropdownOpenUp = false,
 }: {
   locale: Locale;
   layout?: "row" | "col";
   compact?: boolean;
+  aboutBanner?: boolean;
+  /** Footer (etc.): open submenu above the label so it stays in view. */
+  dropdownOpenUp?: boolean;
 }) {
   const categories = usePortfolioNavCategories();
   const pathname = usePathname();
@@ -89,17 +91,19 @@ export function NavPortfolioItem({
       <li className={cn("flex flex-col", compact ? "gap-2.5" : "gap-2")}>
         <Link
           href={`${portfolioPrefix}/${activeSlug}`}
-          className="text-muted-foreground hover:text-foreground block w-full py-1 transition-colors"
+          aria-label={t.portfolio}
+          className={cn(
+            "inline-flex w-full items-center py-1 leading-none transition-colors",
+            portfolioActive
+              ? "text-foreground"
+              : "text-muted-foreground hover:text-foreground",
+          )}
           onClick={close}
         >
-          <GoldStrike
-            active={portfolioActive}
-            trackingTrimEm={compact ? 0.16 : 0.15}
-            strikeExtendEm={MAIN_NAV_GOLD_STRIKE_EXTEND_EM}
-            strikeThickness="fluid"
-          >
-            <span>{t.portfolio}</span>
-          </GoldStrike>
+          <MainNavPortfolioIcon
+            locale={locale}
+            selected={portfolioActive}
+          />
         </Link>
         <ul
           className={cn(
@@ -133,38 +137,46 @@ export function NavPortfolioItem({
     <li ref={wrapRef} className="group relative">
       <Link
         href={`${portfolioPrefix}/${activeSlug}`}
-        className="text-muted-foreground hover:text-foreground transition-colors"
+        aria-label={t.portfolio}
         aria-expanded={isMobileRowNav ? open : undefined}
         aria-controls={isMobileRowNav ? menuId : undefined}
+        className={cn(
+          "inline-flex items-center leading-none transition-colors",
+          portfolioActive
+            ? "text-foreground"
+            : "text-muted-foreground hover:text-foreground",
+        )}
         onClick={(e) => {
           if (!isMobileRowNav) return;
           e.preventDefault();
           setOpen((v) => !v);
         }}
       >
-        <GoldStrike
-          active={portfolioActive}
-          trackingTrimEm={0.25}
-          strikeExtendEm={MAIN_NAV_GOLD_STRIKE_EXTEND_EM}
-          strikeThickness="fluid"
-        >
-          <span>{t.portfolio}</span>
-        </GoldStrike>
+        <MainNavPortfolioIcon
+          locale={locale}
+          selected={portfolioActive}
+          aboutBanner={aboutBanner}
+        />
       </Link>
       <ul
         id={menuId}
         role="list"
         className={cn(
-          "absolute top-full left-0 z-50 box-border flex max-w-[calc(100vw-1.5rem)] flex-col items-stretch justify-center gap-[10px] py-3",
-          /* Bridge the margin gap so :hover isn’t lost between “Darbi” and the panel */
-          "before:pointer-events-auto before:absolute before:bottom-full before:left-0 before:h-[11.6px] before:w-full before:content-['']",
+          "absolute left-0 z-50 box-border flex max-w-[calc(100vw-1.5rem)] flex-col items-stretch justify-center gap-[10px] py-3",
+          dropdownOpenUp ? "bottom-full" : "top-full",
+          /* Bridge the margin gap so :hover isn’t lost between label and panel */
+          dropdownOpenUp
+            ? "before:pointer-events-auto before:absolute before:top-full before:left-0 before:h-[11.6px] before:w-full before:content-['']"
+            : "before:pointer-events-auto before:absolute before:bottom-full before:left-0 before:h-[11.6px] before:w-full before:content-['']",
           open ? "flex" : "hidden min-[701px]:flex",
           "min-[701px]:invisible min-[701px]:opacity-0 min-[701px]:transition-opacity min-[701px]:duration-150",
           "min-[701px]:group-focus-within:visible min-[701px]:group-focus-within:opacity-100",
           "min-[701px]:group-hover:visible min-[701px]:group-hover:opacity-100",
         )}
         style={{
-          marginTop: DROPDOWN_GAP_TOP,
+          ...(dropdownOpenUp
+            ? { marginBottom: DROPDOWN_GAP_TOP }
+            : { marginTop: DROPDOWN_GAP_TOP }),
           minWidth: DROPDOWN_MIN_W,
           width: "max-content",
           minHeight: rowDropdownMinH,

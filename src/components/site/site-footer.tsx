@@ -41,7 +41,7 @@ export function SiteFooter() {
   const contactHref = withLocale("/contact", locale);
 
   return (
-    <footer className="relative mt-24 overflow-hidden">
+    <footer className="relative mt-24 overflow-x-clip">
       <div
         className="pointer-events-none absolute inset-0 z-0"
         aria-hidden
@@ -87,7 +87,11 @@ export function SiteFooter() {
                     {nav.about}
                   </Link>
                 </li>
-                <NavPortfolioItem locale={locale} layout="row" />
+                <NavPortfolioItem
+                  locale={locale}
+                  layout="row"
+                  dropdownOpenUp
+                />
                 <li>
                   <Link
                     href={contactHref}
@@ -143,7 +147,11 @@ export function SiteFooter() {
                       {nav.about}
                     </Link>
                   </li>
-                  <NavPortfolioItem locale={locale} layout="row" />
+                  <NavPortfolioItem
+                    locale={locale}
+                    layout="row"
+                    dropdownOpenUp
+                  />
                   <li>
                     <Link
                       href={contactHref}

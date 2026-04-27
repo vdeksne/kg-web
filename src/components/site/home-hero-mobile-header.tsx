@@ -45,7 +45,7 @@ export function HomeHeroMobileHeader({ className }: { className?: string }) {
     <>
       <header
         className={cn(
-          "fixed top-0 right-0 left-0 z-100 hidden max-[430px]:flex max-[430px]:justify-end max-[430px]:px-3",
+          "fixed top-0 right-0 left-0 z-100 hidden max-[480px]:flex max-[480px]:justify-end max-[480px]:px-3",
           "pointer-events-none pt-[calc(44px+env(safe-area-inset-top))] pb-1.5",
           className,
         )}
@@ -76,7 +76,7 @@ export function HomeHeroMobileHeader({ className }: { className?: string }) {
       {open ? (
         <div
           id="home-mobile-nav-panel"
-          className="fixed inset-0 z-110 flex max-[430px]:flex min-[431px]:hidden flex-col bg-white pt-[env(safe-area-inset-top)]"
+          className="fixed inset-0 z-110 flex max-[480px]:flex min-[481px]:hidden flex-col bg-white pt-[env(safe-area-inset-top)]"
           role="dialog"
           aria-modal="true"
           aria-label="Site navigation"
@@ -97,7 +97,7 @@ export function HomeHeroMobileHeader({ className }: { className?: string }) {
             </div>
           </div>
           <div className="mt-auto shrink-0 border-t border-border/40 px-3 pt-2 pb-[max(0.875rem,env(safe-area-inset-bottom))] min-[380px]:px-4">
-            <SocialLinks className="[&_ul]:max-w-full [&_ul]:flex-wrap [&_ul]:justify-center [&_ul]:gap-[clamp(10px,calc(100vw*14/430),20px)] [&_a]:size-[clamp(2.35rem,calc(100vw*44/430),2.85rem)] [&_img]:size-full!" />
+            <SocialLinks className="[&_ul]:max-w-full [&_ul]:flex-wrap [&_ul]:justify-center [&_ul]:gap-[clamp(10px,calc(100vw*14/480),20px)] [&_a]:size-[clamp(2.35rem,calc(100vw*44/480),2.85rem)] [&_img]:size-full!" />
           </div>
         </div>
       ) : null}

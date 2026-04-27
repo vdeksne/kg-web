@@ -16,15 +16,40 @@ export const fluidPrimaryNavGap =
 export const fluidLangGap =
   "gap-[clamp(8.5px,calc(8.5px+(100vw-320px)*0.003125),13.5px)]";
 
+/**
+ * Language icons (main header / home hero): slightly under primary nav scale; ~12px → 14px.
+ * Icons use `h-[1em]` so this directly controls size.
+ */
+export const fluidLangIconText =
+  "text-[clamp(12px,calc(12px+(100vw-320px)*0.00125),14px)]";
+
+/**
+ * Primary nav menu SVGs (header row): larger than language icons; ~14px → 17px.
+ */
+export const fluidNavMenuIconText =
+  "text-[clamp(14px,calc(14px+(100vw-320px)*0.001875),17px)]";
+
+/** About-banner primary nav menu: scales with ≥701px artboard. */
+export const fluidNavMenuIconAboutDesktop =
+  "text-[clamp(14px,calc(14px+(100vw-701px)*3/1219),17px)]";
+
+/** Primary nav menu SVGs (mobile drawer): large tap targets; ~15px → 19px. */
+export const fluidNavMenuIconMobile =
+  "text-[clamp(15px,calc(15px+(100vw-320px)*0.0025),19px)]";
+
 /** About-header desktop (≥701): lang size tracks 1920 artboard, 12px–16px */
 export const fluidAboutDesktopLang =
   "text-[clamp(12px,calc(12px+(100vw-701px)*4/1219),16px)]";
+
+/** About-banner language icons: same breakpoint as `fluidAboutDesktopLang`, capped smaller for icons. */
+export const fluidLangIconAboutDesktop =
+  "text-[clamp(12px,calc(12px+(100vw-701px)*2/1219),14px)]";
 
 /** About-header desktop: tighter LV | ENG gap vs small-phone curve */
 export const fluidAboutDesktopLangGap =
   "gap-[clamp(6px,calc(100vw*11.52/1920),11.52px)]";
 
-/** Home mobile header: LV | ENG (compact chrome); tuned for ≤430px. */
+/** Home mobile header: LV | ENG (compact chrome); tuned for compact home (≤480px). */
 export const fluidHomeMobileLang =
   "text-[clamp(10px,calc(10px+(100vw-320px)*0.001),12px)] gap-[clamp(5px,calc(5px+(100vw-320px)*0.0045),8px)]";
 

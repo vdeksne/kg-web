@@ -134,6 +134,7 @@ export function SiteHeaderInner({
           </div>
         )}
         <SiteNav
+          iconScale={isAbout ? "aboutBanner" : "header"}
           className={
             isAbout
               ? "flex w-full max-[700px]:justify-center min-[701px]:justify-start"

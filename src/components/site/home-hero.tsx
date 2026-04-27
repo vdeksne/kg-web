@@ -37,11 +37,11 @@ const HERO_BG_MAX_H = Math.round(1109 * HERO_BG_SCALE);
 /** Desktop hero raster */
 const HERO_BG_DESKTOP_SRC = "/images/main-background.png";
 
-/** Compact phones only (≤430px). Wider viewports use desktop hero art + chrome. */
+/** Mobile raster for compact home — width bound matches `HOME_COMPACT_MAX_PX` in site-breakpoints. */
 const HERO_BG_MOBILE_SRC = "/images/main_bg_mobil.png";
 
-/** "Create" strip after -90°; Figma max 644.7×23.29 @ 1920 (fluid); scaled vs lockup, then nudged smaller. */
-const HERO_CREATE_RELATIVE = 0.9;
+/** "Create" strip after -90°; Figma max 644.7×23.29 @ 1920 (fluid); scaled vs lockup (was 0.9). */
+const HERO_CREATE_RELATIVE = 1.3;
 const HERO_SIDE_TEXT_LENGTH =
   Math.round(644.7 * HERO_ART_SCALE * HERO_CREATE_RELATIVE * 100) / 100;
 const HERO_SIDE_TEXT_THICK =
@@ -52,7 +52,7 @@ const HERO_LOCKUP_W = Math.round(1011 * HERO_ART_SCALE);
 const HERO_LOCKUP_H = Math.round(350 * HERO_ART_SCALE);
 
 /** Space between lockup band and About / Portfolio / Contact (1920 reference, fluid). */
-const HERO_NAV_TOP_GAP = 300;
+const HERO_NAV_TOP_GAP = 336;
 /** Distance from viewport bottom to footer rule / icons row (Figma ~148px at 1920). */
 const HERO_FOOTER_BOTTOM = 148;
 const HERO_FOOTER_ICON_GAP = 10.9;
@@ -70,23 +70,27 @@ const heroDesignCssVars = {
 export function HomeHero({ home }: { home: Messages["home"] }) {
   return (
     <div
-      className="relative isolate flex min-h-dvh w-full items-center justify-center overflow-x-hidden overflow-y-visible bg-white px-0"
+      className="relative isolate flex min-h-dvh w-full items-center justify-center overflow-x-clip bg-white px-0"
       style={heroViewportCssVars}
     >
       {/*
-        Mobile raster (≤430px): always cover full viewport (no letterboxing). Bottom
-        anchor keeps ground/signature; edges may crop on extreme aspect ratios.
+        Mobile raster (compact home): full image always visible, scaled to fit viewport;
+        bottom-aligned so ground/signature stay anchored (letterboxing above if needed).
       */}
       <div
-        className="pointer-events-none fixed inset-0 z-1 hidden max-[430px]:block min-h-dvh w-full min-w-full overflow-hidden bg-white"
+        className="pointer-events-none fixed inset-0 z-1 box-border hidden max-[480px]:block bg-white pb-[env(safe-area-inset-bottom)]"
         aria-hidden
       >
+        {/*
+          No overflow-hidden: it can clip object-contain by a subpixel. overflow-x-clip is handled on the hero root.
+          Bottom safe-area inset shrinks the paint box so the full raster stays above the home indicator.
+        */}
         <Image
           src={HERO_BG_MOBILE_SRC}
           alt=""
           fill
           sizes="100vw"
-          className="object-cover object-bottom"
+          className="object-contain object-bottom"
           priority
         />
       </div>
@@ -95,7 +99,7 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
         Clip box size = scaled design size (transform does not affect layout).
       */}
       <div
-        className="relative z-10 max-[430px]:overflow-x-hidden max-[430px]:overflow-y-visible min-[431px]:overflow-hidden"
+        className="relative z-10 max-[480px]:overflow-x-clip min-[481px]:overflow-visible"
         style={{
           width: `calc(${HERO_DESIGN_W}px * var(--hero-scale))`,
           height: `calc(${HERO_DESIGN_H}px * var(--hero-scale))`,
@@ -112,7 +116,7 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
           }}
         >
           <div
-            className="pointer-events-none absolute right-0 bottom-0 z-0 hidden min-[431px]:block bg-contain bg-no-repeat"
+            className="pointer-events-none absolute right-0 bottom-0 z-0 hidden min-[481px]:block bg-contain bg-no-repeat"
             style={{
               left: HERO_CONTENT_X,
               aspectRatio: `${HERO_BG_MAX_W} / ${HERO_BG_MAX_H}`,
@@ -123,18 +127,18 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
             }}
             aria-hidden
           />
-          <div className="relative z-10 flex h-full min-h-0 w-full flex-col max-[430px]:pt-[calc(44px+3rem+env(safe-area-inset-top))] px-[clamp(1.5rem,calc(var(--hero-vw)*202/1920),202px)]">
+          <div className="relative z-10 flex h-full min-h-0 w-full min-[481px]:overflow-visible flex-col max-[480px]:pt-[calc(44px+3rem+env(safe-area-inset-top))] px-[clamp(1.5rem,calc(var(--hero-vw)*202/1920),202px)]">
             <span className="sr-only">{home.heroImageAlt}</span>
-            <DotGrid className="pointer-events-none absolute z-20 hidden min-[431px]:block w-[clamp(140px,calc(231.48*var(--hero-vw)/1920),231.48px)] min-[431px]:top-[calc(33*var(--hero-vw)/1920)] min-[431px]:right-[calc(369*var(--hero-vw)/1920)] min-[431px]:left-auto" />
+            <DotGrid className="pointer-events-none absolute z-20 hidden min-[481px]:block w-[clamp(140px,calc(231.48*var(--hero-vw)/1920),231.48px)] min-[481px]:top-[calc(33*var(--hero-vw)/1920)] min-[481px]:right-[calc(369*var(--hero-vw)/1920)] min-[481px]:left-auto" />
             <div
-              className="hidden min-[431px]:flex min-[431px]:items-start min-[431px]:justify-end"
+              className="hidden min-[481px]:flex min-[481px]:items-start min-[481px]:justify-end"
               style={{ paddingTop: HERO_ALIGN_TOP_PX }}
             >
               <LanguageSwitch />
             </div>
 
             <div
-              className="pointer-events-none absolute top-0 bottom-0 left-0 z-30 hidden min-[431px]:flex min-[431px]:overflow-visible min-[431px]:right-[clamp(1.5rem,calc(var(--hero-vw)*202/1920),202px)] min-[431px]:items-center min-[431px]:justify-end min-[431px]:pt-0"
+              className="pointer-events-none absolute top-0 bottom-0 left-0 z-30 hidden min-[481px]:flex min-[481px]:overflow-visible min-[481px]:right-[clamp(1.5rem,calc(var(--hero-vw)*202/1920),202px)] min-[481px]:items-center min-[481px]:justify-end min-[481px]:pt-0"
               aria-hidden
             >
               <div
@@ -149,13 +153,13 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
                     transform: `translateX(calc(-1 * min(${HERO_SIDE_TEXT_THICK}px, calc(var(--hero-vw) * ${HERO_SIDE_TEXT_THICK} / ${HERO_REF_W}))))`,
                   }}
                 >
-                  <div className="origin-top-right -rotate-90">
+                  <div className="origin-top-right overflow-visible -rotate-90">
                     <Image
                       src="/icons/create.svg"
                       alt=""
                       width={449}
                       height={17}
-                      className="block h-auto brightness-0"
+                      className="block h-auto max-w-none brightness-0"
                       style={{
                         width: `min(${HERO_SIDE_TEXT_LENGTH}px, calc(var(--hero-vw) * ${HERO_SIDE_TEXT_LENGTH} / ${HERO_REF_W}))`,
                       }}
@@ -167,8 +171,8 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
             </div>
             <span className="sr-only">{home.sideTextAlt}</span>
 
-            <div className="grid flex-1 gap-10 pt-10 max-[430px]:pt-5 lg:items-center lg:pt-0">
-              <div className="relative flex min-h-0 flex-col items-start justify-center text-left max-[430px]:min-h-[36vh] lg:min-h-[753px]">
+            <div className="grid flex-1 gap-10 pt-10 max-[480px]:pt-5 lg:items-center lg:pt-0">
+              <div className="relative flex min-h-0 flex-col items-start justify-center text-left max-[480px]:min-h-[36vh] lg:min-h-[753px]">
                 <div
                   className="w-full shrink-0"
                   aria-hidden
@@ -178,7 +182,7 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
                   }}
                 />
                 <div
-                  className="max-[430px]:hidden"
+                  className="max-[480px]:hidden"
                   style={{
                     marginTop: `max(2rem, calc(var(--hero-vw) * ${HERO_NAV_TOP_GAP} / ${HERO_REF_W}))`,
                   }}
@@ -189,7 +193,7 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
             </div>
 
             <div
-              className="mt-auto hidden min-[431px]:flex w-full items-end gap-3 pt-16 lg:pt-10"
+              className="mt-auto hidden min-[481px]:flex w-full items-end gap-3 pt-16 lg:pt-10"
               style={{
                 paddingBottom: `max(1rem, calc(var(--hero-vw) * ${HERO_FOOTER_BOTTOM} / ${HERO_REF_W}))`,
               }}

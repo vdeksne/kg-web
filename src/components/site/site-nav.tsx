@@ -3,29 +3,48 @@
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import {
-  GoldStrike,
-  MAIN_NAV_GOLD_STRIKE_EXTEND_EM,
-} from "@/components/site/gold-strike";
+  MainNavAboutIcon,
+  MainNavContactIcon,
+} from "@/components/site/menu-nav-icons";
 import { NavPortfolioItem } from "@/components/site/nav-portfolio-item";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
 import { messages } from "@/i18n/messages";
 import {
-  fluidHomeMobileMenu,
+  fluidNavMenuIconAboutDesktop,
+  fluidNavMenuIconMobile,
+  fluidNavMenuIconText,
   fluidPrimaryNavGap,
-  fluidPrimaryText,
 } from "@/lib/fluid-type";
 import { withLocale } from "@/lib/i18n-path";
 import { cn } from "@/lib/utils";
+
+export type SiteNavIconScale = "header" | "aboutBanner" | "drawer" | "drawerCompact";
+
+function navIconTextClass(scale: SiteNavIconScale) {
+  switch (scale) {
+    case "aboutBanner":
+      return fluidNavMenuIconAboutDesktop;
+    case "drawerCompact":
+      return fluidNavMenuIconMobile;
+    case "drawer":
+      return fluidNavMenuIconText;
+    default:
+      return fluidNavMenuIconText;
+  }
+}
 
 export function SiteNav({
   className,
   layout = "row",
   compact = false,
+  iconScale = "header",
 }: {
   className?: string;
   layout?: "row" | "col";
   /** Smaller type (home mobile drawer). */
   compact?: boolean;
+  /** Match language switch: `header` default, `aboutBanner` on about desktop, drawer variants for column nav. */
+  iconScale?: SiteNavIconScale;
 }) {
   const pathname = usePathname();
   const params = useParams();
@@ -34,62 +53,80 @@ export function SiteNav({
     typeof raw === "string" && isLocale(raw) ? raw : defaultLocale;
   const t = messages[locale].nav;
 
+  const resolvedScale: SiteNavIconScale =
+    layout === "col"
+      ? compact
+        ? "drawerCompact"
+        : "drawer"
+      : iconScale;
+
+  const iconText = navIconTextClass(resolvedScale);
+  const aboutBanner = resolvedScale === "aboutBanner";
+
   const aboutHref = withLocale("/about", locale);
   const contactHref = withLocale("/contact", locale);
-
-  const strikeTrimEm =
-    layout === "row" ? 0.25 : compact ? 0.16 : 0.15;
 
   return (
     <nav className={className}>
       <ul
         className={
           layout === "row"
-            ? `flex flex-wrap items-center font-normal tracking-[0.25em] uppercase ${fluidPrimaryNavGap} ${fluidPrimaryText}`
-            : compact
-              ? `flex flex-col uppercase ${fluidHomeMobileMenu}`
-              : `flex flex-col gap-4 font-normal tracking-[0.15em] uppercase ${fluidPrimaryText}`
+            ? cn(
+                "flex flex-wrap items-center font-normal leading-none",
+                fluidPrimaryNavGap,
+                iconText,
+              )
+            : cn(
+                "flex flex-col font-normal leading-none uppercase",
+                compact
+                  ? "gap-4 leading-snug tracking-[0.16em]"
+                  : "gap-4",
+                iconText,
+              )
         }
       >
         <li>
           <Link
             href={aboutHref}
+            aria-label={t.about}
             className={cn(
-              "text-muted-foreground hover:text-foreground transition-colors",
+              "inline-flex items-center leading-none transition-colors",
+              pathname === aboutHref
+                ? "text-foreground"
+                : "text-muted-foreground hover:text-foreground",
               compact && "block w-full py-1",
             )}
           >
-            <GoldStrike
-              active={pathname === aboutHref}
-              trackingTrimEm={strikeTrimEm}
-              strikeExtendEm={MAIN_NAV_GOLD_STRIKE_EXTEND_EM}
-              strikeThickness="fluid"
-            >
-              <span>{t.about}</span>
-            </GoldStrike>
+            <MainNavAboutIcon
+              locale={locale}
+              selected={pathname === aboutHref}
+              aboutBanner={aboutBanner}
+            />
           </Link>
         </li>
         <NavPortfolioItem
           locale={locale}
           layout={layout}
           compact={compact}
+          aboutBanner={aboutBanner}
         />
         <li>
           <Link
             href={contactHref}
+            aria-label={t.contact}
             className={cn(
-              "text-muted-foreground hover:text-foreground transition-colors",
+              "inline-flex items-center leading-none transition-colors",
+              pathname === contactHref
+                ? "text-foreground"
+                : "text-muted-foreground hover:text-foreground",
               compact && "block w-full py-1",
             )}
           >
-            <GoldStrike
-              active={pathname === contactHref}
-              trackingTrimEm={strikeTrimEm}
-              strikeExtendEm={MAIN_NAV_GOLD_STRIKE_EXTEND_EM}
-              strikeThickness="fluid"
-            >
-              <span>{t.contact}</span>
-            </GoldStrike>
+            <MainNavContactIcon
+              locale={locale}
+              selected={pathname === contactHref}
+              aboutBanner={aboutBanner}
+            />
           </Link>
         </li>
       </ul>
