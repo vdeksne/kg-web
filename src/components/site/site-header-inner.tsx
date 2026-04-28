@@ -8,7 +8,6 @@ import { LogoLockup } from "@/components/site/logo-lockup";
 import { SiteNav } from "@/components/site/site-nav";
 import { SocialLinks } from "@/components/site/social-links";
 import { withLocale } from "@/lib/i18n-path";
-import { MOBILE_SUBPAGE_LANG_TOP_CLASS } from "@/lib/site-breakpoints";
 import { cn } from "@/lib/utils";
 
 const SHAPES_SRC = "/images/header_shapes_V2.png";
@@ -107,16 +106,6 @@ export function SiteHeaderInner({
                   priority
                 />
               </Link>
-              <div
-                className={cn(
-                  "pointer-events-none absolute right-[22px]",
-                  MOBILE_SUBPAGE_LANG_TOP_CLASS,
-                )}
-              >
-                <div className="pointer-events-auto">
-                  <LanguageSwitch variant="homeMobile" className="shrink-0" />
-                </div>
-              </div>
             </div>
             <div className="hidden min-[701px]:grid w-full grid-cols-[minmax(0,1fr)_auto] items-stretch gap-x-[clamp(1rem,calc(24*100vw/1920),1.5rem)]">
               <div className="min-w-0 self-start">

@@ -56,7 +56,7 @@ export default async function AboutPage({
             )}
           >
             <div
-              className="relative w-full overflow-hidden rounded-2xl bg-neutral-900 shadow-xl ring-1 ring-black/5 lg:rounded-sm lg:shadow-2xl lg:ring-0"
+              className="relative w-full overflow-hidden rounded-none bg-neutral-900 shadow-xl ring-1 ring-black/5 lg:shadow-2xl lg:ring-0"
               style={{ aspectRatio: "673.749 / 561.1" }}
             >
               <Image

@@ -2,7 +2,6 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import { DotGrid } from "@/components/site/dot-grid";
 import { LanguageSwitch } from "@/components/site/language-switch";
-import { HomeHeroMobileHeader } from "@/components/site/home-hero-mobile-header";
 import { SiteNav } from "@/components/site/site-nav";
 import { SocialLinks } from "@/components/site/social-links";
 import type { Messages } from "@/i18n/messages";
@@ -94,7 +93,6 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
           priority
         />
       </div>
-      <HomeHeroMobileHeader />
       {/*
         Clip box size = scaled design size (transform does not affect layout).
       */}

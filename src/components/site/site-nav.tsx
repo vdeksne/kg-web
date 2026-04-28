@@ -66,6 +66,18 @@ export function SiteNav({
   const aboutHref = withLocale("/about", locale);
   const contactHref = withLocale("/contact", locale);
 
+  /** Mobile home drawer: `bg-brand` with white label art (`currentColor`). */
+  const drawerOnBrand =
+    layout === "col" && compact
+      ? {
+          active: "text-[#FFFFFF]",
+          idle: "text-white/80 hover:text-[#FFFFFF]",
+        }
+      : {
+          active: "text-foreground",
+          idle: "text-muted-foreground hover:text-foreground",
+        };
+
   return (
     <nav className={className}>
       <ul
@@ -77,7 +89,7 @@ export function SiteNav({
                 iconText,
               )
             : cn(
-                "flex flex-col font-normal leading-none uppercase",
+                "flex w-max flex-col items-start font-normal leading-none uppercase",
                 compact
                   ? "gap-4 leading-snug tracking-[0.16em]"
                   : "gap-4",
@@ -91,10 +103,8 @@ export function SiteNav({
             aria-label={t.about}
             className={cn(
               "inline-flex items-center leading-none transition-colors",
-              pathname === aboutHref
-                ? "text-foreground"
-                : "text-muted-foreground hover:text-foreground",
-              compact && "block w-full py-1",
+              pathname === aboutHref ? drawerOnBrand.active : drawerOnBrand.idle,
+              compact && "block w-max py-1",
             )}
           >
             <MainNavAboutIcon
@@ -116,10 +126,8 @@ export function SiteNav({
             aria-label={t.contact}
             className={cn(
               "inline-flex items-center leading-none transition-colors",
-              pathname === contactHref
-                ? "text-foreground"
-                : "text-muted-foreground hover:text-foreground",
-              compact && "block w-full py-1",
+              pathname === contactHref ? drawerOnBrand.active : drawerOnBrand.idle,
+              compact && "block w-max py-1",
             )}
           >
             <MainNavContactIcon

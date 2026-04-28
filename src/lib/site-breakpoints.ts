@@ -8,10 +8,8 @@ export const HOME_COMPACT_MAX_PX = 480;
 export const HOME_WIDE_MIN_PX = HOME_COMPACT_MAX_PX + 1;
 
 /**
- * Mobile language inset from viewport top (+ safe area). Subpage banner = base; home main chrome +4px.
+ * Mobile language row: one inset for home (≤480) and about-style headers (≤700 overlay).
+ * Single value avoids a visible jump when navigating home ↔ subpages.
  */
-export const MOBILE_SUBPAGE_LANG_TOP_CLASS =
-  "top-[calc(66px+env(safe-area-inset-top))]";
-
-export const MOBILE_HOME_LANG_TOP_CLASS =
-  "top-[calc(70px+env(safe-area-inset-top))]";
+export const MOBILE_HEADER_LANG_TOP_CLASS =
+  "top-[calc(68px+env(safe-area-inset-top))]";

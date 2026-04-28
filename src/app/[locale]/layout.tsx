@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LocaleHtmlLang } from "@/components/i18n/locale-html-lang";
+import { MobileSiteChrome } from "@/components/site/mobile-site-chrome";
 import { PortfolioNavProvider } from "@/components/site/portfolio-nav-provider";
 import { defaultLocale, isLocale, locales } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
@@ -43,6 +44,7 @@ export default async function LocaleLayout({
     <>
       <LocaleHtmlLang locale={raw} />
       <PortfolioNavProvider categories={site.portfolio.categoryNav}>
+        <MobileSiteChrome />
         {children}
       </PortfolioNavProvider>
     </>

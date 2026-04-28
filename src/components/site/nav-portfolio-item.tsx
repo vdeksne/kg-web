@@ -18,6 +18,10 @@ const DROPDOWN_FILL = "#F3C02D";
 const DROPDOWN_MIN_W = 139.43;
 const DROPDOWN_H = 100.1;
 const DROPDOWN_PAD_X = 17.09;
+/** Mobile column drawer: extra right inset vs design left pad (reference layout). */
+const DROPDOWN_COL_PAD_RIGHT = 60;
+/** Vertical padding inside mobile submenu; keep tight to match main `SiteNav` column gaps. */
+const DROPDOWN_COL_PAD_Y = 10;
 const DROPDOWN_FONT_PX = 18;
 const DROPDOWN_ROW_GAP = 10;
 
@@ -61,7 +65,6 @@ export function NavPortfolioItem({
     DROPDOWN_H,
     24 + categories.length * (DROPDOWN_FONT_PX + DROPDOWN_ROW_GAP),
   );
-
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLLIElement>(null);
   const menuId = useId();
@@ -93,60 +96,77 @@ export function NavPortfolioItem({
 
   if (layout === "col") {
     return (
-      <li className={cn("flex flex-col", compact ? "gap-2.5" : "gap-2")}>
+      <li
+        ref={wrapRef}
+        className={cn("flex flex-col", compact ? "gap-1" : "gap-2")}
+      >
         <Link
           href={`${portfolioPrefix}/${activeSlug}`}
           aria-label={t.portfolio}
+          aria-expanded={open}
+          aria-controls={open ? menuId : undefined}
           className={cn(
-            "inline-flex w-full items-center py-1 leading-none transition-colors",
-            portfolioActive
-              ? "text-foreground"
-              : "text-muted-foreground hover:text-foreground",
+            "inline-flex w-max max-w-full items-center py-1 leading-none transition-colors",
+            compact
+              ? portfolioActive
+                ? "text-[#FFFFFF]"
+                : "text-white/80 hover:text-[#FFFFFF]"
+              : portfolioActive
+                ? "text-foreground"
+                : "text-muted-foreground hover:text-foreground",
           )}
-          onClick={close}
+          onClick={(e) => {
+            e.preventDefault();
+            setOpen((v) => !v);
+          }}
         >
           <MainNavPortfolioIcon locale={locale} selected={portfolioActive} />
         </Link>
-        <ul
-          className={cn(
-            "box-border flex w-full max-w-full flex-col items-stretch justify-center gap-[10px] py-3",
-          )}
-          style={{
-            backgroundColor: DROPDOWN_FILL,
-            paddingLeft: DROPDOWN_PAD_X,
-            paddingRight: DROPDOWN_PAD_X,
-            minHeight: rowDropdownMinH,
-          }}
-        >
-          {categories.map((c) => {
-            const subActive = pathname === `${portfolioPrefix}/${c.slug}`;
-            return (
-              <li key={c.slug}>
-                <Link
-                  href={`${portfolioPrefix}/${c.slug}`}
-                  className={cn(
-                    "group/sub block w-full whitespace-nowrap text-left leading-tight font-light tracking-[0.2em] text-white uppercase outline-none",
-                    fluidDropdownText,
-                  )}
-                  onClick={close}
-                >
-                  <span className="relative inline-block">
-                    <span
-                      className={cn(
-                        "pointer-events-none absolute top-1/2 right-0 left-0 z-0 h-px -translate-y-1/2 bg-muted-foreground transition-opacity duration-150 ease-out",
-                        subActive
-                          ? "opacity-100"
-                          : "opacity-0 group-hover/sub:opacity-100 group-focus-visible/sub:opacity-100",
-                      )}
-                      aria-hidden
-                    />
-                    <span className="relative z-10">{c.label[locale]}</span>
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        {open ? (
+          <ul
+            id={menuId}
+            role="list"
+            className={cn(
+              "box-border mt-[-2px] flex w-max max-w-full flex-col items-stretch justify-start gap-2",
+            )}
+            style={{
+              backgroundColor: DROPDOWN_FILL,
+              paddingLeft: DROPDOWN_PAD_X,
+              paddingRight: DROPDOWN_COL_PAD_RIGHT,
+              paddingTop: DROPDOWN_COL_PAD_Y,
+              paddingBottom: DROPDOWN_COL_PAD_Y,
+            }}
+          >
+            {categories.map((c) => {
+              const subActive = pathname === `${portfolioPrefix}/${c.slug}`;
+              return (
+                <li key={c.slug}>
+                  <Link
+                    href={`${portfolioPrefix}/${c.slug}`}
+                    className={cn(
+                      "group/sub block w-full whitespace-nowrap text-left leading-tight font-light tracking-[0.2em] text-[#FFFFFF] uppercase outline-none",
+                      fluidDropdownText,
+                    )}
+                    onClick={close}
+                  >
+                    <span className="relative inline-block">
+                      <span
+                        className={cn(
+                          "pointer-events-none absolute top-1/2 right-0 left-0 z-0 h-px -translate-y-1/2 bg-[#FFFFFF] transition-opacity duration-150 ease-out",
+                          subActive
+                            ? "opacity-100"
+                            : "opacity-0 group-hover/sub:opacity-100 group-focus-visible/sub:opacity-100",
+                        )}
+                        aria-hidden
+                      />
+                      <span className="relative z-10">{c.label[locale]}</span>
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        ) : null}
       </li>
     );
   }
@@ -190,9 +210,7 @@ export function NavPortfolioItem({
         aria-controls={isMobileRowNav ? menuId : undefined}
         className={cn(
           "inline-flex items-center transition-colors",
-          labelStyle === "text"
-            ? "shrink-0 whitespace-nowrap"
-            : "leading-none",
+          labelStyle === "text" ? "shrink-0 whitespace-nowrap" : "leading-none",
           portfolioActive
             ? "text-foreground"
             : "text-muted-foreground hover:text-foreground",
