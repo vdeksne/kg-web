@@ -56,11 +56,11 @@ export default async function PortfolioCategoryPage({
       <main
         className={cn(
           "mx-auto w-full max-w-[1920px] flex-1 pb-12 pt-[76px]",
-          "max-[700px]:px-[22px] min-[701px]:px-[clamp(1.5rem,calc(100vw*202/1920),202px)]",
+          "max-lg:px-[22px] lg:px-[clamp(1.5rem,calc(100vw*202/1920),202px)]",
         )}
       >
         <PortfolioGalleryProvider items={items} locale={locale}>
-          <div className="text-muted-foreground mb-[35.01px] hidden min-[701px]:flex flex-wrap items-center gap-x-1 gap-y-1 text-xs tracking-[0.18em] uppercase">
+          <div className="text-muted-foreground mb-[35.01px] hidden lg:flex flex-wrap items-center gap-x-1 gap-y-1 text-xs tracking-[0.18em] uppercase">
             <span>{portfolio.breadcrumb[locale]}</span>
             <span>/</span>
             <span>{categoryTitle}</span>

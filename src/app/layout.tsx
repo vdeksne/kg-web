@@ -1,5 +1,12 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
+
+/** `viewport-fit=cover` helps `env(safe-area-inset-*)` and reliable fixed UI on notched phones. */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   title: "Kaspars Groza",

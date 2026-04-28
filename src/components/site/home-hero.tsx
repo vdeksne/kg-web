@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
 import { DotGrid } from "@/components/site/dot-grid";
+import { HomeHeaderMobile } from "@/components/site/home-header-mobile";
 import { LanguageSwitch } from "@/components/site/language-switch";
 import { SiteNav } from "@/components/site/site-nav";
 import { SocialLinks } from "@/components/site/social-links";
@@ -68,10 +69,12 @@ const heroDesignCssVars = {
 
 export function HomeHero({ home }: { home: Messages["home"] }) {
   return (
-    <div
-      className="relative isolate flex min-h-dvh w-full items-center justify-center overflow-x-clip bg-white px-0"
-      style={heroViewportCssVars}
-    >
+    <div className="flex min-h-dvh w-full flex-col overflow-x-clip bg-white">
+      <HomeHeaderMobile />
+      <div
+        className="relative isolate flex min-h-0 flex-1 w-full items-center justify-center overflow-x-clip bg-white px-0"
+        style={heroViewportCssVars}
+      >
       {/*
         Mobile raster (compact home): cover + bottom so width is edge-to-edge (no L/R gutters);
         top may crop slightly vs contain — avoids letterboxing on tall narrow phones.
@@ -125,11 +128,11 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
             }}
             aria-hidden
           />
-          <div className="relative z-10 flex h-full min-h-0 w-full min-[481px]:overflow-visible flex-col max-[480px]:pt-[calc(44px+3rem+env(safe-area-inset-top))] px-[clamp(1.5rem,calc(var(--hero-vw)*202/1920),202px)]">
+          <div className="relative z-10 flex h-full min-h-0 w-full min-[481px]:overflow-visible flex-col px-[clamp(1.5rem,calc(var(--hero-vw)*202/1920),202px)]">
             <span className="sr-only">{home.heroImageAlt}</span>
             <DotGrid className="pointer-events-none absolute z-20 hidden min-[481px]:block w-[clamp(140px,calc(231.48*var(--hero-vw)/1920),231.48px)] min-[481px]:top-[calc(33*var(--hero-vw)/1920)] min-[481px]:right-[calc(369*var(--hero-vw)/1920)] min-[481px]:left-auto" />
             <div
-              className="hidden min-[481px]:flex min-[481px]:items-start min-[481px]:justify-end"
+              className="hidden lg:flex lg:items-start lg:justify-end"
               style={{ paddingTop: HERO_ALIGN_TOP_PX }}
             >
               <LanguageSwitch />
@@ -206,6 +209,7 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

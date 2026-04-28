@@ -3,35 +3,12 @@
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { LanguageSwitch } from "@/components/site/language-switch";
 import { SiteNav } from "@/components/site/site-nav";
-import { isLocale } from "@/i18n/config";
-import {
-  HOME_WIDE_MIN_PX,
-  MOBILE_HEADER_LANG_TOP_CLASS,
-} from "@/lib/site-breakpoints";
+import { HOME_WIDE_MIN_PX } from "@/lib/site-breakpoints";
 import { cn } from "@/lib/utils";
 
-function pathIsLocaleHome(pathname: string) {
-  const normalized = pathname.replace(/\/$/, "") || "/";
-  const parts = normalized.split("/").filter(Boolean);
-  return parts.length === 1 && isLocale(parts[0]!);
-}
-
-function useMediaQuery(query: string) {
-  const [matches, setMatches] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia(query);
-    const onChange = () => setMatches(mq.matches);
-    onChange();
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, [query]);
-  return matches;
-}
-
-/** Home burger + drawer only for compact hero (≤480px). */
-function HomeCompactBurger() {
+/** Home-only menu; visible ≤480px. Drawer stays `fixed` as an overlay. */
+export function HomeCompactBurger() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -82,7 +59,7 @@ function HomeCompactBurger() {
         <>
           <button
             type="button"
-            className="fixed inset-0 z-105 cursor-default max-[480px]:block min-[481px]:hidden"
+            className="fixed inset-0 z-10050 cursor-default max-[480px]:block min-[481px]:hidden"
             aria-hidden
             tabIndex={-1}
             onClick={() => setOpen(false)}
@@ -90,10 +67,9 @@ function HomeCompactBurger() {
           <div
             id="home-mobile-nav-panel"
             className={cn(
-              "fixed z-110 flex max-h-[min(85dvh,calc(100dvh-6rem))] w-max max-w-[calc(100vw-44px)] flex-col overflow-hidden bg-brand text-[#FFFFFF] shadow-xl",
+              "fixed z-10100 flex max-h-[min(85dvh,calc(100dvh-6rem))] w-max max-w-[calc(100vw-44px)] flex-col overflow-hidden bg-brand text-[#FFFFFF] shadow-xl",
               "right-[22px]",
-              /* Below lang + gap; pulled up slightly so hero/header SVG doesn’t show above the panel */
-              "top-[calc(68px+env(safe-area-inset-top)+0.75rem+0.75rem+9px-8px)]",
+              "top-[calc(68px+env(safe-area-inset-top,0px)+5.5rem)]",
               "max-[480px]:flex min-[481px]:hidden",
             )}
             role="dialog"
@@ -109,43 +85,5 @@ function HomeCompactBurger() {
         </>
       ) : null}
     </div>
-  );
-}
-
-/**
- * Single fixed slot for mobile LV/ENG (≤700px) so position matches across home and subpages.
- * Home compact (≤480px) stacks the burger under the same column; wide home (481–700) uses in-hero lang only.
- */
-export function MobileSiteChrome() {
-  const pathname = usePathname();
-  const [mounted, setMounted] = useState(false);
-  const isHome = pathIsLocaleHome(pathname);
-  const max700 = useMediaQuery("(max-width: 700px)");
-  const min481 = useMediaQuery(`(min-width: ${HOME_WIDE_MIN_PX}px)`);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const showChrome =
-    mounted && max700 && !(isHome && min481);
-
-  if (!showChrome) return null;
-
-  return (
-    <header
-      className="pointer-events-none fixed top-0 right-0 left-0 z-100"
-      aria-hidden={false}
-    >
-      <div
-        className={cn(
-          "pointer-events-auto absolute right-[22px] z-10 flex w-max max-w-full flex-col items-end gap-3",
-          MOBILE_HEADER_LANG_TOP_CLASS,
-        )}
-      >
-        <LanguageSwitch variant="homeMobile" className="shrink-0" />
-        {isHome ? <HomeCompactBurger /> : null}
-      </div>
-    </header>
   );
 }

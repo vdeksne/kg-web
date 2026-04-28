@@ -19,7 +19,7 @@ export function LanguageSwitch({
   variant = "default",
 }: {
   className?: string;
-  /** `homeMobile`: subpage ≤700px / home compact chrome. `aboutDesktop`: subpage ≥701px banner. */
+  /** `homeMobile`: fixed chrome below `lg` + home ≤480 burger. `aboutDesktop`: in-flow banner ≥`lg`. */
   variant?: "default" | "homeMobile" | "aboutDesktop";
 }) {
   const pathname = usePathname();

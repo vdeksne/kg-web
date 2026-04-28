@@ -14,8 +14,8 @@ const SHAPES_SRC = "/images/header_shapes_V2.png";
 const SHAPES_INTRINSIC_W = 1961;
 const SHAPES_INTRINSIC_H = 814;
 
-/** Subpage header: raster + compact lang ≤700px; desktop banner ≥701px. */
-const SUBPAGE_HEADER_MOBILE_MAX_PX = 700;
+/** Subpage header: mobile raster below `lg`; desktop banner + in-flow lang from `lg`. */
+const SUBPAGE_HEADER_MOBILE_MAX_PX = 1023;
 const MOBILE_SUBPAGE_HEADER_SRC = "/images/mobite - header.png";
 const MOBILE_SUBPAGE_HEADER_W = 720;
 const MOBILE_SUBPAGE_HEADER_H = 260;
@@ -37,9 +37,14 @@ export function SiteHeaderInner({
     <header
       className={cn("relative box-border w-full", !isAbout && "pb-6")}
     >
+      <div className="relative z-20 flex w-full justify-end px-[22px] pt-[calc(68px+env(safe-area-inset-top,0))] pb-3 lg:hidden pointer-events-none">
+        <nav aria-label="Language" className="pointer-events-auto">
+          <LanguageSwitch variant="homeMobile" className="shrink-0" />
+        </nav>
+      </div>
       {isAbout ? (
         <div
-          className="pointer-events-none absolute top-0 z-0 hidden min-[701px]:block select-none"
+          className="pointer-events-none absolute top-0 z-0 hidden lg:block select-none"
           style={{
             right: "clamp(48px, calc(203 * 100vw / 1920), 203px)",
             height: "clamp(160px, calc(407 * 100vw / 1920), 407px)",
@@ -64,14 +69,14 @@ export function SiteHeaderInner({
         className={cn(
           "relative z-10 mx-auto flex w-full flex-col",
           isAbout
-            ? "max-[700px]:gap-7 min-[701px]:gap-[clamp(32px,calc(107.5*100vw/1920),107.5px)]"
+            ? "max-lg:gap-7 lg:gap-[clamp(32px,calc(107.5*100vw/1920),107.5px)]"
             : "gap-6",
           isAbout
-            ? "max-w-[1920px] px-[clamp(1.5rem,calc(100vw*202/1920),202px)] max-[700px]:px-[22px]"
+            ? "max-w-[1920px] px-[clamp(1.5rem,calc(100vw*202/1920),202px)] max-lg:px-[22px]"
             : "max-w-6xl px-6 sm:px-10",
-          !isAbout && "pt-8",
+          !isAbout && "pt-8 max-lg:pt-0",
           isAbout &&
-            "max-[700px]:pt-0 min-[701px]:pt-[clamp(56px,calc(206*100vw/1920),206px)]",
+            "max-lg:pt-0 lg:pt-[clamp(56px,calc(206*100vw/1920),206px)]",
         )}
         style={
           isAbout
@@ -88,7 +93,7 @@ export function SiteHeaderInner({
           <>
             <div
               className={cn(
-                "relative hidden w-full max-[700px]:block max-[700px]:mx-[-22px] max-[700px]:w-[calc(100%+44px)]",
+                "relative hidden w-full max-lg:block max-lg:mx-[-22px] max-lg:w-[calc(100%+44px)]",
                 "pt-0",
               )}
             >
@@ -101,13 +106,13 @@ export function SiteHeaderInner({
                   alt="Kaspars Groza — portfolio"
                   width={MOBILE_SUBPAGE_HEADER_W}
                   height={MOBILE_SUBPAGE_HEADER_H}
-                  className="h-auto w-full object-contain object-left"
+                  className="h-auto w-full max-lg:-mt-28 object-contain object-left"
                   sizes={`(max-width: ${SUBPAGE_HEADER_MOBILE_MAX_PX}px) 100vw, 400px`}
                   priority
                 />
               </Link>
             </div>
-            <div className="hidden min-[701px]:grid w-full grid-cols-[minmax(0,1fr)_auto] items-stretch gap-x-[clamp(1rem,calc(24*100vw/1920),1.5rem)]">
+            <div className="hidden lg:grid w-full grid-cols-[minmax(0,1fr)_auto] items-stretch gap-x-[clamp(1rem,calc(24*100vw/1920),1.5rem)]">
               <div className="min-w-0 self-start">
                 <HeaderBannerLogo locale={locale} />
               </div>
@@ -121,7 +126,7 @@ export function SiteHeaderInner({
           <div className="flex flex-wrap items-start justify-between gap-6">
             <LogoLockup />
             <div className="flex flex-col items-end gap-4">
-              <LanguageSwitch />
+              <LanguageSwitch className="hidden lg:flex" />
               <div className="flex w-full justify-center">
                 <SocialLinks />
               </div>
@@ -132,7 +137,7 @@ export function SiteHeaderInner({
           iconScale={isAbout ? "aboutBanner" : "header"}
           className={
             isAbout
-              ? "flex w-full max-[700px]:justify-center min-[701px]:justify-start"
+              ? "flex w-full max-lg:justify-center lg:justify-start"
               : undefined
           }
         />

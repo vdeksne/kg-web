@@ -30,7 +30,7 @@ export default async function AboutPage({
       <main
         className={cn(
           "mx-auto w-full max-w-[1920px] flex-1 pb-16 pt-6 sm:pt-8 lg:pt-2",
-          "max-[700px]:px-[22px] min-[701px]:px-[clamp(1.5rem,calc(100vw*202/1920),202px)]",
+          "max-lg:px-[22px] lg:px-[clamp(1.5rem,calc(100vw*202/1920),202px)]",
         )}
       >
         <div
