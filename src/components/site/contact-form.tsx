@@ -23,6 +23,11 @@ const CONTACT_ASIDE_LH_MAX = 24;
 const CONTACT_ASIDE_LH_SLOPE =
   (CONTACT_ASIDE_LH_MAX - CONTACT_ASIDE_LH_MIN) / 1600;
 
+const CONTACT_LABEL_FS_MIN = 12;
+const CONTACT_LABEL_FS_MAX = 15;
+const CONTACT_LABEL_FS_SLOPE =
+  (CONTACT_LABEL_FS_MAX - CONTACT_LABEL_FS_MIN) / 1600;
+
 /** Contact main heading — Figma max, fluid down to narrow viewports */
 const contactHeadingStyle: React.CSSProperties = {
   color: "#000",
@@ -46,15 +51,16 @@ const contactHeaderAsideStyle: React.CSSProperties = {
   textTransform: "uppercase",
 };
 
-/** Name / email / message labels */
+/** Name / email / message — small paragraph, light like header email / phone */
 const contactFieldLabelStyle: React.CSSProperties = {
-  color: "#000",
+  color: "var(--muted-foreground)",
   fontFamily:
     '"Gotham Light", Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif',
-  fontSize: "19.01px",
+  fontSize: `clamp(${CONTACT_LABEL_FS_MIN}px, calc(${CONTACT_LABEL_FS_MIN}px + (100vw - 320px) * ${CONTACT_LABEL_FS_SLOPE}), ${CONTACT_LABEL_FS_MAX}px)`,
   fontStyle: "normal",
-  fontWeight: 500,
-  lineHeight: "normal",
+  fontWeight: 300,
+  lineHeight: 1.5,
+  letterSpacing: "0.04em",
   textTransform: "uppercase",
 };
 
@@ -74,7 +80,32 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      setStatus(res.ok ? "sent" : "error");
+      const json = (await res.json().catch(() => null)) as {
+        ok?: boolean;
+        dev?: boolean;
+        mockReason?: string;
+        error?: string;
+        detail?: string;
+      } | null;
+
+      if (res.ok && json?.ok) {
+        if (json.dev && json.mockReason) {
+          console.warn(
+            "[contact] Email not delivered (dev/local). Resend error:",
+            json.mockReason,
+          );
+        }
+        setStatus("sent");
+        return;
+      }
+
+      if (!res.ok) {
+        console.error(
+          "[contact]",
+          json?.detail ?? json?.error ?? res.statusText,
+        );
+      }
+      setStatus("error");
     } catch {
       setStatus("error");
     }

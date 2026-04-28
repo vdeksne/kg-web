@@ -37,6 +37,15 @@ function MockAdminApi({ children }: { children: React.ReactNode }) {
       if (url.includes("/api/admin/logout") && init?.method === "POST") {
         return new Response(null, { status: 200 });
       }
+      if (
+        url.includes("/api/admin/contact-messages") &&
+        (!init?.method || init.method === "GET")
+      ) {
+        return new Response(
+          JSON.stringify({ persistenceConfigured: true, rows: [] }),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        );
+      }
       return orig(input, init);
     };
     return () => {

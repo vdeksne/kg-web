@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, LogOut } from "lucide-react";
+import { Check, ChevronDown, Copy, LogOut } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -23,7 +23,19 @@ const TABS = [
   { id: "about" as const, label: "About" },
   { id: "portfolio" as const, label: "Work" },
   { id: "contact" as const, label: "Contact" },
+  { id: "messages" as const, label: "Messages" },
 ];
+
+type AdminContactMessage = {
+  id: string;
+  created_at: string;
+  name: string;
+  email: string;
+  message: string;
+  email_sent: boolean;
+  dev_mock: boolean;
+  error_detail: string | null;
+};
 
 /** Same asset as site footer — combining macron in filename */
 const ADMIN_NEMIZ_SRC = "/icons/nemiz.svg";
@@ -140,6 +152,13 @@ export function AdminDashboard() {
   const [saveState, setSaveState] = useState<"idle" | "saving" | "ok" | "err">(
     "idle",
   );
+  const [messages, setMessages] = useState<AdminContactMessage[] | null>(null);
+  const [messagesNote, setMessagesNote] = useState<string | null>(null);
+  const [messagesLoading, setMessagesLoading] = useState(false);
+  const [copiedEmailMessageId, setCopiedEmailMessageId] = useState<
+    string | null
+  >(null);
+
   const load = useCallback(async () => {
     setLoadError(null);
     const res = await fetch("/api/admin/content", { credentials: "include" });
@@ -158,6 +177,43 @@ export function AdminDashboard() {
   useEffect(() => {
     void load();
   }, [load]);
+
+  const loadMessages = useCallback(async () => {
+    setMessagesLoading(true);
+    setMessagesNote(null);
+    try {
+      const res = await fetch("/api/admin/contact-messages", {
+        credentials: "include",
+      });
+      if (res.status === 401) {
+        router.push("/admin/login?next=/admin");
+        return;
+      }
+      if (!res.ok) {
+        const err = (await res.json()) as { error?: string };
+        setMessages([]);
+        setMessagesNote(err.error ?? "Could not load messages.");
+        return;
+      }
+      const data = (await res.json()) as {
+        persistenceConfigured?: boolean;
+        rows?: AdminContactMessage[];
+      };
+      setMessages(data.rows ?? []);
+      if (data.persistenceConfigured === false) {
+        setMessagesNote(
+          "Database logging is off: set SUPABASE_SERVICE_ROLE_KEY and run the contact_messages migration (see supabase/migrations/002_contact_messages.sql).",
+        );
+      }
+    } finally {
+      setMessagesLoading(false);
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (tab !== "messages") return;
+    void loadMessages();
+  }, [tab, loadMessages]);
 
   const uploadFile = async (file: File): Promise<string | null> => {
     const fd = new FormData();
@@ -263,16 +319,30 @@ export function AdminDashboard() {
           </p>
         </motion.div>
         <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
-          <motion.div whileTap={{ scale: 0.98 }}>
-            <Button
-              type="button"
-              onClick={() => void save()}
-              disabled={saveState === "saving"}
-              className="h-12 rounded-none bg-[var(--kg-accent)] px-14 text-sm font-semibold text-zinc-950 hover:brightness-95"
-            >
-              {saveState === "saving" ? "Saving…" : "Save changes"}
-            </Button>
-          </motion.div>
+          {tab !== "messages" ? (
+            <motion.div whileTap={{ scale: 0.98 }}>
+              <Button
+                type="button"
+                onClick={() => void save()}
+                disabled={saveState === "saving"}
+                className="h-12 rounded-none bg-[var(--kg-accent)] px-14 text-sm font-semibold text-zinc-950 hover:brightness-95"
+              >
+                {saveState === "saving" ? "Saving…" : "Save changes"}
+              </Button>
+            </motion.div>
+          ) : (
+            <motion.div whileTap={{ scale: 0.98 }}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => void loadMessages()}
+                disabled={messagesLoading}
+                className="h-12 rounded-none border-zinc-600 bg-zinc-950 px-8 text-sm font-medium text-zinc-200 hover:bg-zinc-900"
+              >
+                {messagesLoading ? "Refreshing…" : "Refresh"}
+              </Button>
+            </motion.div>
+          )}
         </div>
       </header>
 
@@ -1026,6 +1096,122 @@ export function AdminDashboard() {
                   )
                 }
               />
+            </div>
+          ) : null}
+
+          {tab === "messages" ? (
+            <div className="space-y-6">
+              {messagesNote ? (
+                <p className="rounded-md border border-amber-900/60 bg-amber-950/25 px-4 py-3 text-sm text-amber-200/90">
+                  {messagesNote}
+                </p>
+              ) : null}
+              {messagesLoading && messages === null ? (
+                <p className="text-sm text-zinc-500">Loading…</p>
+              ) : null}
+              {messages && messages.length === 0 && !messagesLoading ? (
+                <p className="text-sm text-zinc-500">
+                  No submissions yet. They appear here when visitors send the
+                  contact form (and Supabase logging is configured).
+                </p>
+              ) : null}
+              {messages && messages.length > 0 ? (
+                <ul className="space-y-4">
+                  {messages.map((m) => (
+                    <li
+                      key={m.id}
+                      className="rounded-lg border border-zinc-800 bg-zinc-900/35 p-4 sm:p-5"
+                    >
+                      <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-zinc-800/80 pb-3">
+                        <div>
+                          <p className="font-medium text-white">{m.name}</p>
+                          <div className="flex items-center gap-0.5">
+                            <a
+                              href={`mailto:${m.email}`}
+                              className="font-mono text-xs text-[var(--kg-accent)] underline-offset-2 hover:underline"
+                            >
+                              {m.email}
+                            </a>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              className="size-7 shrink-0 rounded-none text-zinc-500 hover:bg-zinc-800/80 hover:text-zinc-200"
+                              aria-label={
+                                copiedEmailMessageId === m.id
+                                  ? "Copied"
+                                  : "Copy email address"
+                              }
+                              title="Copy email"
+                              onClick={() => {
+                                void navigator.clipboard
+                                  .writeText(m.email)
+                                  .then(() => {
+                                    setCopiedEmailMessageId(m.id);
+                                    window.setTimeout(
+                                      () => setCopiedEmailMessageId(null),
+                                      1500,
+                                    );
+                                  })
+                                  .catch(() => {
+                                    /* clipboard denied */
+                                  });
+                              }}
+                            >
+                              {copiedEmailMessageId === m.id ? (
+                                <Check
+                                  className="size-3.5 text-emerald-400"
+                                  strokeWidth={2}
+                                  aria-hidden
+                                />
+                              ) : (
+                                <Copy
+                                  className="size-3.5"
+                                  strokeWidth={2}
+                                  aria-hidden
+                                />
+                              )}
+                            </Button>
+                          </div>
+                        </div>
+                        <time
+                          className="text-xs text-zinc-500 tabular-nums"
+                          dateTime={m.created_at}
+                        >
+                          {new Date(m.created_at).toLocaleString(undefined, {
+                            dateStyle: "medium",
+                            timeStyle: "short",
+                          })}
+                        </time>
+                      </div>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {m.email_sent ? (
+                          <span className="rounded-none border border-emerald-900/70 bg-emerald-950/40 px-2 py-0.5 text-[0.65rem] font-semibold tracking-wide text-emerald-300 uppercase">
+                            Email sent
+                          </span>
+                        ) : (
+                          <span className="rounded-none border border-zinc-700 bg-zinc-950/60 px-2 py-0.5 text-[0.65rem] font-semibold tracking-wide text-zinc-400 uppercase">
+                            Email not sent
+                          </span>
+                        )}
+                        {m.dev_mock ? (
+                          <span className="rounded-none border border-amber-900/70 bg-amber-950/35 px-2 py-0.5 text-[0.65rem] font-semibold tracking-wide text-amber-200/90 uppercase">
+                            Dev / mock
+                          </span>
+                        ) : null}
+                      </div>
+                      {m.error_detail ? (
+                        <p className="mt-2 font-mono text-xs text-amber-200/80">
+                          {m.error_detail}
+                        </p>
+                      ) : null}
+                      <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-zinc-300">
+                        {m.message}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </div>
           ) : null}
         </motion.div>

@@ -1,9 +1,28 @@
 import { NextResponse } from "next/server";
+import { insertContactMessageRecord } from "@/lib/contact/contact-messages-db";
 import {
   contactFormPayloadSchema,
   type ContactFormPayload,
 } from "@/lib/contact/contact-payload";
 import { sendContactEmail } from "@/lib/contact/send-contact-email";
+
+async function recordSubmission(
+  body: ContactFormPayload,
+  meta: {
+    emailSent: boolean;
+    devMock: boolean;
+    errorDetail: string | null;
+  },
+): Promise<void> {
+  await insertContactMessageRecord({
+    name: body.name,
+    email: body.email,
+    message: body.message,
+    emailSent: meta.emailSent,
+    devMock: meta.devMock,
+    errorDetail: meta.errorDetail,
+  });
+}
 
 function isConfigured(): boolean {
   return Boolean(
@@ -17,8 +36,10 @@ function isLocalRequest(req: Request): boolean {
   return (
     host.startsWith("localhost:") ||
     host.startsWith("127.0.0.1:") ||
+    host.startsWith("[::1]:") ||
     host === "localhost" ||
     host === "127.0.0.1" ||
+    host === "[::1]" ||
     host.endsWith(".local")
   );
 }
@@ -63,12 +84,44 @@ export async function POST(req: Request) {
   } catch (err) {
     const detail = err instanceof Error ? err.message : String(err);
     console.error("[contact] Send failed:", detail);
-    // Resend misconfiguration (domain, from address, API key) — check Vercel env and Resend dashboard.
+
+    // Local / dev: don’t block the form when Resend is misconfigured (bad key, unverified domain).
+    if (allowMockWithoutResend(req)) {
+      console.warn(
+        "[contact] Local/dev: returning mock success. Fix Resend (API key, CONTACT_FROM_EMAIL domain, CONTACT_TO_EMAIL). Error was:",
+        detail,
+      );
+      await recordSubmission(body, {
+        emailSent: false,
+        devMock: true,
+        errorDetail: detail,
+      });
+      return NextResponse.json({
+        ok: true,
+        dev: true,
+        mockReason: detail,
+      });
+    }
+
+    await recordSubmission(body, {
+      emailSent: false,
+      devMock: false,
+      errorDetail: detail,
+    });
+    const exposeDetail = process.env.NODE_ENV === "development";
     return NextResponse.json(
-      { error: "Could not send your message. Please try again later." },
+      {
+        error: "Could not send your message. Please try again later.",
+        ...(exposeDetail ? { detail } : {}),
+      },
       { status: 503 },
     );
   }
 
+  await recordSubmission(body, {
+    emailSent: true,
+    devMock: false,
+    errorDetail: null,
+  });
   return NextResponse.json({ ok: true });
 }

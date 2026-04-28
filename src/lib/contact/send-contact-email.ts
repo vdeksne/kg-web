@@ -4,7 +4,54 @@ const DEFAULT_TO = "info@kasparsgroza.lv";
 
 /** Env files sometimes wrap or break lines; Resend rejects addr-spec with CR/LF. */
 function normalizeMailHeaderValue(value: string): string {
-  return value.replace(/[\r\n]+/g, "").trim();
+  return value
+    .replace(/[\r\n]+/g, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+/** Domains Resend will not send *from* without verifying that domain in Resend (not your inbox). */
+const BLOCKED_FROM_DOMAINS = new Set(
+  [
+    "gmail.com",
+    "googlemail.com",
+    "yahoo.com",
+    "yahoo.co.uk",
+    "hotmail.com",
+    "outlook.com",
+    "live.com",
+    "msn.com",
+    "icloud.com",
+    "me.com",
+    "mac.com",
+    "aol.com",
+    "proton.me",
+    "protonmail.com",
+  ].map((d) => d.toLowerCase()),
+);
+
+function domainFromFromHeader(from: string): string | null {
+  const trimmed = from.trim();
+  const angle = trimmed.match(/<([^>]+)>/);
+  const addr = (angle ? angle[1] : trimmed).trim();
+  const at = addr.lastIndexOf("@");
+  if (at < 1 || at === addr.length - 1) return null;
+  return addr.slice(at + 1).toLowerCase();
+}
+
+function assertResendCompatibleFrom(from: string): void {
+  const domain = domainFromFromHeader(from);
+  if (!domain) {
+    throw new Error(
+      'CONTACT_FROM_EMAIL must be a valid address (e.g. onboarding@resend.dev or "Site <hello@yourdomain.com>").',
+    );
+  }
+  if (domain.endsWith("resend.dev")) return;
+  if (BLOCKED_FROM_DOMAINS.has(domain)) {
+    throw new Error(
+      `CONTACT_FROM_EMAIL cannot use @${domain} as the sender. Resend only sends from domains you verify at resend.com, or use onboarding@resend.dev for testing. Reply-To will still be the visitor’s email.`,
+    );
+  }
 }
 
 function escapeHtml(text: string): string {
@@ -49,6 +96,8 @@ export async function sendContactEmail(data: {
   if (!from) {
     throw new Error("CONTACT_FROM_EMAIL is not configured");
   }
+
+  assertResendCompatibleFrom(from);
 
   const rawTo = process.env.CONTACT_TO_EMAIL;
   const to =
