@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import type { Messages } from "@/i18n/messages";
 
 /** 320px → 1920px viewport — matches site fluid type ramps */
@@ -23,11 +22,6 @@ const CONTACT_ASIDE_LH_MAX = 24;
 const CONTACT_ASIDE_LH_SLOPE =
   (CONTACT_ASIDE_LH_MAX - CONTACT_ASIDE_LH_MIN) / 1600;
 
-const CONTACT_LABEL_FS_MIN = 12;
-const CONTACT_LABEL_FS_MAX = 15;
-const CONTACT_LABEL_FS_SLOPE =
-  (CONTACT_LABEL_FS_MAX - CONTACT_LABEL_FS_MIN) / 1600;
-
 /** Contact main heading — Figma max, fluid down to narrow viewports */
 const contactHeadingStyle: React.CSSProperties = {
   color: "#000",
@@ -39,7 +33,7 @@ const contactHeadingStyle: React.CSSProperties = {
   textTransform: "uppercase",
 };
 
-/** Email + phone beside the main heading — Figma max, fluid */
+/** Email + phone in header, and all form field labels (name, email, message) — same ramp */
 const contactHeaderAsideStyle: React.CSSProperties = {
   color: "#000",
   fontFamily: 'Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif',
@@ -48,19 +42,6 @@ const contactHeaderAsideStyle: React.CSSProperties = {
   fontWeight: 300,
   lineHeight: `clamp(${CONTACT_ASIDE_LH_MIN}px, calc(${CONTACT_ASIDE_LH_MIN}px + (100vw - 320px) * ${CONTACT_ASIDE_LH_SLOPE}), ${CONTACT_ASIDE_LH_MAX}px)`,
   letterSpacing: "0.05em",
-  textTransform: "uppercase",
-};
-
-/** Name / email / message — small paragraph, light like header email / phone */
-const contactFieldLabelStyle: React.CSSProperties = {
-  color: "var(--muted-foreground)",
-  fontFamily:
-    '"Gotham Light", Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif',
-  fontSize: `clamp(${CONTACT_LABEL_FS_MIN}px, calc(${CONTACT_LABEL_FS_MIN}px + (100vw - 320px) * ${CONTACT_LABEL_FS_SLOPE}), ${CONTACT_LABEL_FS_MAX}px)`,
-  fontStyle: "normal",
-  fontWeight: 300,
-  lineHeight: 1.5,
-  letterSpacing: "0.04em",
   textTransform: "uppercase",
 };
 
@@ -151,9 +132,13 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
 
       <div className="grid gap-10 md:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="name" className="p-0" style={contactFieldLabelStyle}>
+          <label
+            htmlFor="name"
+            className="block select-none"
+            style={contactHeaderAsideStyle}
+          >
             {copy.nameLabel}
-          </Label>
+          </label>
           <Input
             id="name"
             name="name"
@@ -162,9 +147,13 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="email" className="p-0" style={contactFieldLabelStyle}>
+          <label
+            htmlFor="email"
+            className="block select-none"
+            style={contactHeaderAsideStyle}
+          >
             {copy.emailLabel}
-          </Label>
+          </label>
           <Input
             id="email"
             name="email"
@@ -176,9 +165,13 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="message" className="p-0" style={contactFieldLabelStyle}>
+        <label
+          htmlFor="message"
+          className="block select-none"
+          style={contactHeaderAsideStyle}
+        >
           {copy.messageLabel}
-        </Label>
+        </label>
         <textarea
           id="message"
           name="message"

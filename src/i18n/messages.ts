@@ -50,7 +50,7 @@ const messagesLv: Messages = {
     titleDefault: "Kaspars Groza — Portfolio",
     titleTemplate: "%s — Kaspars Groza",
     description:
-      "Grafiskā dizaina portfolio — zīmoli, identitātes un vizuālā komunikācija.",
+      "Grafiskā dizaina portfolio - zīmoli, identitātes un vizuālā komunikācija.",
   },
   nav: {
     about: "Par mani",
@@ -63,7 +63,7 @@ const messagesLv: Messages = {
     },
   },
   home: {
-    heroImageAlt: "Kaspars Groza — portfolio",
+    heroImageAlt: "Kaspars Groza - portfolio",
     sideTextAlt: "Kopā varam radīt kaut ko īpašu",
   },
   about: {
@@ -83,7 +83,7 @@ const messagesLv: Messages = {
     emailLabel: "E-pasts*",
     messageLabel: "Uzdod savu jautājumu",
     submit: "Nosūtīt",
-    sent: "Paldies — nosūtīts.",
+    sent: "Paldies - nosūtīts.",
     error: "Neizdevās nosūtīt. Mēģini vēlreiz.",
   },
   footer: {
@@ -93,10 +93,10 @@ const messagesLv: Messages = {
 
 const messagesEn: Messages = {
   meta: {
-    titleDefault: "Kaspars Groza — Portfolio",
-    titleTemplate: "%s — Kaspars Groza",
+    titleDefault: "Kaspars Groza - Portfolio",
+    titleTemplate: "%s - Kaspars Groza",
     description:
-      "Graphic design portfolio — identities, branding, and visual communication.",
+      "Graphic design portfolio - identities, branding, and visual communication.",
   },
   nav: {
     about: "About",
