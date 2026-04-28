@@ -32,7 +32,11 @@ export const metadata: Metadata = {
   },
   description: siteDescription,
   icons: {
-    icon: [{ url: "/images/kg.svg", type: "image/svg+xml" }],
+    icon: [
+      { url: "/api/brand-icon", sizes: "512x512", type: "image/png" },
+      { url: "/images/kg.svg", type: "image/svg+xml" },
+    ],
+    apple: [{ url: "/api/brand-icon", sizes: "512x512", type: "image/png" }],
   },
   openGraph: {
     title: siteTitle,
@@ -41,11 +45,20 @@ export const metadata: Metadata = {
     siteName: "Kaspars Groza",
     locale: "lv_LV",
     type: "website",
+    images: [
+      {
+        url: "/api/og-image",
+        width: 1200,
+        height: 630,
+        alt: siteTitle,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: siteTitle,
     description: siteDescription,
+    images: ["/api/og-image"],
   },
 };
 

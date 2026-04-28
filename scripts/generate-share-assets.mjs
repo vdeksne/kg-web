@@ -1,6 +1,6 @@
 /**
- * Optional: rasterize public/images/kg.svg → static PNGs (e.g. for email or CDN).
- * Social previews use dynamic src/app/opengraph-image.tsx at runtime.
+ * Optional: rasterize public/images/kg.svg → public/images/opengraph.png for static hosting.
+ * Deployed site uses GET /api/og-image and /api/brand-icon (sharp) for OG + PNG favicon.
  * Run: npm install && npm run generate:share
  */
 import { readFileSync } from "fs";
