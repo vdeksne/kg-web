@@ -31,8 +31,7 @@ export default async function PortfolioCategoryPage({
   const items = portfolio.items.filter((item) =>
     item.categories.includes(categoryParam),
   );
-  const desktopColumnCount =
-    items.length <= 1 ? 1 : items.length === 2 ? 2 : 3;
+  const desktopColumnCount = items.length <= 1 ? 1 : items.length === 2 ? 2 : 3;
   const desktopColumns = distributePortfolioItemsToColumns(
     items,
     desktopColumnCount,

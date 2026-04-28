@@ -2,6 +2,14 @@ import { Resend } from "resend";
 
 const DEFAULT_TO = "info@kasparsgroza.lv";
 
+/** Thrown for server/env misconfiguration — safe to show the message to operators debugging the deploy. */
+export class ContactEmailConfigError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ContactEmailConfigError";
+  }
+}
+
 /** Env files sometimes wrap or break lines; Resend rejects addr-spec with CR/LF. */
 function normalizeMailHeaderValue(value: string): string {
   return value
@@ -42,7 +50,7 @@ function domainFromFromHeader(from: string): string | null {
 function assertResendCompatibleFrom(from: string): void {
   const domain = domainFromFromHeader(from);
   if (!domain) {
-    throw new Error(
+    throw new ContactEmailConfigError(
       'CONTACT_FROM_EMAIL must be a valid address (e.g. onboarding@resend.dev or "Site <hello@yourdomain.com>").',
     );
   }
@@ -91,22 +99,30 @@ export async function sendContactEmail(data: {
     : "";
 
   if (!apiKey) {
-    throw new Error("RESEND_API_KEY is not configured");
+    throw new ContactEmailConfigError("RESEND_API_KEY is not configured");
   }
   if (!from) {
-    throw new Error("CONTACT_FROM_EMAIL is not configured");
+    throw new ContactEmailConfigError("CONTACT_FROM_EMAIL is not configured");
   }
 
   assertResendCompatibleFrom(from);
 
+  const fromDomain = domainFromFromHeader(from);
   const rawTo = process.env.CONTACT_TO_EMAIL;
-  const to =
-    rawTo != null && rawTo.trim() !== ""
-      ? rawTo
-          .split(",")
-          .map((s) => normalizeMailHeaderValue(s))
-          .filter(Boolean)
-      : [DEFAULT_TO];
+  const hasExplicitTo = rawTo != null && rawTo.trim() !== "";
+
+  if (fromDomain?.endsWith("resend.dev") && !hasExplicitTo) {
+    throw new ContactEmailConfigError(
+      "CONTACT_TO_EMAIL is required when CONTACT_FROM_EMAIL uses @resend.dev. Set it to the inbox you used to sign up at resend.com, or verify your domain in Resend and send from an address on that domain (then you can use the default recipient).",
+    );
+  }
+
+  const to = hasExplicitTo
+    ? rawTo
+        .split(",")
+        .map((s) => normalizeMailHeaderValue(s))
+        .filter(Boolean)
+    : [DEFAULT_TO];
 
   const replyTo = normalizeMailHeaderValue(data.email);
 
@@ -114,7 +130,7 @@ export async function sendContactEmail(data: {
   const { error } = await resend.emails.send({
     from,
     to,
-    subject: `Portfolio contact — ${data.name}`,
+    subject: `Portfolio | Contact | ${data.name}`,
     replyTo,
     html: buildHtml(data),
     text: `Name: ${data.name}\nEmail: ${data.email}\n\n${data.message}`,

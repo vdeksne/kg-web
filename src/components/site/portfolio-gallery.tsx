@@ -32,7 +32,9 @@ const GalleryContext = createContext<GalleryCtx | null>(null);
 function useGallery() {
   const ctx = useContext(GalleryContext);
   if (!ctx) {
-    throw new Error("PortfolioGalleryTile must be inside PortfolioGalleryProvider");
+    throw new Error(
+      "PortfolioGalleryTile must be inside PortfolioGalleryProvider",
+    );
   }
   return ctx;
 }
@@ -55,6 +57,7 @@ function PortfolioLightbox({
   const item = items[index]!;
   const descriptionText = item.description[locale]?.trim() ?? "";
   const closeRef = useRef<HTMLButtonElement>(null);
+  const swipeStartRef = useRef<{ x: number; y: number } | null>(null);
   const canNavigate = items.length > 1;
 
   useEffect(() => {
@@ -83,15 +86,39 @@ function PortfolioLightbox({
   const intrinsicW = Math.round(frame.width);
   const intrinsicH = Math.round(frame.height);
 
+  const onSwipePointerDown = (e: React.PointerEvent) => {
+    if (!canNavigate) return;
+    swipeStartRef.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const endSwipe = (e: React.PointerEvent) => {
+    if (!canNavigate || !swipeStartRef.current) return;
+    const start = swipeStartRef.current;
+    swipeStartRef.current = null;
+    const dx = e.clientX - start.x;
+    const dy = e.clientY - start.y;
+    const minDistance = 48;
+    if (Math.abs(dx) < minDistance) return;
+    if (Math.abs(dy) > Math.abs(dx) * 1.15) return;
+    if (dx > 0) onPrev();
+    else onNext();
+  };
+
+  const onSwipePointerUp = (e: React.PointerEvent) => {
+    endSwipe(e);
+  };
+
+  const onSwipePointerCancel = () => {
+    swipeStartRef.current = null;
+  };
+
   return (
     <div
       className="fixed inset-0 z-500 flex flex-col"
       role="dialog"
       aria-modal="true"
       aria-labelledby="portfolio-lightbox-title"
-      aria-describedby={
-        descriptionText ? "portfolio-lightbox-desc" : undefined
-      }
+      aria-describedby={descriptionText ? "portfolio-lightbox-desc" : undefined}
     >
       <button
         type="button"
@@ -114,7 +141,12 @@ function PortfolioLightbox({
 
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-sm bg-white/5 ring-1 ring-white/10">
           <div className="relative isolate flex min-h-0 flex-1">
-            <div className="flex min-h-0 flex-1 items-center justify-center overflow-y-auto overscroll-contain p-3 pr-14 pl-14 sm:p-6 sm:pr-16 sm:pl-16 md:p-10 md:pr-20 md:pl-20">
+            <div
+              className="flex min-h-0 flex-1 touch-pan-y items-center justify-center overflow-y-auto overscroll-contain p-3 pr-14 pl-14 sm:p-6 sm:pr-16 sm:pl-16 md:p-10 md:pr-20 md:pl-20"
+              onPointerDown={onSwipePointerDown}
+              onPointerUp={onSwipePointerUp}
+              onPointerCancel={onSwipePointerCancel}
+            >
               <Image
                 key={item.id}
                 src={item.src}
@@ -239,19 +271,19 @@ export function PortfolioGalleryProvider({
   return (
     <GalleryContext.Provider value={{ open }}>
       {children}
-      {mounted && activeIndex !== null ? (
-        createPortal(
-          <PortfolioLightbox
-            items={items}
-            index={activeIndex}
-            locale={locale}
-            onClose={close}
-            onPrev={goPrev}
-            onNext={goNext}
-          />,
-          document.body,
-        )
-      ) : null}
+      {mounted && activeIndex !== null
+        ? createPortal(
+            <PortfolioLightbox
+              items={items}
+              index={activeIndex}
+              locale={locale}
+              onClose={close}
+              onPrev={goPrev}
+              onNext={goNext}
+            />,
+            document.body,
+          )
+        : null}
     </GalleryContext.Provider>
   );
 }

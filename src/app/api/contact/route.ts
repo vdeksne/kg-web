@@ -4,7 +4,13 @@ import {
   contactFormPayloadSchema,
   type ContactFormPayload,
 } from "@/lib/contact/contact-payload";
-import { sendContactEmail } from "@/lib/contact/send-contact-email";
+import {
+  ContactEmailConfigError,
+  sendContactEmail,
+} from "@/lib/contact/send-contact-email";
+
+const RESEND_SETUP_HINT =
+  "If you use onboarding@resend.dev, Resend only delivers to your Resend account email until you verify a sending domain. Set CONTACT_TO_EMAIL accordingly on Vercel, or verify the domain and use CONTACT_FROM_EMAIL on that domain.";
 
 async function recordSubmission(
   body: ContactFormPayload,
@@ -83,6 +89,7 @@ export async function POST(req: Request) {
     await sendContactEmail(body);
   } catch (err) {
     const detail = err instanceof Error ? err.message : String(err);
+    const isConfigError = err instanceof ContactEmailConfigError;
     console.error("[contact] Send failed:", detail);
 
     // Local / dev: don’t block the form when Resend is misconfigured (bad key, unverified domain).
@@ -113,8 +120,11 @@ export async function POST(req: Request) {
       process.env.CONTACT_PUBLIC_ERROR_DETAIL === "1";
     return NextResponse.json(
       {
-        error: "Could not send your message. Please try again later.",
-        ...(exposeDetail ? { detail } : {}),
+        error: isConfigError
+          ? detail
+          : "Could not send your message. Please try again later.",
+        ...(!isConfigError && exposeDetail ? { detail } : {}),
+        ...(!isConfigError ? { hint: RESEND_SETUP_HINT } : {}),
       },
       { status: 503 },
     );

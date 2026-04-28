@@ -49,10 +49,15 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle",
   );
+  const [errorFeedback, setErrorFeedback] = useState<{
+    message: string;
+    hint?: string;
+  } | null>(null);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("sending");
+    setErrorFeedback(null);
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries());
     try {
@@ -67,6 +72,7 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
         mockReason?: string;
         error?: string;
         detail?: string;
+        hint?: string;
       } | null;
 
       if (res.ok && json?.ok) {
@@ -81,10 +87,19 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
       }
 
       if (!res.ok) {
+        const serverMsg =
+          typeof json?.error === "string" && json.error.trim() !== ""
+            ? json.error
+            : copy.error;
+        const hint =
+          typeof json?.hint === "string" && json.hint.trim() !== ""
+            ? json.hint
+            : undefined;
         console.error(
           "[contact]",
           json?.detail ?? json?.error ?? res.statusText,
         );
+        setErrorFeedback({ message: serverMsg, hint });
       }
       setStatus("error");
     } catch {
@@ -185,7 +200,16 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
           <p className="text-muted-foreground text-sm">{copy.sent}</p>
         ) : null}
         {status === "error" ? (
-          <p className="text-destructive text-sm">{copy.error}</p>
+          <div className="max-w-prose space-y-2">
+            <p className="text-destructive text-sm">
+              {errorFeedback?.message ?? copy.error}
+            </p>
+            {errorFeedback?.hint ? (
+              <p className="text-muted-foreground text-xs leading-relaxed">
+                {errorFeedback.hint}
+              </p>
+            ) : null}
+          </div>
         ) : null}
         <div className="flex w-full max-w-full flex-wrap items-center justify-between gap-4 sm:gap-8">
           <Image
