@@ -108,7 +108,9 @@ export async function POST(req: Request) {
       devMock: false,
       errorDetail: detail,
     });
-    const exposeDetail = process.env.NODE_ENV === "development";
+    const exposeDetail =
+      process.env.NODE_ENV === "development" ||
+      process.env.CONTACT_PUBLIC_ERROR_DETAIL === "1";
     return NextResponse.json(
       {
         error: "Could not send your message. Please try again later.",

@@ -17,6 +17,7 @@ function supabaseImagePattern():
 }
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ["sharp"],
   turbopack: {
     root: process.cwd(),
   },
