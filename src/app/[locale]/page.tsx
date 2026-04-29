@@ -1,4 +1,4 @@
-import { HomeHero } from "@/components/site/home-hero";
+import { HomeHero } from "@/components/site/HomeHero";
 import { defaultLocale, isLocale } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
 

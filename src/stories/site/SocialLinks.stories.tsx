@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { SocialLinks } from "@/components/site/social-links";
+import { SocialLinks } from "@/components/site/SocialLinks";
 
 const meta = {
   title: "Site/SocialLinks",

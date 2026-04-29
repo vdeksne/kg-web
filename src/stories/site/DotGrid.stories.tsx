@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { DotGrid } from "@/components/site/dot-grid";
+import { DotGrid } from "@/components/site/DotGrid";
 
 const meta = {
   title: "Site/DotGrid",

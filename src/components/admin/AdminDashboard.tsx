@@ -5,9 +5,9 @@ import { Check, ChevronDown, Copy, LogOut } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Label } from "@/components/ui/Label";
 import { normalizePortfolioCategorySlugInput } from "@/lib/portfolio-categories";
 import {
   GALLERY_TILE_PRESETS,

@@ -2,9 +2,9 @@ import { notFound } from "next/navigation";
 import {
   PortfolioGalleryProvider,
   PortfolioGalleryTile,
-} from "@/components/site/portfolio-gallery";
-import { SiteFooter } from "@/components/site/site-footer";
-import { SiteHeaderInner } from "@/components/site/site-header-inner";
+} from "@/components/site/PortfolioGallery";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { SiteHeaderInner } from "@/components/site/SiteHeaderInner";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
 import { LOGO_GALLERY_TOTAL } from "@/data/portfolio";
 import { distributePortfolioItemsToColumns } from "@/lib/portfolio-gallery-columns";

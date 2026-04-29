@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { useEffect } from "react";
-import { AdminDashboard } from "@/components/admin/admin-dashboard";
+import { AdminDashboard } from "@/components/admin/AdminDashboard";
 import { DEFAULT_SITE_CONTENT } from "@/lib/site-content/defaults";
 
 function MockAdminApi({ children }: { children: React.ReactNode }) {

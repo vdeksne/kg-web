@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { GoldStrike } from "@/components/site/gold-strike";
+import { GoldStrike } from "@/components/site/GoldStrike";
 
 const meta = {
   title: "Site/GoldStrike",

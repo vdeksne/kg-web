@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { LanguageEngIcon, LanguageLvIcon } from "@/components/site/language-icons";
+import { LanguageEngIcon, LanguageLvIcon } from "@/components/site/LanguageIcons";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
 import {
   fluidAboutDesktopLangGap,

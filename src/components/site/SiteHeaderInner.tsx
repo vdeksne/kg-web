@@ -2,11 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Locale } from "@/i18n/config";
 import { defaultLocale } from "@/i18n/config";
-import { HeaderBannerLogo } from "@/components/site/header-banner-logo";
-import { LanguageSwitch } from "@/components/site/language-switch";
-import { LogoLockup } from "@/components/site/logo-lockup";
-import { SiteNav } from "@/components/site/site-nav";
-import { SocialLinks } from "@/components/site/social-links";
+import { HeaderBannerLogo } from "@/components/site/HeaderBannerLogo";
+import { LanguageSwitch } from "@/components/site/LanguageSwitch";
+import { LogoLockup } from "@/components/site/LogoLockup";
+import { SiteNav } from "@/components/site/SiteNav";
+import { SocialLinks } from "@/components/site/SocialLinks";
 import { withLocale } from "@/lib/i18n-path";
 import { cn } from "@/lib/utils";
 

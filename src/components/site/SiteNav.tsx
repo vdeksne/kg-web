@@ -5,8 +5,8 @@ import { useParams, usePathname } from "next/navigation";
 import {
   MainNavAboutIcon,
   MainNavContactIcon,
-} from "@/components/site/menu-nav-icons";
-import { NavPortfolioItem } from "@/components/site/nav-portfolio-item";
+} from "@/components/site/MenuNavIcons";
+import { NavPortfolioItem } from "@/components/site/NavPortfolioItem";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
 import { messages } from "@/i18n/messages";
 import {

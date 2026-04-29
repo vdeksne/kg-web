@@ -1,4 +1,4 @@
-import { KgLogoLink } from "@/components/site/kg-logo-link";
+import { KgLogoLink } from "@/components/site/KgLogoLink";
 
 export function LogoLockup({ className }: { className?: string }) {
   return <KgLogoLink className={className} />;

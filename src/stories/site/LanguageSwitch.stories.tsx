@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { LanguageSwitch } from "@/components/site/language-switch";
+import { LanguageSwitch } from "@/components/site/LanguageSwitch";
 
 const meta = {
   title: "Site/LanguageSwitch",

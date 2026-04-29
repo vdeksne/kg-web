@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { KgLogo } from "@/components/site/kg-logo";
+import { KgLogo } from "@/components/site/KgLogo";
 
 const meta = {
   title: "Site/KgLogo",

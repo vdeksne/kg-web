@@ -6,8 +6,8 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { messages } from "@/i18n/messages";
 import { withLocale } from "@/lib/i18n-path";
-import { MainNavPortfolioIcon } from "@/components/site/menu-nav-icons";
-import { usePortfolioNavCategories } from "@/components/site/portfolio-nav-provider";
+import { MainNavPortfolioIcon } from "@/components/site/MenuNavIcons";
+import { usePortfolioNavCategories } from "@/components/site/PortfolioNavProvider";
 import { fluidDropdownText } from "@/lib/fluid-type";
 import { cn } from "@/lib/utils";
 
@@ -68,6 +68,8 @@ export function NavPortfolioItem({
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLLIElement>(null);
   const menuId = useId();
+  const openRef = useRef(open);
+  openRef.current = open;
 
   useEffect(() => {
     setOpen(false);
@@ -80,17 +82,16 @@ export function NavPortfolioItem({
     const sync = () => setIsMobileRowNav(mq.matches);
     sync();
     mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
-
-  useEffect(() => {
-    if (!open) return;
-    const onDoc = (e: MouseEvent) => {
+    function onDoc(e: MouseEvent) {
+      if (!openRef.current) return;
       if (!wrapRef.current?.contains(e.target as Node)) setOpen(false);
-    };
+    }
     document.addEventListener("mousedown", onDoc);
-    return () => document.removeEventListener("mousedown", onDoc);
-  }, [open]);
+    return () => {
+      mq.removeEventListener("change", sync);
+      document.removeEventListener("mousedown", onDoc);
+    };
+  }, []);
 
   const close = useCallback(() => setOpen(false), []);
 

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { SiteNav } from "@/components/site/site-nav";
+import { SiteNav } from "@/components/site/SiteNav";
 
 const meta = {
   title: "Site/SiteNav",

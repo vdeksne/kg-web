@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { NavPortfolioItem } from "@/components/site/nav-portfolio-item";
-import { SocialLinks } from "@/components/site/social-links";
+import { NavPortfolioItem } from "@/components/site/NavPortfolioItem";
+import { SocialLinks } from "@/components/site/SocialLinks";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
 import { messages } from "@/i18n/messages";
 import { withLocale } from "@/lib/i18n-path";

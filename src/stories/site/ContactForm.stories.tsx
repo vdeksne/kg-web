@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { ContactForm } from "@/components/site/contact-form";
+import { ContactForm } from "@/components/site/ContactForm";
 import { getMessages } from "@/i18n/messages";
 
 const meta = {

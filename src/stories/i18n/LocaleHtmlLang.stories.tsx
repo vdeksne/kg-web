@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { LocaleHtmlLang } from "@/components/i18n/locale-html-lang";
+import { LocaleHtmlLang } from "@/components/i18n/LocaleHtmlLang";
 
 const meta = {
   title: "i18n/LocaleHtmlLang",

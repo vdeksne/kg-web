@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { LocaleHtmlLang } from "@/components/i18n/locale-html-lang";
-import { PortfolioNavProvider } from "@/components/site/portfolio-nav-provider";
+import { LocaleHtmlLang } from "@/components/i18n/LocaleHtmlLang";
+import { PortfolioNavProvider } from "@/components/site/PortfolioNavProvider";
 import { defaultLocale, isLocale, locales } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
 import { getSiteContent } from "@/lib/site-content/store";

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
-import { KgLogo } from "@/components/site/kg-logo";
+import { KgLogo } from "@/components/site/KgLogo";
 import { withLocale } from "@/lib/i18n-path";
 
 export function KgLogoLink({

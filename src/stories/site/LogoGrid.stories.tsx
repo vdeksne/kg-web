@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { LogoGrid } from "@/components/site/logo-grid";
+import { LogoGrid } from "@/components/site/LogoGrid";
 
 const meta = {
   title: "Site/LogoGrid",

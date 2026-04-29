@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { SiteHeaderInner } from "@/components/site/site-header-inner";
+import { SiteHeaderInner } from "@/components/site/SiteHeaderInner";
 
 const meta = {
   title: "Site/SiteHeaderInner",

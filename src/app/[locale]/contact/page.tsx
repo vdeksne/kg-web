@@ -1,6 +1,6 @@
-import { ContactForm } from "@/components/site/contact-form";
-import { SiteFooter } from "@/components/site/site-footer";
-import { SiteHeaderInner } from "@/components/site/site-header-inner";
+import { ContactForm } from "@/components/site/ContactForm";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { SiteHeaderInner } from "@/components/site/SiteHeaderInner";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
 import { contactFormCopy } from "@/lib/site-content/selectors";
 import { getSiteContent } from "@/lib/site-content/store";

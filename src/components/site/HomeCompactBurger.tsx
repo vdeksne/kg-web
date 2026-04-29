@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { SiteNav } from "@/components/site/site-nav";
+import { SiteNav } from "@/components/site/SiteNav";
 import { HOME_WIDE_MIN_PX } from "@/lib/site-breakpoints";
 import { cn } from "@/lib/utils";
 
@@ -22,16 +22,14 @@ export function HomeCompactBurger() {
       if (mq.matches) setOpen(false);
     };
     mq.addEventListener("change", onMq);
-    return () => mq.removeEventListener("change", onMq);
-  }, []);
-
-  useEffect(() => {
-    if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    if (open) document.addEventListener("keydown", onKey);
+    return () => {
+      mq.removeEventListener("change", onMq);
+      document.removeEventListener("keydown", onKey);
+    };
   }, [open]);
 
   return (

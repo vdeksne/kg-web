@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { SiteFooter } from "@/components/site/site-footer";
-import { SiteHeaderInner } from "@/components/site/site-header-inner";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { SiteHeaderInner } from "@/components/site/SiteHeaderInner";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
 import { fluidAboutBody, fluidAboutTitle } from "@/lib/fluid-type";
 import { getSiteContent } from "@/lib/site-content/store";

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { HomeHero } from "@/components/site/home-hero";
+import { HomeHero } from "@/components/site/HomeHero";
 import { getMessages } from "@/i18n/messages";
 
 const meta = {

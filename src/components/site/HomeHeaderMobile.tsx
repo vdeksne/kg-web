@@ -1,7 +1,7 @@
 "use client";
 
-import { HomeCompactBurger } from "@/components/site/home-compact-burger";
-import { LanguageSwitch } from "@/components/site/language-switch";
+import { HomeCompactBurger } from "@/components/site/HomeCompactBurger";
+import { LanguageSwitch } from "@/components/site/LanguageSwitch";
 
 /** Below `lg`: LV/ENG + compact burger in normal document flow at the top of the home page. */
 export function HomeHeaderMobile() {

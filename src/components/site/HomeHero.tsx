@@ -1,10 +1,10 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
-import { DotGrid } from "@/components/site/dot-grid";
-import { HomeHeaderMobile } from "@/components/site/home-header-mobile";
-import { LanguageSwitch } from "@/components/site/language-switch";
-import { SiteNav } from "@/components/site/site-nav";
-import { SocialLinks } from "@/components/site/social-links";
+import { DotGrid } from "@/components/site/DotGrid";
+import { HomeHeaderMobile } from "@/components/site/HomeHeaderMobile";
+import { LanguageSwitch } from "@/components/site/LanguageSwitch";
+import { SiteNav } from "@/components/site/SiteNav";
+import { SocialLinks } from "@/components/site/SocialLinks";
 import type { Messages } from "@/i18n/messages";
 
 /**
