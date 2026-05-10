@@ -75,141 +75,144 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
         className="relative isolate flex min-h-0 flex-1 w-full items-center justify-center overflow-x-clip bg-white px-0"
         style={heroViewportCssVars}
       >
-      {/*
+        {/*
         Mobile raster (compact home): cover + bottom so width is edge-to-edge (no L/R gutters);
         top may crop slightly vs contain — avoids letterboxing on tall narrow phones.
       */}
-      <div
-        className="pointer-events-none fixed inset-0 z-1 box-border hidden max-[480px]:block bg-white pb-[env(safe-area-inset-bottom)]"
-        aria-hidden
-      >
-        {/*
+        <div
+          className="pointer-events-none fixed inset-0 z-1 box-border hidden max-[480px]:block bg-white pb-[env(safe-area-inset-bottom)]"
+          aria-hidden
+        >
+          {/*
           No overflow-hidden: subpixel clip risk. overflow-x-clip is on the hero root.
           Bottom safe-area inset shrinks the paint box above the home indicator.
         */}
-        <Image
-          src={HERO_BG_MOBILE_SRC}
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover object-bottom"
-          priority
-        />
-      </div>
-      {/*
+          <Image
+            src={HERO_BG_MOBILE_SRC}
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover object-bottom"
+            priority
+          />
+        </div>
+        {/*
         Clip box size = scaled design size (transform does not affect layout).
       */}
-      <div
-        className="relative z-10 max-[480px]:overflow-x-clip min-[481px]:overflow-visible"
-        style={{
-          width: `calc(${HERO_DESIGN_W}px * var(--hero-scale))`,
-          height: `calc(${HERO_DESIGN_H}px * var(--hero-scale))`,
-        }}
-      >
         <div
-          className="relative"
+          className="relative z-10 max-[480px]:overflow-x-clip min-[481px]:overflow-visible"
           style={{
-            width: HERO_DESIGN_W,
-            height: HERO_DESIGN_H,
-            transform: "scale(var(--hero-scale))",
-            transformOrigin: "top left",
-            ...heroDesignCssVars,
+            width: `calc(${HERO_DESIGN_W}px * var(--hero-scale))`,
+            height: `calc(${HERO_DESIGN_H}px * var(--hero-scale))`,
           }}
         >
           <div
-            className="pointer-events-none absolute right-0 bottom-0 z-0 hidden min-[481px]:block bg-contain bg-no-repeat"
+            className="relative"
             style={{
-              left: HERO_CONTENT_X,
-              aspectRatio: `${HERO_BG_MAX_W} / ${HERO_BG_MAX_H}`,
-              height: "auto",
-              maxHeight: `calc(var(--hero-vh) - ${HERO_ALIGN_TOP_PX}px)`,
-              backgroundImage: `url('${HERO_BG_DESKTOP_SRC}')`,
-              backgroundPosition: "right bottom",
+              width: HERO_DESIGN_W,
+              height: HERO_DESIGN_H,
+              transform: "scale(var(--hero-scale))",
+              transformOrigin: "top left",
+              ...heroDesignCssVars,
             }}
-            aria-hidden
-          />
-          <div className="relative z-10 flex h-full min-h-0 w-full min-[481px]:overflow-visible flex-col px-[clamp(1.5rem,calc(var(--hero-vw)*202/1920),202px)]">
-            <span className="sr-only">{home.heroImageAlt}</span>
-            <DotGrid className="pointer-events-none absolute z-20 hidden min-[481px]:block w-[clamp(140px,calc(231.48*var(--hero-vw)/1920),231.48px)] min-[481px]:top-[calc(33*var(--hero-vw)/1920)] min-[481px]:right-[calc(369*var(--hero-vw)/1920)] min-[481px]:left-auto" />
+          >
             <div
-              className="hidden lg:flex lg:items-start lg:justify-end"
-              style={{ paddingTop: HERO_ALIGN_TOP_PX }}
-            >
-              <LanguageSwitch />
-            </div>
-
-            <div
-              className="pointer-events-none absolute top-0 bottom-0 left-0 z-30 hidden min-[481px]:flex min-[481px]:overflow-visible min-[481px]:right-[clamp(1.5rem,calc(var(--hero-vw)*202/1920),202px)] min-[481px]:items-center min-[481px]:justify-end min-[481px]:pt-0"
+              className="pointer-events-none absolute right-0 bottom-0 z-0 hidden min-[481px]:block bg-contain bg-no-repeat"
+              style={{
+                left: HERO_CONTENT_X,
+                aspectRatio: `${HERO_BG_MAX_W} / ${HERO_BG_MAX_H}`,
+                height: "auto",
+                maxHeight: `calc(var(--hero-vh) - ${HERO_ALIGN_TOP_PX}px)`,
+                backgroundImage: `url('${HERO_BG_DESKTOP_SRC}')`,
+                backgroundPosition: "right bottom",
+              }}
               aria-hidden
-            >
+            />
+            <div className="relative z-10 flex h-full min-h-0 w-full min-[481px]:overflow-visible flex-col px-[clamp(1.5rem,calc(var(--hero-vw)*202/1920),202px)]">
+              <span className="sr-only">{home.heroImageAlt}</span>
+              <DotGrid className="pointer-events-none absolute z-20 hidden min-[481px]:block w-[clamp(140px,calc(231.48*var(--hero-vw)/1920),231.48px)] min-[481px]:top-[calc(33*var(--hero-vw)/1920)] min-[481px]:right-[calc(369*var(--hero-vw)/1920)] min-[481px]:left-auto" />
               <div
-                className="shrink-0 overflow-visible"
-                style={{
-                  transform: `translateY(calc(-0.5 * min(${HERO_SIDE_TEXT_LENGTH}px, calc(var(--hero-vw) * ${HERO_SIDE_TEXT_LENGTH} / ${HERO_REF_W}))))`,
-                }}
+                className="hidden lg:flex lg:items-start lg:justify-end"
+                style={{ paddingTop: HERO_ALIGN_TOP_PX }}
+              >
+                <LanguageSwitch />
+              </div>
+
+              <div
+                className="pointer-events-none absolute top-0 bottom-0 left-0 z-30 hidden min-[481px]:flex min-[481px]:overflow-visible min-[481px]:right-[clamp(1.5rem,calc(var(--hero-vw)*202/1920),202px)] min-[481px]:items-center min-[481px]:justify-end min-[481px]:pt-0"
+                aria-hidden
               >
                 <div
-                  className="block overflow-visible"
+                  className="shrink-0 overflow-visible"
                   style={{
-                    transform: `translateX(calc(-1 * min(${HERO_SIDE_TEXT_THICK}px, calc(var(--hero-vw) * ${HERO_SIDE_TEXT_THICK} / ${HERO_REF_W}))))`,
+                    transform: `translateY(calc(-0.5 * min(${HERO_SIDE_TEXT_LENGTH}px, calc(var(--hero-vw) * ${HERO_SIDE_TEXT_LENGTH} / ${HERO_REF_W}))))`,
                   }}
                 >
-                  <div className="origin-top-right overflow-visible -rotate-90">
-                    <Image
-                      src="/icons/create.svg"
-                      alt=""
-                      width={449}
-                      height={17}
-                      className="block h-auto max-w-none brightness-0"
-                      style={{
-                        width: `min(${HERO_SIDE_TEXT_LENGTH}px, calc(var(--hero-vw) * ${HERO_SIDE_TEXT_LENGTH} / ${HERO_REF_W}))`,
-                      }}
-                      unoptimized
+                  <div
+                    className="block overflow-visible"
+                    style={{
+                      transform: `translateX(calc(-1 * min(${HERO_SIDE_TEXT_THICK}px, calc(var(--hero-vw) * ${HERO_SIDE_TEXT_THICK} / ${HERO_REF_W}))))`,
+                    }}
+                  >
+                    <div className="origin-top-right overflow-visible -rotate-90">
+                      <Image
+                        src="/icons/create.svg"
+                        alt=""
+                        width={449}
+                        height={17}
+                        className="block h-auto max-w-none brightness-0"
+                        style={{
+                          width: `min(${HERO_SIDE_TEXT_LENGTH}px, calc(var(--hero-vw) * ${HERO_SIDE_TEXT_LENGTH} / ${HERO_REF_W}))`,
+                        }}
+                        unoptimized
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span className="sr-only">{home.sideTextAlt}</span>
+
+              <div className="grid flex-1 gap-10 pt-10 max-[480px]:pt-5 lg:items-center lg:pt-0">
+                <div className="relative flex min-h-0 flex-col items-start justify-center text-left max-[480px]:min-h-[36vh] lg:min-h-[753px]">
+                  <div
+                    className="w-full shrink-0"
+                    aria-hidden
+                    style={{
+                      maxWidth: `min(${HERO_LOCKUP_W}px, calc(var(--hero-vw) * ${HERO_LOCKUP_W} / ${HERO_REF_W}))`,
+                      aspectRatio: `${HERO_LOCKUP_W} / ${HERO_LOCKUP_H}`,
+                    }}
+                  />
+              <div
+                className="max-[480px]:hidden [--hero-nav-mt-extra:0px] max-lg:min-[481px]:[--hero-nav-mt-extra:clamp(3rem,11vw,6.75rem)]"
+                style={{
+                  marginTop: `calc(max(2rem, calc(var(--hero-vw) * ${HERO_NAV_TOP_GAP} / ${HERO_REF_W})) + var(--hero-nav-mt-extra))`,
+                }}
+              >
+                    <SiteNav
+                      layout="row"
+                      className="flex w-full justify-start"
                     />
                   </div>
                 </div>
               </div>
-            </div>
-            <span className="sr-only">{home.sideTextAlt}</span>
 
-            <div className="grid flex-1 gap-10 pt-10 max-[480px]:pt-5 lg:items-center lg:pt-0">
-              <div className="relative flex min-h-0 flex-col items-start justify-center text-left max-[480px]:min-h-[36vh] lg:min-h-[753px]">
-                <div
-                  className="w-full shrink-0"
-                  aria-hidden
-                  style={{
-                    maxWidth: `min(${HERO_LOCKUP_W}px, calc(var(--hero-vw) * ${HERO_LOCKUP_W} / ${HERO_REF_W}))`,
-                    aspectRatio: `${HERO_LOCKUP_W} / ${HERO_LOCKUP_H}`,
-                  }}
-                />
-                <div
-                  className="max-[480px]:hidden"
-                  style={{
-                    marginTop: `max(2rem, calc(var(--hero-vw) * ${HERO_NAV_TOP_GAP} / ${HERO_REF_W}))`,
-                  }}
-                >
-                  <SiteNav layout="row" className="flex w-full justify-start" />
-                </div>
-              </div>
-            </div>
-
-            <div
-              className="mt-auto hidden min-[481px]:flex w-full items-end gap-3 pt-16 lg:pt-10"
-              style={{
-                paddingBottom: `max(1rem, calc(var(--hero-vw) * ${HERO_FOOTER_BOTTOM} / ${HERO_REF_W}))`,
-              }}
-            >
               <div
-                className="h-px min-h-px min-w-0 flex-1 bg-[#231F20]"
-                aria-hidden
-              />
-              <SocialLinks
-                className={`shrink-0 [&_ul]:gap-[clamp(12px,calc(var(--hero-vw)*${HERO_FOOTER_ICON_GAP}/${HERO_REF_W}),${HERO_FOOTER_ICON_GAP}px)] [&_a]:size-[clamp(2rem,calc(var(--hero-vw)*40/${HERO_REF_W}),2.5rem)] [&_img]:size-full!`}
-              />
+                className="mt-auto hidden min-[481px]:flex w-full items-end gap-3 pt-16 lg:pt-10"
+                style={{
+                  paddingBottom: `max(1rem, calc(var(--hero-vw) * ${HERO_FOOTER_BOTTOM} / ${HERO_REF_W}))`,
+                }}
+              >
+                <div
+                  className="h-px min-h-px min-w-0 flex-1 bg-[#231F20]"
+                  aria-hidden
+                />
+                <SocialLinks
+                  className={`shrink-0 [&_ul]:gap-[clamp(12px,calc(var(--hero-vw)*${HERO_FOOTER_ICON_GAP}/${HERO_REF_W}),${HERO_FOOTER_ICON_GAP}px)] [&_a]:size-[clamp(2rem,calc(var(--hero-vw)*40/${HERO_REF_W}),2.5rem)] [&_img]:size-full!`}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   );

@@ -2,9 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LocaleHtmlLang } from "@/components/i18n/LocaleHtmlLang";
 import { PortfolioNavProvider } from "@/components/site/PortfolioNavProvider";
+import { PublicSiteImageFriction } from "@/components/site/PublicSiteImageFriction";
 import { defaultLocale, isLocale, locales } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
 import { getSiteContent } from "@/lib/site-content/store";
+
+/** CMS data must load on every request; a static layout freezes nav + merged content at build time. */
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -42,9 +46,12 @@ export default async function LocaleLayout({
   return (
     <>
       <LocaleHtmlLang locale={raw} />
-      <PortfolioNavProvider categories={site.portfolio.categoryNav}>
-        {children}
-      </PortfolioNavProvider>
+      <PublicSiteImageFriction />
+      <div className="kg-img-protected-host">
+        <PortfolioNavProvider categories={site.portfolio.categoryNav}>
+          {children}
+        </PortfolioNavProvider>
+      </div>
     </>
   );
 }

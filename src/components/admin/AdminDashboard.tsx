@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, ChevronDown, Copy, LogOut } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, Copy, LogOut } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -14,9 +14,10 @@ import {
   GALLERY_TILE_SIZE_ORDER,
   GALLERY_OBJECT_CONTAIN_IDS,
   type GalleryTileSizeId,
-  aspectRatioCssFromTileSize,
 } from "@/lib/gallery-tile-sizes";
+import { aspectRatioCssForPortfolioItem } from "@/lib/portfolio-item-frame";
 import type { LocalizedString, SiteContent } from "@/lib/site-content/types";
+import { portfolioCategorySlugSchema } from "@/lib/site-content/types";
 import { cn } from "@/lib/utils";
 
 const TABS = [
@@ -52,6 +53,102 @@ const TILE_SIZE_OPTIONS: { value: GalleryTileSizeId; label: string }[] =
 
 const fieldClass =
   "rounded-md border border-zinc-800 bg-zinc-950 text-zinc-100 placeholder:text-zinc-600 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.03)] outline-none focus-visible:border-zinc-600 focus-visible:ring-2 focus-visible:ring-[var(--kg-accent)]/20";
+
+/** Stable id for new slides (some environments lack `crypto.randomUUID`). */
+function newPortfolioItemId(): string {
+  if (typeof globalThis.crypto?.randomUUID === "function") {
+    return globalThis.crypto.randomUUID();
+  }
+  return `item-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
+}
+
+/**
+ * First gallery category for a new slide — must match a valid nav slug.
+ * Avoids `""` / invalid live slug values while the slug field is being edited (before blur).
+ */
+function primaryCategorySlugForNewSlide(
+  categoryNav: SiteContent["portfolio"]["categoryNav"],
+): string {
+  for (const row of categoryNav) {
+    const s = normalizePortfolioCategorySlugInput(row.slug);
+    if (portfolioCategorySlugSchema.safeParse(s).success) return s;
+  }
+  const fromFirst = normalizePortfolioCategorySlugInput(
+    categoryNav[0]?.slug ?? "",
+  );
+  if (portfolioCategorySlugSchema.safeParse(fromFirst).success) return fromFirst;
+  return "logo";
+}
+
+/** Reorder gallery items (array order = public site order). */
+function reorderPortfolioItems<T>(items: T[], from: number, to: number): T[] {
+  if (
+    from === to ||
+    from < 0 ||
+    from >= items.length ||
+    to < 0 ||
+    to > items.length
+  ) {
+    return items;
+  }
+  const next = [...items];
+  const [removed] = next.splice(from, 1);
+  next.splice(to, 0, removed!);
+  return next;
+}
+
+/** 1-based position field: type a slot number and blur / Enter to move there. */
+function GalleryOrderPositionInput({
+  index,
+  total,
+  onMoveTo,
+}: {
+  index: number;
+  total: number;
+  onMoveTo: (oneBasedPosition: number) => void;
+}) {
+  const [local, setLocal] = useState(String(index + 1));
+  useEffect(() => {
+    setLocal(String(index + 1));
+  }, [index, total]);
+
+  return (
+    <div className="flex min-w-0 flex-1 items-center gap-1.5">
+      <label className="text-[0.6rem] shrink-0 text-zinc-600 whitespace-nowrap">
+        Order #
+      </label>
+      <Input
+        type="number"
+        inputMode="numeric"
+        min={1}
+        max={total}
+        value={local}
+        onChange={(e) => setLocal(e.target.value)}
+        onBlur={() => {
+          const n = parseInt(local, 10);
+          const clamped = Number.isFinite(n)
+            ? Math.max(1, Math.min(total, n))
+            : index + 1;
+          setLocal(String(clamped));
+          if (clamped !== index + 1) onMoveTo(clamped);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            (e.target as HTMLInputElement).blur();
+          }
+        }}
+        className={cn(
+          fieldClass,
+          "h-8 min-w-0 max-w-[4.5rem] px-1.5 text-center text-xs tabular-nums",
+        )}
+        aria-label="Gallery order position"
+      />
+      <span className="shrink-0 text-[0.65rem] tabular-nums text-zinc-600">
+        / {total}
+      </span>
+    </div>
+  );
+}
 
 /** OS-drawn chevron ignores padding; custom icon + appearance-none */
 const gallerySelectClass = cn(
@@ -242,8 +339,19 @@ export function AdminDashboard() {
         credentials: "include",
       });
       if (!res.ok) {
-        const err = (await res.json()) as { error?: string };
-        throw new Error(err.error ?? "Save failed");
+        const err = (await res.json()) as {
+          error?: string;
+          details?: unknown;
+        };
+        let msg = err.error ?? "Save failed";
+        if (
+          msg === "Validation failed" &&
+          err.details &&
+          typeof err.details === "object"
+        ) {
+          msg = `${msg}\n\n${JSON.stringify(err.details, null, 2)}`;
+        }
+        throw new Error(msg);
       }
       setSaveState("ok");
       setTimeout(() => setSaveState("idle"), 2400);
@@ -711,8 +819,15 @@ export function AdminDashboard() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between gap-4">
-                <h2 className="text-lg font-medium text-white">Gallery</h2>
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+                <div>
+                  <h2 className="text-lg font-medium text-white">Gallery</h2>
+                  <p className="mt-1 text-xs text-zinc-500">
+                    Order is saved to the site: first items appear first in each
+                    category grid. Use Order # to jump to a position, or the
+                    arrows to nudge.
+                  </p>
+                </div>
                 <Button
                   type="button"
                   variant="outline"
@@ -727,13 +842,14 @@ export function AdminDashboard() {
                               items: [
                                 ...c.portfolio.items,
                                 {
-                                  id: crypto.randomUUID(),
+                                  id: newPortfolioItemId(),
                                   alt: "New piece",
                                   src: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&q=80",
                                   tileSize: "w488h426",
                                   categories: [
-                                    c.portfolio.categoryNav[0]?.slug ??
-                                      "logo",
+                                    primaryCategorySlugForNewSlide(
+                                      c.portfolio.categoryNav,
+                                    ),
                                   ],
                                   description: { lv: "", en: "" },
                                 },
@@ -757,10 +873,97 @@ export function AdminDashboard() {
                     transition={{ delay: index * 0.04 }}
                     className="group rounded-xl border border-zinc-800/90 bg-zinc-900/35 p-4 transition-colors hover:border-zinc-700"
                   >
+                    <div className="mb-3 flex flex-wrap items-center justify-end gap-2 border-b border-zinc-800/80 pb-2 sm:flex-nowrap sm:justify-between">
+                      <GalleryOrderPositionInput
+                        index={index}
+                        total={content.portfolio.items.length}
+                        onMoveTo={(oneBased) =>
+                          setContent((c) => {
+                            if (!c) return c;
+                            const targetIdx = oneBased - 1;
+                            if (targetIdx === index) return c;
+                            return {
+                              ...c,
+                              portfolio: {
+                                ...c.portfolio,
+                                items: reorderPortfolioItems(
+                                  c.portfolio.items,
+                                  index,
+                                  targetIdx,
+                                ),
+                              },
+                            };
+                          })
+                        }
+                      />
+                      <div className="flex shrink-0 items-center gap-0.5">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="size-8 shrink-0 rounded-none text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100 disabled:opacity-30"
+                          disabled={index === 0}
+                          aria-label="Move earlier in gallery"
+                          title="Earlier"
+                          onClick={() =>
+                            setContent((c) => {
+                              if (!c || index === 0) return c;
+                              return {
+                                ...c,
+                                portfolio: {
+                                  ...c.portfolio,
+                                  items: reorderPortfolioItems(
+                                    c.portfolio.items,
+                                    index,
+                                    index - 1,
+                                  ),
+                                },
+                              };
+                            })
+                          }
+                        >
+                          <ChevronUp className="size-4" aria-hidden />
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="size-8 shrink-0 rounded-none text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100 disabled:opacity-30"
+                          disabled={
+                            index >= content.portfolio.items.length - 1
+                          }
+                          aria-label="Move later in gallery"
+                          title="Later"
+                          onClick={() =>
+                            setContent((c) => {
+                              if (
+                                !c ||
+                                index >= c.portfolio.items.length - 1
+                              ) {
+                                return c;
+                              }
+                              return {
+                                ...c,
+                                portfolio: {
+                                  ...c.portfolio,
+                                  items: reorderPortfolioItems(
+                                    c.portfolio.items,
+                                    index,
+                                    index + 1,
+                                  ),
+                                },
+                              };
+                            })
+                          }
+                        >
+                          <ChevronDown className="size-4" aria-hidden />
+                        </Button>
+                      </div>
+                    </div>
                     <div
                       className="relative mb-4 w-full overflow-hidden rounded-lg bg-zinc-950"
                       style={{
-                        aspectRatio: aspectRatioCssFromTileSize(item.tileSize),
+                        aspectRatio: aspectRatioCssForPortfolioItem(item),
                       }}
                     >
                       {item.src ? (
@@ -956,6 +1159,151 @@ export function AdminDashboard() {
                           className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-zinc-500"
                           strokeWidth={2}
                         />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="flex cursor-pointer items-center gap-2.5 text-xs text-zinc-300">
+                          <input
+                            type="checkbox"
+                            checked={item.customFramePx != null}
+                            onChange={(e) => {
+                              const on = e.target.checked;
+                              setContent((c) => {
+                                if (!c) return c;
+                                const items = [...c.portfolio.items];
+                                const cur = items[index]!;
+                                if (on) {
+                                  const p =
+                                    GALLERY_TILE_PRESETS[cur.tileSize];
+                                  items[index] = {
+                                    ...cur,
+                                    customFramePx: {
+                                      width: Math.round(p.width),
+                                      height: Math.round(p.height),
+                                    },
+                                  };
+                                } else {
+                                  const copy = { ...cur };
+                                  delete copy.customFramePx;
+                                  items[index] = copy;
+                                }
+                                return {
+                                  ...c,
+                                  portfolio: {
+                                    ...c.portfolio,
+                                    items,
+                                  },
+                                };
+                              });
+                            }}
+                            className="size-3.5 shrink-0 rounded border border-zinc-600 bg-zinc-950 accent-[var(--kg-accent)]"
+                          />
+                          <span>
+                            Custom frame size (px){" "}
+                            <span className="text-zinc-600">
+                              — overrides preset aspect & width
+                            </span>
+                          </span>
+                        </label>
+                        {item.customFramePx ? (
+                          <div className="grid grid-cols-2 gap-2">
+                            <div className="space-y-1">
+                              <span className="text-[0.6rem] text-zinc-600">
+                                Width
+                              </span>
+                              <Input
+                                type="number"
+                                inputMode="numeric"
+                                min={1}
+                                max={4000}
+                                value={item.customFramePx.width}
+                                onChange={(e) => {
+                                  const n = Number(e.target.value);
+                                  setContent((c) => {
+                                    if (!c) return c;
+                                    const items = [...c.portfolio.items];
+                                    const cur = items[index]!;
+                                    if (!cur.customFramePx) return c;
+                                    const width = Number.isFinite(n)
+                                      ? Math.min(
+                                          4000,
+                                          Math.max(
+                                            1,
+                                            Math.round(n),
+                                          ),
+                                        )
+                                      : cur.customFramePx.width;
+                                    items[index] = {
+                                      ...cur,
+                                      customFramePx: {
+                                        ...cur.customFramePx,
+                                        width,
+                                      },
+                                    };
+                                    return {
+                                      ...c,
+                                      portfolio: {
+                                        ...c.portfolio,
+                                        items,
+                                      },
+                                    };
+                                  });
+                                }}
+                                className={cn(
+                                  fieldClass,
+                                  "h-9 px-2 text-xs tabular-nums",
+                                )}
+                              />
+                            </div>
+                            <div className="space-y-1">
+                              <span className="text-[0.6rem] text-zinc-600">
+                                Height
+                              </span>
+                              <Input
+                                type="number"
+                                inputMode="numeric"
+                                min={1}
+                                max={4000}
+                                value={item.customFramePx.height}
+                                onChange={(e) => {
+                                  const n = Number(e.target.value);
+                                  setContent((c) => {
+                                    if (!c) return c;
+                                    const items = [...c.portfolio.items];
+                                    const cur = items[index]!;
+                                    if (!cur.customFramePx) return c;
+                                    const height = Number.isFinite(n)
+                                      ? Math.min(
+                                          4000,
+                                          Math.max(
+                                            1,
+                                            Math.round(n),
+                                          ),
+                                        )
+                                      : cur.customFramePx.height;
+                                    items[index] = {
+                                      ...cur,
+                                      customFramePx: {
+                                        ...cur.customFramePx,
+                                        height,
+                                      },
+                                    };
+                                    return {
+                                      ...c,
+                                      portfolio: {
+                                        ...c.portfolio,
+                                        items,
+                                      },
+                                    };
+                                  });
+                                }}
+                                className={cn(
+                                  fieldClass,
+                                  "h-9 px-2 text-xs tabular-nums",
+                                )}
+                              />
+                            </div>
+                          </div>
+                        ) : null}
                       </div>
                       <label className="block text-center text-[0.7rem] text-zinc-500">
                         <span className="cursor-pointer text-[var(--kg-accent)] hover:underline">

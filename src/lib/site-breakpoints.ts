@@ -7,6 +7,9 @@ export const HOME_COMPACT_MAX_PX = 480;
 /** First width that uses the wide-home layer (desktop raster, inline lang, row nav, etc.). */
 export const HOME_WIDE_MIN_PX = HOME_COMPACT_MAX_PX + 1;
 
+/** Subpage (about-style) nav: compact single-line proportions from this width down */
+export const SUBPAGE_NAV_COMPACT_MAX_PX = 420;
+
 /**
  * Fixed LV/ENG chrome shows at this width and below (Tailwind `lg` breakpoint − 1).
  * Must stay in sync with about-header layout: below `lg` the in-flow header has no lang slot.

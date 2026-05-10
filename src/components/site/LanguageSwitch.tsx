@@ -38,7 +38,7 @@ export function LanguageSwitch({
   return (
     <div
       className={cn(
-        "inline-flex h-[1em] w-max max-w-full shrink-0 items-center font-normal leading-none",
+        "inline-flex w-max max-w-full shrink-0 items-center overflow-visible font-normal leading-none",
         rowClass,
         className,
       )}

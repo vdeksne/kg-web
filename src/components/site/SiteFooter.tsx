@@ -78,13 +78,13 @@ export function SiteFooter() {
               <div className="flex w-full max-w-full flex-wrap items-center justify-center gap-x-[27.19px] gap-y-3 text-center">
                 <a
                   href="mailto:info@kasparsgroza.lv"
-                  className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
+                  className="shrink-0 whitespace-nowrap text-foreground"
                 >
                   info@kasparsgroza.lv
                 </a>
                 <a
                   href="tel:+37120370077"
-                  className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
+                  className="shrink-0 whitespace-nowrap text-foreground"
                 >
                   +371 20370077
                 </a>
@@ -109,12 +109,12 @@ export function SiteFooter() {
                 className="flex min-h-0 min-w-0 flex-1 justify-end"
                 style={{ paddingInlineEnd: GAP_SIDE_TO_ICONS }}
               >
-                <nav className="shrink-0">
-                  <ul className="flex flex-nowrap [&>li:nth-child(2)]:ms-[49.87px] [&>li:nth-child(3)]:ms-[49.97px]">
+                <nav className="shrink-0 [&_a]:word-spacing-[0.08em]">
+                  <ul className="flex flex-nowrap gap-x-7">
                     <li>
                       <Link
                         href={aboutHref}
-                        className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
+                        className="shrink-0 whitespace-nowrap text-foreground"
                       >
                         {nav.about}
                       </Link>
@@ -129,7 +129,7 @@ export function SiteFooter() {
                     <li>
                       <Link
                         href={contactHref}
-                        className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
+                        className="shrink-0 whitespace-nowrap text-foreground"
                       >
                         {nav.contact}
                       </Link>
@@ -146,13 +146,13 @@ export function SiteFooter() {
               >
                 <a
                   href="mailto:info@kasparsgroza.lv"
-                  className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
+                  className="shrink-0 whitespace-nowrap text-foreground"
                 >
                   info@kasparsgroza.lv
                 </a>
                 <a
                   href="tel:+37120370077"
-                  className="shrink-0 whitespace-nowrap hover:text-foreground transition-colors"
+                  className="shrink-0 whitespace-nowrap text-foreground"
                   style={{ marginInlineStart: GAP_EMAIL_TO_PHONE }}
                 >
                   +371 20370077

@@ -10,6 +10,7 @@ import { NavPortfolioItem } from "@/components/site/NavPortfolioItem";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
 import { messages } from "@/i18n/messages";
 import {
+  fluidAboutBannerNavCompactMax420,
   fluidNavMenuIconAboutDesktop,
   fluidNavMenuIconMobile,
   fluidNavMenuIconText,
@@ -62,37 +63,40 @@ export function SiteNav({
 
   const iconText = navIconTextClass(resolvedScale);
   const aboutBanner = resolvedScale === "aboutBanner";
+  const aboutBannerRow = aboutBanner && layout === "row";
 
   const aboutHref = withLocale("/about", locale);
   const contactHref = withLocale("/contact", locale);
 
-  /** Mobile home drawer: `bg-brand` with white label art (`currentColor`). */
+  /** Unselected items use the same solid ink as selected; only the SVG (incl. yellow bar) differs. */
   const drawerOnBrand =
     layout === "col" && compact
       ? {
           active: "text-[#FFFFFF]",
-          idle: "text-white/80 hover:text-[#FFFFFF]",
+          idle: "text-[#FFFFFF]",
         }
       : {
           active: "text-foreground",
-          idle: "text-muted-foreground hover:text-foreground",
+          idle: "text-foreground",
         };
 
   return (
-    <nav className={className}>
+    <nav className={cn(className, aboutBannerRow && "overflow-visible")}>
       <ul
         className={
           layout === "row"
             ? cn(
-                "flex flex-wrap items-center font-normal leading-none",
+                "flex items-center font-normal leading-none min-w-0 overflow-visible",
+                aboutBannerRow
+                  ? "flex-nowrap justify-center"
+                  : "flex-wrap",
                 fluidPrimaryNavGap,
                 iconText,
+                aboutBannerRow && fluidAboutBannerNavCompactMax420,
               )
             : cn(
                 "flex w-max flex-col items-start font-normal leading-none uppercase",
-                compact
-                  ? "gap-4 leading-snug tracking-[0.16em]"
-                  : "gap-4",
+                compact ? "gap-6 leading-snug tracking-[0.16em]" : "gap-4",
                 iconText,
               )
         }
@@ -102,7 +106,7 @@ export function SiteNav({
             href={aboutHref}
             aria-label={t.about}
             className={cn(
-              "inline-flex items-center leading-none transition-colors",
+              "inline-flex items-center leading-none",
               pathname === aboutHref ? drawerOnBrand.active : drawerOnBrand.idle,
               compact && "block w-max py-1",
             )}
@@ -125,7 +129,7 @@ export function SiteNav({
             href={contactHref}
             aria-label={t.contact}
             className={cn(
-              "inline-flex items-center leading-none transition-colors",
+              "inline-flex items-center leading-none",
               pathname === contactHref ? drawerOnBrand.active : drawerOnBrand.idle,
               compact && "block w-max py-1",
             )}

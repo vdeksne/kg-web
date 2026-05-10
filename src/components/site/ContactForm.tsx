@@ -4,46 +4,13 @@ import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import {
+  fluidContactDecorative,
+  fluidContactLabel,
+  fluidContactTitle,
+} from "@/lib/fluid-type";
 import type { Messages } from "@/i18n/messages";
-
-/** 320px → 1920px viewport — matches site fluid type ramps */
-const CONTACT_HEADING_MIN_PX = 28;
-const CONTACT_HEADING_MAX_PX = 67.05;
-const CONTACT_HEADING_SLOPE =
-  (CONTACT_HEADING_MAX_PX - CONTACT_HEADING_MIN_PX) / 1600;
-
-const CONTACT_ASIDE_FS_MIN = 12;
-const CONTACT_ASIDE_FS_MAX = 19;
-const CONTACT_ASIDE_FS_SLOPE =
-  (CONTACT_ASIDE_FS_MAX - CONTACT_ASIDE_FS_MIN) / 1600;
-
-const CONTACT_ASIDE_LH_MIN = 16;
-const CONTACT_ASIDE_LH_MAX = 24;
-const CONTACT_ASIDE_LH_SLOPE =
-  (CONTACT_ASIDE_LH_MAX - CONTACT_ASIDE_LH_MIN) / 1600;
-
-/** Contact main heading — Figma max, fluid down to narrow viewports */
-const contactHeadingStyle: React.CSSProperties = {
-  color: "#000",
-  fontFamily: 'Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif',
-  fontSize: `clamp(${CONTACT_HEADING_MIN_PX}px, calc(${CONTACT_HEADING_MIN_PX}px + (100vw - 320px) * ${CONTACT_HEADING_SLOPE}), ${CONTACT_HEADING_MAX_PX}px)`,
-  fontStyle: "normal",
-  fontWeight: 700,
-  lineHeight: "normal",
-  textTransform: "uppercase",
-};
-
-/** Email + phone in header, and all form field labels (name, email, message) — same ramp */
-const contactHeaderAsideStyle: React.CSSProperties = {
-  color: "#000",
-  fontFamily: 'Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif',
-  fontSize: `clamp(${CONTACT_ASIDE_FS_MIN}px, calc(${CONTACT_ASIDE_FS_MIN}px + (100vw - 320px) * ${CONTACT_ASIDE_FS_SLOPE}), ${CONTACT_ASIDE_FS_MAX}px)`,
-  fontStyle: "normal",
-  fontWeight: 300,
-  lineHeight: `clamp(${CONTACT_ASIDE_LH_MIN}px, calc(${CONTACT_ASIDE_LH_MIN}px + (100vw - 320px) * ${CONTACT_ASIDE_LH_SLOPE}), ${CONTACT_ASIDE_LH_MAX}px)`,
-  letterSpacing: "0.05em",
-  textTransform: "uppercase",
-};
+import { cn } from "@/lib/utils";
 
 export function ContactForm({ copy }: { copy: Messages["contact"] }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
@@ -108,26 +75,43 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
   }
 
   return (
-    <form className="relative space-y-12" onSubmit={onSubmit}>
+    <form
+      className={cn(
+        "relative space-y-12 lg:space-y-[clamp(2.5rem,calc(100vw*48/1920),3rem)]",
+      )}
+      onSubmit={onSubmit}
+    >
       <p
-        className="text-muted-foreground/25 pointer-events-none absolute -z-10 text-[clamp(2rem,6vw,4rem)] font-black tracking-[0.2em] uppercase select-none"
+        className={cn(
+          "text-muted-foreground/25 pointer-events-none absolute -z-10 font-black tracking-[0.2em] uppercase select-none",
+          fluidContactDecorative,
+        )}
         aria-hidden
       >
         {copy.decorative}
       </p>
 
-      <div className="flex flex-col gap-6 sm:gap-8 min-[1439px]:flex-row min-[1439px]:items-end min-[1439px]:justify-between min-[1439px]:gap-10">
-        <div className="min-w-0 max-w-full min-[1439px]:min-w-0 min-[1439px]:flex-1">
+      <div
+        className={cn(
+          "flex flex-col gap-6 sm:gap-8",
+          "lg:flex-row lg:items-end lg:justify-between lg:gap-[clamp(2rem,calc(100vw*40/1920),2.5rem)]",
+        )}
+      >
+        <div className="min-w-0 max-w-full lg:min-w-0 lg:flex-1">
           <h2
-            className="max-w-full hyphens-auto wrap-break-word min-[1439px]:whitespace-nowrap"
-            style={contactHeadingStyle}
+            className={cn(
+              fluidContactTitle,
+              "max-w-full hyphens-auto wrap-break-word lg:whitespace-nowrap",
+            )}
           >
             {copy.heading}
           </h2>
         </div>
         <div
-          className="flex min-w-0 max-w-full shrink-0 flex-wrap items-center gap-x-4 gap-y-2 sm:flex-nowrap"
-          style={contactHeaderAsideStyle}
+          className={cn(
+            fluidContactLabel,
+            "flex min-w-0 max-w-full shrink-0 flex-wrap items-center gap-x-4 gap-y-2 sm:flex-nowrap",
+          )}
         >
           <a
             href="mailto:info@kasparsgroza.lv"
@@ -136,7 +120,7 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
             info@kasparsgroza.lv
           </a>
           <div
-            className="hidden h-10 w-px shrink-0 bg-[var(--kg-accent)] lg:block"
+            className="hidden h-10 w-px shrink-0 bg-brand lg:block"
             aria-hidden
           />
           <span className="shrink-0 whitespace-nowrap">
@@ -145,12 +129,16 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
         </div>
       </div>
 
-      <div className="grid gap-10 md:grid-cols-2">
+      <div
+        className={cn(
+          "grid gap-10 md:grid-cols-2",
+          "lg:gap-[clamp(2.25rem,calc(100vw*40/1920),2.5rem)]",
+        )}
+      >
         <div className="space-y-2">
           <label
             htmlFor="name"
-            className="block select-none"
-            style={contactHeaderAsideStyle}
+            className={cn("block select-none", fluidContactLabel)}
           >
             {copy.nameLabel}
           </label>
@@ -158,14 +146,13 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
             id="name"
             name="name"
             required
-            className="border-0 border-b border-foreground/40 rounded-none px-0 shadow-none focus-visible:ring-0"
+            className="border-0 border-b border-foreground/40 rounded-none px-0 shadow-none focus-visible:ring-0 lg:text-[clamp(16px,calc(100vw*18/1920),18px)]"
           />
         </div>
         <div className="space-y-2">
           <label
             htmlFor="email"
-            className="block select-none"
-            style={contactHeaderAsideStyle}
+            className={cn("block select-none", fluidContactLabel)}
           >
             {copy.emailLabel}
           </label>
@@ -174,7 +161,7 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
             name="email"
             type="email"
             required
-            className="border-0 border-b border-foreground/40 rounded-none px-0 shadow-none focus-visible:ring-0"
+            className="border-0 border-b border-foreground/40 rounded-none px-0 shadow-none focus-visible:ring-0 lg:text-[clamp(16px,calc(100vw*18/1920),18px)]"
           />
         </div>
       </div>
@@ -182,8 +169,7 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
       <div className="space-y-2">
         <label
           htmlFor="message"
-          className="block select-none"
-          style={contactHeaderAsideStyle}
+          className={cn("block select-none", fluidContactLabel)}
         >
           {copy.messageLabel}
         </label>
@@ -191,7 +177,10 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
           id="message"
           name="message"
           rows={4}
-          className="border-foreground/40 placeholder:text-muted-foreground focus-visible:border-foreground w-full resize-none border-0 border-b bg-transparent px-0 py-2 text-sm outline-none focus-visible:ring-0"
+          className={cn(
+            "border-foreground/40 placeholder:text-muted-foreground focus-visible:border-foreground w-full resize-none border-0 border-b bg-transparent px-0 py-2 text-sm outline-none focus-visible:ring-0",
+            "lg:text-[clamp(16px,calc(100vw*18/1920),18px)]",
+          )}
         />
       </div>
 
@@ -211,23 +200,22 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
             ) : null}
           </div>
         ) : null}
-        <div className="flex w-full max-w-full flex-wrap items-center justify-between gap-4 sm:gap-8">
+        <div className="flex w-full max-w-full flex-wrap items-center justify-between gap-4 sm:gap-8 lg:gap-[clamp(1.5rem,calc(100vw*32/1920),2rem)]">
           <Image
             src="/icons/create.svg"
             alt={copy.decorative}
             width={1136}
             height={41}
-            className="shrink object-contain object-left"
-            style={{
-              width: "min(1135.97px, 100%)",
-              height: "auto",
-            }}
+            className="h-auto w-full max-w-full shrink object-contain object-left lg:max-w-[min(1136px,calc(100vw*1136/1920))]"
             unoptimized
           />
           <Button
             type="submit"
             disabled={status === "sending"}
-            className="inline-flex max-w-full shrink-0 items-center justify-center rounded-none bg-[var(--kg-accent)] px-0 py-0 font-sans text-[16px] font-normal tracking-[0.25em] text-white uppercase hover:brightness-95 !h-[84.706px] !w-[276.956px] !min-h-0"
+            className={cn(
+              "inline-flex max-w-full shrink-0 items-center justify-center rounded-none bg-brand px-0 py-0 font-sans font-normal tracking-[0.25em] uppercase text-white hover:brightness-95 min-h-0!",
+              "h-[clamp(52px,calc(100vw*84.706/1920),84.706px)] w-[min(100%,clamp(12.5rem,calc(100vw*276.956/1920),276.956px))] text-[clamp(14px,calc(100vw*16/1920),16px)]",
+            )}
           >
             {copy.submit}
           </Button>

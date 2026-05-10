@@ -99,7 +99,7 @@ export function NavPortfolioItem({
     return (
       <li
         ref={wrapRef}
-        className={cn("flex flex-col", compact ? "gap-1" : "gap-2")}
+        className={cn("flex flex-col", compact ? "gap-2" : "gap-2")}
       >
         <Link
           href={`${portfolioPrefix}/${activeSlug}`}
@@ -107,14 +107,10 @@ export function NavPortfolioItem({
           aria-expanded={open}
           aria-controls={open ? menuId : undefined}
           className={cn(
-            "inline-flex w-max max-w-full items-center py-1 leading-none transition-colors",
+            "inline-flex w-max max-w-full items-center py-1 leading-none",
             compact
-              ? portfolioActive
-                ? "text-[#FFFFFF]"
-                : "text-white/80 hover:text-[#FFFFFF]"
-              : portfolioActive
-                ? "text-foreground"
-                : "text-muted-foreground hover:text-foreground",
+              ? "text-[#FFFFFF]"
+              : "text-foreground",
           )}
           onClick={(e) => {
             e.preventDefault();
@@ -128,7 +124,8 @@ export function NavPortfolioItem({
             id={menuId}
             role="list"
             className={cn(
-              "box-border mt-[-2px] flex w-max max-w-full flex-col items-stretch justify-start gap-2",
+              "box-border mt-[-2px] flex w-max max-w-full flex-col items-stretch justify-start",
+              compact ? "gap-3" : "gap-2",
             )}
             style={{
               backgroundColor: DROPDOWN_FILL,
@@ -179,13 +176,11 @@ export function NavPortfolioItem({
           href={`${portfolioPrefix}/${activeSlug}`}
           aria-label={labelStyle === "icon" ? t.portfolio : undefined}
           className={cn(
-            "inline-flex items-center transition-colors",
+            "inline-flex items-center",
             labelStyle === "text"
               ? "shrink-0 whitespace-nowrap"
               : "leading-none",
-            portfolioActive
-              ? "text-foreground"
-              : "text-muted-foreground hover:text-foreground",
+            "text-foreground",
           )}
         >
           {labelStyle === "text" ? (
@@ -210,11 +205,8 @@ export function NavPortfolioItem({
         aria-expanded={isMobileRowNav ? open : undefined}
         aria-controls={isMobileRowNav ? menuId : undefined}
         className={cn(
-          "inline-flex items-center transition-colors",
+          "inline-flex items-center text-foreground",
           labelStyle === "text" ? "shrink-0 whitespace-nowrap" : "leading-none",
-          portfolioActive
-            ? "text-foreground"
-            : "text-muted-foreground hover:text-foreground",
         )}
         onClick={(e) => {
           if (!isMobileRowNav) return;

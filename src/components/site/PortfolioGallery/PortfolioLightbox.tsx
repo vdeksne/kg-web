@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { GALLERY_TILE_PRESETS } from "@/lib/gallery-tile-sizes";
+import { portfolioItemFrameDims } from "@/lib/portfolio-item-frame";
 import type { Locale } from "@/i18n/config";
 import type { PortfolioItem } from "@/lib/site-content/types";
 
@@ -48,7 +48,7 @@ export function PortfolioLightbox({
 
   const unoptimized =
     item.src.startsWith("/uploads/") || item.src.endsWith(".svg");
-  const frame = GALLERY_TILE_PRESETS[item.tileSize];
+  const frame = portfolioItemFrameDims(item);
   const intrinsicW = Math.round(frame.width);
   const intrinsicH = Math.round(frame.height);
 
@@ -80,7 +80,7 @@ export function PortfolioLightbox({
 
   return (
     <div
-      className="fixed inset-0 z-500 flex flex-col"
+      className="kg-img-protected-host fixed inset-0 z-500 flex flex-col"
       role="dialog"
       aria-modal="true"
       aria-labelledby="portfolio-lightbox-title"

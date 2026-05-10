@@ -33,6 +33,14 @@ export const fluidNavMenuIconText =
 export const fluidNavMenuIconAboutDesktop =
   "text-[clamp(14px,calc(14px+(100vw-701px)*3/1219),17px)]";
 
+/**
+ * Overrides {@link fluidNavMenuIconAboutDesktop} gap + SVG em scale at ≤420px so the three-row
+ * items match the compact mobile mockup (proportional 320→420, single flex line).
+ * Width literal must stay aligned with SUBPAGE_NAV_COMPACT_MAX_PX (site-breakpoints).
+ */
+export const fluidAboutBannerNavCompactMax420 =
+  "max-[420px]:gap-[length:clamp(11px,calc(11px+(100vw-320px)*0.048),18px)] max-[420px]:text-[length:clamp(10px,calc(10px+(100vw-320px)*0.01),11px)]";
+
 /** Primary nav menu SVGs (mobile drawer): large tap targets; ~15px → 19px. */
 export const fluidNavMenuIconMobile =
   "text-[clamp(15px,calc(15px+(100vw-320px)*0.0025),19px)]";
@@ -53,9 +61,13 @@ export const fluidAboutDesktopLangGap =
 export const fluidHomeMobileLang =
   "text-[clamp(10px,calc(10px+(100vw-320px)*0.001),12px)] gap-[clamp(5px,calc(5px+(100vw-320px)*0.0045),8px)]";
 
+/** With `homeMobile` variant ≤420 — proportionally tighter vs subpage raster nav mockups */
+export const fluidHomeMobileLangCompactMax420 =
+  "max-[420px]:gap-[length:clamp(5px,calc(5px+(100vw-320px)*0.0125),7.5px)] max-[420px]:text-[length:clamp(9px,calc(9px+(100vw-320px)*0.007143),10.25px)]";
+
 /** Home mobile burger drawer: primary nav links. */
 export const fluidHomeMobileMenu =
-  "gap-4 font-normal leading-snug text-[clamp(15px,calc(15px+(100vw-320px)*0.00145),18px)] tracking-[0.16em]";
+  "gap-6 font-normal leading-snug text-[clamp(15px,calc(15px+(100vw-320px)*0.00145),18px)] tracking-[0.16em]";
 
 /** Home mobile drawer: portfolio sub-links. */
 export const fluidHomeMobileNavSub =
@@ -69,10 +81,27 @@ export const fluidNavSubText =
 export const fluidDropdownText =
   "text-[clamp(14px,calc(14px+(100vw-320px)*0.001875),18px)]";
 
-/** About page title: ~32px @ 320 → 65.55px @ 1920 */
+/** About headline: mobile single-line band; desktop (lg+) scales like 1920 artboard to max 65.55px. */
 export const fluidAboutTitle =
-  "text-[clamp(2rem,calc(32px+(100vw-320px)*0.02097),65.55px)]";
+  "max-lg:whitespace-nowrap max-lg:tracking-tight max-lg:text-[clamp(21px,calc(21px+(100vw-320px)*0.062),42px)] lg:text-[length:clamp(2.25rem,calc(100vw*65.55/1920),65.55px)]";
 
-/** About page body: 16px @ 320 → 20px @ 1920 */
+/**
+ * About body: mobile/tablet stack uses 320→ ramp; from `lg` tracks 12.67px→20px @1920 (16px floor).
+ */
 export const fluidAboutBody =
-  "text-[clamp(1rem,calc(16px+(100vw-320px)*0.0025),20px)]";
+  "text-[clamp(1rem,calc(16px+(100vw-320px)*0.0025),20px)] lg:text-[length:clamp(16px,calc(100vw*20/1920),20px)]";
+
+/** Contact page H2 — same 1920 cap as {@link fluidAboutTitle}; below `lg` fluid for uppercase heading. */
+export const fluidContactTitle =
+  "font-sans font-bold not-italic uppercase leading-none tracking-tight text-foreground max-lg:text-[length:clamp(28px,calc(28px+(100vw-320px)*0.05),48px)] lg:text-[length:clamp(2.25rem,calc(100vw*65.55/1920),65.55px)]";
+
+/**
+ * Contact labels, email/phone row, message label — matches previous aside ramp below `lg`;
+ * from `lg` tracks 12→19px and line-height to 24px @1920.
+ */
+export const fluidContactLabel =
+  "font-sans font-light not-italic uppercase tracking-[0.05em] text-foreground text-[length:clamp(12px,calc(12px+(100vw-320px)*0.004375),19px)] leading-[length:clamp(16px,calc(16px+(100vw-320px)*0.005),24px)] lg:text-[length:clamp(12px,calc(100vw*19/1920),19px)] lg:leading-[length:clamp(16px,calc(100vw*24/1920),24px)]";
+
+/** Large decorative watermark behind contact form — scales with 1920 artboard on desktop. */
+export const fluidContactDecorative =
+  "text-[clamp(2rem,calc(2rem+(100vw-320px)*0.025),4rem)] lg:text-[length:clamp(2rem,calc(100vw*64/1920),4rem)]";

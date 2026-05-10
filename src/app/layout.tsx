@@ -68,8 +68,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="lv" className="h-full antialiased">
-      <body className="bg-background text-foreground min-h-full font-sans">
+    <html lang="lv" className="h-full overscroll-none antialiased">
+      <body className="bg-background text-foreground min-h-dvh font-sans overscroll-none">
         {children}
       </body>
     </html>

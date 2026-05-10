@@ -13,6 +13,12 @@ const ALLOWED = new Set([
   "image/svg+xml",
 ]);
 
+/** Vercel serverless has a read-only filesystem except /tmp — local public/ fallback only works off Vercel. */
+function canUseLocalDiskFallback(): boolean {
+  if (process.env.UPLOAD_DISABLE_LOCAL_FALLBACK === "1") return false;
+  return process.env.VERCEL !== "1";
+}
+
 export async function POST(request: Request) {
   if (!(await isAdminAuthenticated())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -46,28 +52,62 @@ export async function POST(request: Request) {
 
   const buf = Buffer.from(await file.arrayBuffer());
 
+  async function saveToPublicUploads(): Promise<NextResponse> {
+    const dir = join(process.cwd(), "public", "uploads", "cms");
+    await mkdir(dir, { recursive: true });
+    const name = `${randomUUID()}.${ext}`;
+    const diskPath = join(dir, name);
+    await writeFile(diskPath, buf);
+    const url = `/uploads/cms/${name}`;
+    return NextResponse.json({ url, storage: "local" as const });
+  }
+
   if (process.env.SUPABASE_SERVICE_ROLE_KEY && process.env.NEXT_PUBLIC_SUPABASE_URL) {
     try {
       const admin = createServiceRoleClient();
-      const path = `cms/${randomUUID()}.${ext}`;
+      const path = `${randomUUID()}.${ext}`;
       const { error } = await admin.storage.from("cms").upload(path, buf, {
         contentType: file.type,
         upsert: true,
       });
       if (error) throw error;
       const { data: pub } = admin.storage.from("cms").getPublicUrl(path);
-      return NextResponse.json({ url: pub.publicUrl });
+      return NextResponse.json({ url: pub.publicUrl, storage: "supabase" as const });
     } catch (e) {
-      const message = e instanceof Error ? e.message : "Upload failed";
-      return NextResponse.json({ error: message }, { status: 500 });
+      const message =
+        e instanceof Error ? e.message : typeof e === "object" && e && "message" in e
+          ? String((e as { message: unknown }).message)
+          : "Upload failed";
+      console.error("[api/admin/upload] Supabase storage failed:", e);
+
+      if (canUseLocalDiskFallback()) {
+        console.warn(
+          "[api/admin/upload] Saving to public/uploads/cms (Supabase bucket \"cms\" missing or misconfigured).",
+        );
+        try {
+          return await saveToPublicUploads();
+        } catch (diskErr) {
+          console.error("[api/admin/upload] Local fallback failed:", diskErr);
+          return NextResponse.json(
+            {
+              error:
+                diskErr instanceof Error ? diskErr.message : "Local upload failed",
+            },
+            { status: 500 },
+          );
+        }
+      }
+
+      return NextResponse.json(
+        {
+          error: message,
+          hint:
+            'In Supabase: create a public storage bucket named "cms" (see supabase/migrations/003_storage_cms_bucket.sql) or rely on local "public/uploads" only when not deployed on Vercel.',
+        },
+        { status: 500 },
+      );
     }
   }
 
-  const dir = join(process.cwd(), "public", "uploads", "cms");
-  await mkdir(dir, { recursive: true });
-  const name = `${randomUUID()}.${ext}`;
-  const diskPath = join(dir, name);
-  await writeFile(diskPath, buf);
-  const url = `/uploads/cms/${name}`;
-  return NextResponse.json({ url });
+  return saveToPublicUploads();
 }

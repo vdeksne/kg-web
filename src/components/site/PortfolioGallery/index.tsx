@@ -10,11 +10,8 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { PortfolioLightbox } from "./PortfolioLightbox";
-import {
-  GALLERY_OBJECT_CONTAIN_IDS,
-  GALLERY_TILE_PRESETS,
-  aspectRatioCssFromTileSize,
-} from "@/lib/gallery-tile-sizes";
+import { GALLERY_OBJECT_CONTAIN_IDS } from "@/lib/gallery-tile-sizes";
+import { aspectRatioCssForPortfolioItem, portfolioItemFrameDims } from "@/lib/portfolio-item-frame";
 import type { Locale } from "@/i18n/config";
 import type { PortfolioItem } from "@/lib/site-content/types";
 import { cn } from "@/lib/utils";
@@ -109,7 +106,7 @@ export function PortfolioGalleryProvider({
 
 export function PortfolioGalleryTile({ item }: { item: PortfolioItem }) {
   const { open } = useGallery();
-  const frame = GALLERY_TILE_PRESETS[item.tileSize];
+  const frame = portfolioItemFrameDims(item);
   const isContain = GALLERY_OBJECT_CONTAIN_IDS.has(item.id);
   const unoptimized =
     item.src.startsWith("/uploads/") || item.src.endsWith(".svg");
@@ -129,7 +126,7 @@ export function PortfolioGalleryTile({ item }: { item: PortfolioItem }) {
         <div
           className="relative w-full overflow-hidden"
           style={{
-            aspectRatio: aspectRatioCssFromTileSize(item.tileSize),
+            aspectRatio: aspectRatioCssForPortfolioItem(item),
           }}
         >
           <Image

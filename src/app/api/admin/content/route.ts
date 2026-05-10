@@ -1,4 +1,6 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
+import { locales } from "@/i18n/config";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { getSiteContent, persistSiteContent } from "@/lib/site-content/store";
 import { siteContentSchema } from "@/lib/site-content/types";
@@ -36,6 +38,10 @@ export async function POST(request: Request) {
   } catch (e) {
     const message = e instanceof Error ? e.message : "Save failed";
     return NextResponse.json({ error: message }, { status: 500 });
+  }
+
+  for (const locale of locales) {
+    revalidatePath(`/${locale}`, "layout");
   }
 
   return NextResponse.json({ ok: true });

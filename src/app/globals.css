@@ -190,10 +190,20 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
+  /**
+   * Discourage drag-to-desktop + iOS “Save Image” callout on public imagery.
+   * Paired with `PublicSiteImageFriction` (blocks context menu / drag start on `img`).
+   */
+  .kg-img-protected-host img {
+    -webkit-user-drag: none;
+    -webkit-touch-callout: none;
+    user-select: none;
   }
+
   html {
-    @apply font-sans;
+    @apply overscroll-none font-sans;
+  }
+  body {
+    @apply bg-background text-foreground overscroll-none;
   }
 }

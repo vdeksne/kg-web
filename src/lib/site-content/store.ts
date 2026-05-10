@@ -11,6 +11,15 @@ import { siteContentSchema } from "./types";
 
 const FILE_PATH = join(process.cwd(), "content", "site-content.json");
 
+/** Treat `{}` as “no meaningful DB row” so we still fall back to file + defaults. */
+function nonEmptySiteLayer(
+  layer: Partial<SiteContent> | null,
+): Partial<SiteContent> | null {
+  if (layer == null || typeof layer !== "object") return null;
+  if (Object.keys(layer).length === 0) return null;
+  return layer;
+}
+
 async function loadFromFile(): Promise<Partial<SiteContent> | null> {
   try {
     const raw = await readFile(FILE_PATH, "utf-8");
@@ -23,10 +32,28 @@ async function loadFromFile(): Promise<Partial<SiteContent> | null> {
 
 async function loadFromSupabase(): Promise<Partial<SiteContent> | null> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) return null;
+  if (!url) return null;
+
   try {
-    const supabase = createClient(url, key);
+    /** Same credential path as {@link persistSiteContent}: service role bypasses anon/publishable env mismatches. */
+    if (process.env.SUPABASE_SERVICE_ROLE_KEY?.trim()) {
+      const admin = createServiceRoleClient();
+      const { data, error } = await admin
+        .from("site_content")
+        .select("payload")
+        .eq("id", 1)
+        .maybeSingle();
+      if (!error && data?.payload) {
+        return data.payload as Partial<SiteContent>;
+      }
+    }
+
+    const publicKey =
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+    if (!publicKey?.trim()) return null;
+
+    const supabase = createClient(url, publicKey);
     const { data, error } = await supabase
       .from("site_content")
       .select("payload")
@@ -40,8 +67,14 @@ async function loadFromSupabase(): Promise<Partial<SiteContent> | null> {
 }
 
 export async function getSiteContent(): Promise<SiteContent> {
-  const fileLayer = await loadFromFile();
-  const dbLayer = await loadFromSupabase();
+  const dbRaw = await loadFromSupabase();
+  const dbLayer = nonEmptySiteLayer(dbRaw);
+
+  const cmsFromSupabase =
+    !!process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() && dbLayer !== null;
+
+  const fileLayer = cmsFromSupabase ? null : await loadFromFile();
+
   const merged = deepMergeSiteContent(
     DEFAULT_SITE_CONTENT,
     fileLayer,

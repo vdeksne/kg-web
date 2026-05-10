@@ -7,6 +7,7 @@ import { LanguageSwitch } from "@/components/site/LanguageSwitch";
 import { LogoLockup } from "@/components/site/LogoLockup";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SocialLinks } from "@/components/site/SocialLinks";
+import { fluidHomeMobileLangCompactMax420 } from "@/lib/fluid-type";
 import { withLocale } from "@/lib/i18n-path";
 import { cn } from "@/lib/utils";
 
@@ -34,12 +35,13 @@ export function SiteHeaderInner({
   const belowNavPx = isAbout ? contentGapBelowNavPx : undefined;
 
   return (
-    <header
-      className={cn("relative box-border w-full", !isAbout && "pb-6")}
-    >
-      <div className="relative z-20 flex w-full justify-end px-[22px] pt-[calc(68px+env(safe-area-inset-top,0))] pb-3 lg:hidden pointer-events-none">
+    <header className={cn("relative box-border w-full", !isAbout && "pb-6")}>
+      <div className="relative z-20 flex w-full justify-end px-[22px] pt-[calc(68px+env(safe-area-inset-top,0))] pb-3 sm:px-9 md:px-12 lg:hidden pointer-events-none">
         <nav aria-label="Language" className="pointer-events-auto">
-          <LanguageSwitch variant="homeMobile" className="shrink-0" />
+          <LanguageSwitch
+            variant="homeMobile"
+            className={cn("shrink-0", fluidHomeMobileLangCompactMax420)}
+          />
         </nav>
       </div>
       {isAbout ? (
@@ -72,7 +74,7 @@ export function SiteHeaderInner({
             ? "max-lg:gap-7 lg:gap-[clamp(32px,calc(107.5*100vw/1920),107.5px)]"
             : "gap-6",
           isAbout
-            ? "max-w-[1920px] px-[clamp(1.5rem,calc(100vw*202/1920),202px)] max-lg:px-[22px]"
+            ? "max-w-[1920px] px-[clamp(1.5rem,calc(100vw*202/1920),202px)] max-lg:px-[22px] sm:max-lg:px-9 md:max-lg:px-12"
             : "max-w-6xl px-6 sm:px-10",
           !isAbout && "pt-8 max-lg:pt-0",
           isAbout &&
@@ -93,7 +95,10 @@ export function SiteHeaderInner({
           <>
             <div
               className={cn(
-                "relative hidden w-full max-lg:block max-lg:mx-[-22px] max-lg:w-[calc(100%+44px)]",
+                "relative hidden w-full max-lg:block",
+                "max-lg:mx-[-22px] max-lg:w-[calc(100%+44px)]",
+                "sm:max-lg:-mx-9 sm:max-lg:w-[calc(100%+4.5rem)]",
+                "md:max-lg:-mx-12 md:max-lg:w-[calc(100%+6rem)]",
                 "pt-0",
               )}
             >

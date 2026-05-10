@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { GalleryTileSizeId } from "@/lib/gallery-tile-sizes";
 import { galleryTileSizeSchema } from "@/lib/gallery-tile-sizes";
 
 export const localizedStringSchema = z.object({
@@ -24,19 +25,38 @@ export type PortfolioCategoryNavItem = z.infer<
   typeof portfolioCategoryNavItemSchema
 >;
 
+/** Normalized portfolio gallery slide (after CMS parse). */
+export type PortfolioItem = {
+  id: string;
+  alt: string;
+  src: string;
+  tileSize: GalleryTileSizeId;
+  categories: string[];
+  description: LocalizedString;
+  /** Optional: overrides {@link tileSize} preset for CSS aspect ratio and tile max-width (px). */
+  customFramePx?: { width: number; height: number };
+};
+
 /** Accepts legacy `category` (single) or `categories` (one or more sections). */
+const customFramePxSchema = z.object({
+  width: z.number().int().positive().max(4000),
+  height: z.number().int().positive().max(4000),
+});
+
 export const portfolioItemSchema = z
   .object({
     id: z.string(),
     alt: z.string(),
     src: z.string().min(1),
     tileSize: galleryTileSizeSchema,
+    /** When set, overrides preset dimensions for aspect ratio and max-width. */
+    customFramePx: customFramePxSchema.optional(),
     categories: z.array(portfolioCategorySlugSchema).optional(),
     category: portfolioCategorySlugSchema.optional(),
     /** Short project note (tools, process) — shown in the gallery lightbox. */
     description: localizedStringSchema.optional(),
   })
-  .transform((data) => {
+  .transform((data): PortfolioItem => {
     const raw =
       data.categories != null && data.categories.length > 0
         ? data.categories
@@ -44,7 +64,7 @@ export const portfolioItemSchema = z
           ? [data.category]
           : [];
     const categories = [...new Set(raw)];
-    return {
+    const base: PortfolioItem = {
       id: data.id,
       alt: data.alt,
       src: data.src,
@@ -52,9 +72,10 @@ export const portfolioItemSchema = z
       categories,
       description: data.description ?? { lv: "", en: "" },
     };
+    return data.customFramePx !== undefined
+      ? { ...base, customFramePx: data.customFramePx }
+      : base;
   });
-
-export type PortfolioItem = z.infer<typeof portfolioItemSchema>;
 
 export const siteContentSchema = z
   .object({

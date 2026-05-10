@@ -29,14 +29,18 @@ export default async function AboutPage({
       <SiteHeaderInner variant="about" locale={locale} />
       <main
         className={cn(
-          "mx-auto w-full max-w-[1920px] flex-1 pb-16 pt-6 sm:pt-8 lg:pt-2",
-          "max-lg:px-[22px] lg:px-[clamp(1.5rem,calc(100vw*202/1920),202px)]",
+          "mx-auto w-full max-w-[1920px] flex-1",
+          "max-lg:px-[22px] max-lg:pb-16 max-lg:pt-6 max-lg:sm:pt-8",
+          "sm:max-lg:px-9 md:max-lg:px-12",
+          "lg:px-[clamp(1.5rem,calc(100vw*202/1920),202px)]",
+          "lg:pb-[clamp(3rem,calc(100vw*64/1920),4rem)] lg:pt-[clamp(0.5rem,calc(100vw*16/1920),24px)]",
         )}
       >
         <div
           className={cn(
-            "flex flex-col gap-8 sm:gap-10",
-            "lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:items-start lg:gap-x-12 lg:gap-y-6",
+            "flex flex-col gap-8 sm:max-lg:gap-10",
+            "lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:items-start",
+            "lg:gap-x-[clamp(2rem,calc(100vw*48/1920),3rem)] lg:gap-y-[clamp(1.25rem,calc(100vw*24/1920),24px)]",
           )}
         >
           <h1
@@ -51,7 +55,8 @@ export default async function AboutPage({
 
           <div
             className={cn(
-              "relative order-2 mx-auto w-full max-w-[min(100%,673.749px)] shrink-0 lg:order-0 lg:mx-0",
+              "relative order-3 mx-auto w-full max-w-[min(100%,673.749px)] shrink-0 lg:order-0 lg:mx-0",
+              "lg:max-w-[min(100%,calc(100vw*673.749/1920),673.749px)]",
               "lg:col-start-2 lg:row-start-1 lg:row-span-3 lg:self-start",
             )}
           >
@@ -75,7 +80,8 @@ export default async function AboutPage({
 
           <div
             className={cn(
-              "order-3 max-w-full space-y-5 sm:max-w-[789px] sm:space-y-6 lg:order-0",
+              "order-2 max-w-full space-y-5 sm:max-lg:max-w-[789px] sm:max-lg:space-y-6 lg:order-0",
+              "lg:max-w-[min(100%,calc(100vw*789/1920),789px)] lg:space-y-[clamp(1.25rem,calc(100vw*24/1920),24px)]",
               "text-left lg:text-justify",
               "font-sans font-light not-italic text-foreground",
               fluidAboutBody,
@@ -99,7 +105,7 @@ export default async function AboutPage({
             alt=""
             width={210}
             height={142}
-            className="order-4 mx-auto block h-auto w-[min(210px,72vw)] max-w-full sm:w-[200px] lg:col-start-1 lg:row-start-3 lg:order-0 lg:ml-auto lg:mr-0 lg:w-[210px] lg:self-end"
+            className="order-4 mx-auto block h-auto w-[min(210px,72vw)] max-w-full sm:max-lg:w-[200px] lg:col-start-1 lg:row-start-3 lg:order-0 lg:ml-auto lg:mr-0 lg:w-[clamp(156px,calc(100vw*210/1920),210px)] lg:self-end"
           />
         </div>
       </main>

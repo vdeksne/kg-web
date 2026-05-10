@@ -22,7 +22,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  if (!body.password || !assertAdminPassword(body.password)) {
+  const password =
+    typeof body.password === "string" ? body.password.trim() : "";
+  if (!password || !assertAdminPassword(password)) {
     return NextResponse.json({ error: "Invalid password" }, { status: 401 });
   }
 
