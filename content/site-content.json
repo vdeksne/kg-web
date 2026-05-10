@@ -306,5 +306,11 @@
       "lv": "Neizdevās nosūtīt. Mēģini vēlreiz.",
       "en": "Could not send. Please try again."
     }
+  },
+  "social": {
+    "facebook": "https://facebook.com",
+    "instagram": "https://instagram.com",
+    "linkedin": "https://linkedin.com",
+    "whatsapp": "https://wa.me/"
   }
 }

@@ -25,6 +25,16 @@ export type PortfolioCategoryNavItem = z.infer<
   typeof portfolioCategoryNavItemSchema
 >;
 
+/** Footer / header icon row — absolute URLs (`https://…`). */
+export const socialLinksHrefSchema = z.object({
+  facebook: z.string().url(),
+  instagram: z.string().url(),
+  linkedin: z.string().url(),
+  whatsapp: z.string().url(),
+});
+
+export type SocialLinksHrefMap = z.infer<typeof socialLinksHrefSchema>;
+
 /** Normalized portfolio gallery slide (after CMS parse). */
 export type PortfolioItem = {
   id: string;
@@ -102,6 +112,7 @@ export const siteContentSchema = z
       sent: localizedStringSchema,
       error: localizedStringSchema,
     }),
+    social: socialLinksHrefSchema,
   })
   .superRefine((data, ctx) => {
     const navSlugs = data.portfolio.categoryNav.map((c) => c.slug);

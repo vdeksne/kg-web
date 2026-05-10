@@ -1444,6 +1444,49 @@ export function AdminDashboard() {
                   )
                 }
               />
+
+              <div className="border-t border-zinc-800 pt-10">
+                <p className="text-sm font-medium text-zinc-300">
+                  Social links (header + footer icons)
+                </p>
+                <p className="mt-1 text-xs text-zinc-500">
+                  Full URLs (https://…). Saved with the rest of the site content.
+                </p>
+                <div className="mt-6 grid gap-6 sm:grid-cols-2">
+                  {(
+                    [
+                      ["facebook", "Facebook"] as const,
+                      ["instagram", "Instagram"] as const,
+                      ["linkedin", "LinkedIn"] as const,
+                      ["whatsapp", "WhatsApp"] as const,
+                    ] as const
+                  ).map(([key, label]) => (
+                    <div key={key} className="grid gap-2">
+                      <Label className="text-zinc-400">{label} URL</Label>
+                      <Input
+                        type="url"
+                        autoComplete="off"
+                        className={cn(fieldClass, "h-10 rounded-md px-3 text-sm")}
+                        value={content.social[key]}
+                        onChange={(e) => {
+                          const v = e.target.value;
+                          setContent((c) =>
+                            c
+                              ? {
+                                  ...c,
+                                  social: {
+                                    ...c.social,
+                                    [key]: v,
+                                  },
+                                }
+                              : c,
+                          );
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           ) : null}
 

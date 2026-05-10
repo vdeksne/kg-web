@@ -2,6 +2,14 @@ import { portfolioItems as seedPortfolio } from "@/data/portfolio";
 import { messages } from "@/i18n/messages";
 import type { SiteContent } from "./types";
 
+/** Populates {@link DEFAULT_SITE_CONTENT} and doubles as fallback when no CMS row exists. */
+export const DEFAULT_SOCIAL_LINK_HREFS: SiteContent["social"] = {
+  facebook: "https://facebook.com",
+  instagram: "https://instagram.com",
+  linkedin: "https://linkedin.com",
+  whatsapp: "https://wa.me/",
+};
+
 const portrait =
   "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=900&q=80";
 
@@ -75,4 +83,5 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     sent: { lv: messages.lv.contact.sent, en: messages.en.contact.sent },
     error: { lv: messages.lv.contact.error, en: messages.en.contact.error },
   },
+  social: DEFAULT_SOCIAL_LINK_HREFS,
 };

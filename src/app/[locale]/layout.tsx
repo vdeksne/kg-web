@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { LocaleHtmlLang } from "@/components/i18n/LocaleHtmlLang";
 import { PortfolioNavProvider } from "@/components/site/PortfolioNavProvider";
 import { PublicSiteImageFriction } from "@/components/site/PublicSiteImageFriction";
+import { SocialLinksProvider } from "@/components/site/SocialLinksProvider";
 import { defaultLocale, isLocale, locales } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
 import { getSiteContent } from "@/lib/site-content/store";
@@ -48,9 +49,11 @@ export default async function LocaleLayout({
       <LocaleHtmlLang locale={raw} />
       <PublicSiteImageFriction />
       <div className="kg-img-protected-host">
-        <PortfolioNavProvider categories={site.portfolio.categoryNav}>
-          {children}
-        </PortfolioNavProvider>
+        <SocialLinksProvider social={site.social}>
+          <PortfolioNavProvider categories={site.portfolio.categoryNav}>
+            {children}
+          </PortfolioNavProvider>
+        </SocialLinksProvider>
       </div>
     </>
   );

@@ -130,7 +130,7 @@ const messagesEn: Messages = {
     messageLabel: "Your message",
     submit: "Send",
     sent: "Thank you, message sent.",
-    error: "Could not send. Please try again.",
+    error: "Sorry, could not send. Please try again.",
   },
   footer: {
     tagline: "Nemiz",
