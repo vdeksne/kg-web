@@ -91,9 +91,12 @@ export const fluidAboutTitle =
 export const fluidAboutBody =
   "text-[clamp(1rem,calc(16px+(100vw-320px)*0.0025),20px)] lg:text-[length:clamp(16px,calc(100vw*20/1920),20px)]";
 
-/** Contact page H2 — same 1920 cap as {@link fluidAboutTitle}; below `lg` fluid for uppercase heading. */
+/**
+ * Contact page H2 — same 1920 cap as {@link fluidAboutTitle}; below `lg` stays one line (both LV/EN
+ * headings) via nowrap + tighter floor fluid scale for narrow widths.
+ */
 export const fluidContactTitle =
-  "font-sans font-bold not-italic uppercase leading-none tracking-tight text-foreground max-lg:text-[length:clamp(28px,calc(28px+(100vw-320px)*0.05),48px)] lg:text-[length:clamp(2.25rem,calc(100vw*65.55/1920),65.55px)]";
+  "font-sans font-bold not-italic uppercase leading-none tracking-tight text-foreground max-lg:whitespace-nowrap max-lg:tracking-normal max-lg:text-[length:clamp(16px,calc(16px+(100vw-320px)*0.065),52px)] lg:text-[length:clamp(2.25rem,calc(100vw*65.55/1920),65.55px)]";
 
 /**
  * Contact labels, email/phone row, message label — matches previous aside ramp below `lg`;

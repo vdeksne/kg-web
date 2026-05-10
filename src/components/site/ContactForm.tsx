@@ -98,12 +98,7 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
         )}
       >
         <div className="min-w-0 max-w-full lg:min-w-0 lg:flex-1">
-          <h2
-            className={cn(
-              fluidContactTitle,
-              "max-w-full hyphens-auto wrap-break-word lg:whitespace-nowrap",
-            )}
-          >
+          <h2 className={cn(fluidContactTitle, "max-w-full min-w-0")}>
             {copy.heading}
           </h2>
         </div>
