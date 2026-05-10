@@ -129,7 +129,7 @@ const messagesEn: Messages = {
     emailLabel: "Email*",
     messageLabel: "Your message",
     submit: "Send",
-    sent: "Thanks — sent.",
+    sent: "Thank you, message sent.",
     error: "Could not send. Please try again.",
   },
   footer: {
