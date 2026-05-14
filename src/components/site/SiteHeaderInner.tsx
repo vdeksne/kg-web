@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Locale } from "@/i18n/config";
 import { defaultLocale } from "@/i18n/config";
@@ -12,12 +11,11 @@ import { withLocale } from "@/lib/i18n-path";
 import { cn } from "@/lib/utils";
 
 const SHAPES_SRC = "/images/header_shapes_V2.png";
-const SHAPES_INTRINSIC_W = 1961;
-const SHAPES_INTRINSIC_H = 814;
 
 /** Subpage header: mobile raster below `lg`; desktop banner + in-flow lang from `lg`. */
-const SUBPAGE_HEADER_MOBILE_MAX_PX = 1023;
 const MOBILE_SUBPAGE_HEADER_SRC = "/images/mobite - header.png";
+/** CSS `url()` must encode spaces; Next/Image handled this implicitly. */
+const MOBILE_SUBPAGE_HEADER_URL = encodeURI(MOBILE_SUBPAGE_HEADER_SRC);
 const MOBILE_SUBPAGE_HEADER_W = 720;
 const MOBILE_SUBPAGE_HEADER_H = 260;
 
@@ -46,25 +44,16 @@ export function SiteHeaderInner({
       </div>
       {isAbout ? (
         <div
-          className="pointer-events-none absolute top-0 z-0 hidden lg:block select-none"
+          className="pointer-events-none absolute top-0 z-0 hidden bg-contain bg-right-top bg-no-repeat select-none lg:block"
           style={{
             right: "clamp(48px, calc(203 * 100vw / 1920), 203px)",
             height: "clamp(160px, calc(407 * 100vw / 1920), 407px)",
             width:
               "min(980px, calc(100vw - 2 * clamp(1.5rem, 100vw * 202 / 1920, 202px) - clamp(48px, 100vw * 203 / 1920, 203px)))",
+            backgroundImage: `url('${SHAPES_SRC}')`,
           }}
           aria-hidden
-        >
-          <Image
-            src={SHAPES_SRC}
-            alt=""
-            width={SHAPES_INTRINSIC_W}
-            height={SHAPES_INTRINSIC_H}
-            className="h-full w-full object-contain object-top-right"
-            sizes="(max-width: 1024px) 100vw, 980px"
-            priority
-          />
-        </div>
+        />
       ) : null}
 
       <div
@@ -104,18 +93,13 @@ export function SiteHeaderInner({
             >
               <Link
                 href={withLocale("/", locale)}
-                className="relative block w-full max-w-none rounded-none border-0 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              >
-                <Image
-                  src={MOBILE_SUBPAGE_HEADER_SRC}
-                  alt="Kaspars Groza — portfolio"
-                  width={MOBILE_SUBPAGE_HEADER_W}
-                  height={MOBILE_SUBPAGE_HEADER_H}
-                  className="h-auto w-full max-lg:-mt-28 object-contain object-left"
-                  sizes={`(max-width: ${SUBPAGE_HEADER_MOBILE_MAX_PX}px) 100vw, 400px`}
-                  priority
-                />
-              </Link>
+                aria-label="Kaspars Groza — portfolio"
+                className="relative block w-full max-w-none rounded-none border-0 bg-contain bg-left bg-no-repeat outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 max-lg:-mt-28"
+                style={{
+                  aspectRatio: `${MOBILE_SUBPAGE_HEADER_W} / ${MOBILE_SUBPAGE_HEADER_H}`,
+                  backgroundImage: `url('${MOBILE_SUBPAGE_HEADER_URL}')`,
+                }}
+              />
             </div>
             <div className="hidden lg:grid w-full grid-cols-[minmax(0,1fr)_auto] items-stretch gap-x-[clamp(1rem,calc(24*100vw/1920),1.5rem)]">
               <div className="min-w-0 self-start">
@@ -128,9 +112,16 @@ export function SiteHeaderInner({
             </div>
           </>
         ) : (
-          <div className="flex flex-wrap items-start justify-between gap-6">
+          <div
+            className={cn(
+              "flex justify-between gap-6",
+              /* One row on desktop so LV/ENG can’t change header height by wrapping. */
+              "max-lg:flex-wrap max-lg:items-start",
+              "lg:flex-nowrap lg:items-center lg:min-h-0",
+            )}
+          >
             <LogoLockup />
-            <div className="flex flex-col items-end gap-4">
+            <div className="flex min-h-0 shrink-0 flex-col items-end gap-4">
               <LanguageSwitch className="hidden lg:flex" />
               <div className="flex w-full justify-center">
                 <SocialLinks />

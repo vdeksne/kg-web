@@ -122,7 +122,6 @@ export function SiteFooter() {
                     <NavPortfolioItem
                       locale={locale}
                       layout="row"
-                      labelStyle="text"
                       dropdown={false}
                       showActiveState={false}
                     />

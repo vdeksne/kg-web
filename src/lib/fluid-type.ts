@@ -24,26 +24,27 @@ export const fluidLangIconText =
   "text-[clamp(12px,calc(12px+(100vw-320px)*0.00125),14px)]";
 
 /**
- * Primary nav menu SVGs (header row): larger than language icons; ~14px → 17px.
+ * Primary nav menu (text row): ~21px → 24px floor/cap (scales with vw; `em` drives band height).
+ * Band height stays `calc(1em * 25.8/17)` relative to this `em`.
  */
 export const fluidNavMenuIconText =
-  "text-[clamp(14px,calc(14px+(100vw-320px)*0.001875),17px)]";
+  "text-[clamp(21px,calc(21px+(100vw-320px)*0.001875),24px)]";
 
 /** About-banner primary nav menu: scales with ≥701px artboard. */
 export const fluidNavMenuIconAboutDesktop =
-  "text-[clamp(14px,calc(14px+(100vw-701px)*3/1219),17px)]";
+  "text-[clamp(21px,calc(21px+(100vw-701px)*3/1219),24px)]";
 
 /**
- * Overrides {@link fluidNavMenuIconAboutDesktop} gap + SVG em scale at ≤420px so the three-row
+ * Overrides {@link fluidNavMenuIconAboutDesktop} gap + em scale at ≤420px so the three-row
  * items match the compact mobile mockup (proportional 320→420, single flex line).
  * Width literal must stay aligned with SUBPAGE_NAV_COMPACT_MAX_PX (site-breakpoints).
  */
 export const fluidAboutBannerNavCompactMax420 =
-  "max-[420px]:gap-[length:clamp(11px,calc(11px+(100vw-320px)*0.048),18px)] max-[420px]:text-[length:clamp(10px,calc(10px+(100vw-320px)*0.01),11px)]";
+  "max-[420px]:gap-[length:clamp(11px,calc(11px+(100vw-320px)*0.048),18px)] max-[420px]:text-[length:clamp(15px,calc(15px+(100vw-320px)*0.01),17px)]";
 
-/** Primary nav menu SVGs (mobile drawer): large tap targets; ~15px → 19px. */
+/** Primary nav menu (mobile drawer): large tap targets; ~22px → 27px. */
 export const fluidNavMenuIconMobile =
-  "text-[clamp(15px,calc(15px+(100vw-320px)*0.0025),19px)]";
+  "text-[clamp(22px,calc(22px+(100vw-320px)*0.003125),27px)]";
 
 /** About-header desktop (≥701): lang size tracks 1920 artboard, 12px–16px */
 export const fluidAboutDesktopLang =

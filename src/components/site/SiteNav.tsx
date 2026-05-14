@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import {
-  MainNavAboutIcon,
-  MainNavContactIcon,
-} from "@/components/site/MenuNavIcons";
 import { NavPortfolioItem } from "@/components/site/NavPortfolioItem";
+import {
+  PrimaryNavText,
+  PRIMARY_NAV_UL_ROW_LAYOUT_CLASS,
+  primaryNavItemShellClass,
+} from "@/components/site/PrimaryNavText";
 import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
 import { messages } from "@/i18n/messages";
 import {
@@ -19,9 +20,13 @@ import {
 import { withLocale } from "@/lib/i18n-path";
 import { cn } from "@/lib/utils";
 
-export type SiteNavIconScale = "header" | "aboutBanner" | "drawer" | "drawerCompact";
+export type SiteNavIconScale =
+  | "header"
+  | "aboutBanner"
+  | "drawer"
+  | "drawerCompact";
 
-function navIconTextClass(scale: SiteNavIconScale) {
+function navTypographyClass(scale: SiteNavIconScale) {
   switch (scale) {
     case "aboutBanner":
       return fluidNavMenuIconAboutDesktop;
@@ -42,9 +47,7 @@ export function SiteNav({
 }: {
   className?: string;
   layout?: "row" | "col";
-  /** Smaller type (home mobile drawer). */
   compact?: boolean;
-  /** Match language switch: `header` default, `aboutBanner` on about desktop, drawer variants for column nav. */
   iconScale?: SiteNavIconScale;
 }) {
   const pathname = usePathname();
@@ -55,30 +58,25 @@ export function SiteNav({
   const t = messages[locale].nav;
 
   const resolvedScale: SiteNavIconScale =
-    layout === "col"
-      ? compact
-        ? "drawerCompact"
-        : "drawer"
-      : iconScale;
+    layout === "col" ? (compact ? "drawerCompact" : "drawer") : iconScale;
 
-  const iconText = navIconTextClass(resolvedScale);
+  const textScaleClass = navTypographyClass(resolvedScale);
   const aboutBanner = resolvedScale === "aboutBanner";
   const aboutBannerRow = aboutBanner && layout === "row";
 
   const aboutHref = withLocale("/about", locale);
   const contactHref = withLocale("/contact", locale);
 
-  /** Unselected items use the same solid ink as selected; only the SVG (incl. yellow bar) differs. */
-  const drawerOnBrand =
-    layout === "col" && compact
-      ? {
-          active: "text-[#FFFFFF]",
-          idle: "text-[#FFFFFF]",
-        }
-      : {
-          active: "text-foreground",
-          idle: "text-foreground",
-        };
+  const inactiveColor =
+    layout === "col" && compact ? "text-[#FFFFFF]" : "text-foreground";
+  const activeColor = inactiveColor;
+
+  const aboutSel = pathname === aboutHref;
+  const contactSel = pathname === contactHref;
+
+  const colShellInactive = primaryNavItemShellClass(
+    layout === "col" && compact ? "text-[#FFFFFF]" : "text-foreground",
+  );
 
   return (
     <nav className={cn(className, aboutBannerRow && "overflow-visible")}>
@@ -87,58 +85,54 @@ export function SiteNav({
           layout === "row"
             ? cn(
                 "flex items-center font-normal leading-none min-w-0 overflow-visible",
-                aboutBannerRow
-                  ? "flex-nowrap justify-center"
-                  : "flex-wrap",
+                PRIMARY_NAV_UL_ROW_LAYOUT_CLASS,
+                aboutBannerRow && "justify-center",
                 fluidPrimaryNavGap,
-                iconText,
+                textScaleClass,
                 aboutBannerRow && fluidAboutBannerNavCompactMax420,
               )
             : cn(
-                "flex w-max flex-col items-start font-normal leading-none uppercase",
-                compact ? "gap-6 leading-snug tracking-[0.16em]" : "gap-4",
-                iconText,
+                "flex w-max flex-col items-start font-normal uppercase leading-none tracking-[0.06em]",
+                compact
+                  ? "gap-6 leading-snug tracking-[0.1em]"
+                  : "gap-4",
+                textScaleClass,
               )
         }
       >
-        <li>
+        <li className={layout === "row" ? "shrink-0" : undefined}>
           <Link
             href={aboutHref}
-            aria-label={t.about}
-            className={cn(
-              "inline-flex items-center leading-none",
-              pathname === aboutHref ? drawerOnBrand.active : drawerOnBrand.idle,
-              compact && "block w-max py-1",
-            )}
+            aria-current={aboutSel ? "page" : undefined}
+            className={
+              layout === "row"
+                ? primaryNavItemShellClass(
+                    cn(aboutSel ? activeColor : inactiveColor),
+                  )
+                : colShellInactive
+            }
           >
-            <MainNavAboutIcon
-              locale={locale}
-              selected={pathname === aboutHref}
-              aboutBanner={aboutBanner}
-            />
+            <PrimaryNavText selected={aboutSel}>{t.about}</PrimaryNavText>
           </Link>
         </li>
         <NavPortfolioItem
           locale={locale}
           layout={layout}
           compact={compact}
-          aboutBanner={aboutBanner}
         />
-        <li>
+        <li className={layout === "row" ? "shrink-0" : undefined}>
           <Link
             href={contactHref}
-            aria-label={t.contact}
-            className={cn(
-              "inline-flex items-center leading-none",
-              pathname === contactHref ? drawerOnBrand.active : drawerOnBrand.idle,
-              compact && "block w-max py-1",
-            )}
+            aria-current={contactSel ? "page" : undefined}
+            className={
+              layout === "row"
+                ? primaryNavItemShellClass(
+                    cn(contactSel ? activeColor : inactiveColor),
+                  )
+                : colShellInactive
+            }
           >
-            <MainNavContactIcon
-              locale={locale}
-              selected={pathname === contactHref}
-              aboutBanner={aboutBanner}
-            />
+            <PrimaryNavText selected={contactSel}>{t.contact}</PrimaryNavText>
           </Link>
         </li>
       </ul>

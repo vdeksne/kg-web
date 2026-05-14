@@ -55,7 +55,7 @@ export default async function AboutPage({
 
           <div
             className={cn(
-              "relative order-3 mx-auto w-full max-w-[min(100%,673.749px)] shrink-0 lg:order-0 lg:mx-0",
+              "relative order-2 mx-auto w-full max-w-[min(100%,673.749px)] shrink-0 lg:order-0 lg:mx-0",
               "lg:max-w-[min(100%,calc(100vw*673.749/1920),673.749px)]",
               "lg:col-start-2 lg:row-start-1 lg:row-span-3 lg:self-start",
             )}
@@ -80,7 +80,7 @@ export default async function AboutPage({
 
           <div
             className={cn(
-              "order-2 max-w-full space-y-5 sm:max-lg:max-w-[789px] sm:max-lg:space-y-6 lg:order-0",
+              "order-3 max-w-full space-y-5 sm:max-lg:max-w-[789px] sm:max-lg:space-y-6 lg:order-0",
               "lg:max-w-[min(100%,calc(100vw*789/1920),789px)] lg:space-y-[clamp(1.25rem,calc(100vw*24/1920),24px)]",
               "text-left lg:text-justify",
               "font-sans font-light not-italic text-foreground",

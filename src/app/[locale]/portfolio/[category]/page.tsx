@@ -59,10 +59,14 @@ export default async function PortfolioCategoryPage({
         )}
       >
         <PortfolioGalleryProvider items={items} locale={locale}>
-          <div className="text-muted-foreground mb-[35.01px] hidden lg:flex flex-wrap items-center gap-x-1 gap-y-1 text-xs tracking-[0.18em] uppercase">
-            <span>{portfolio.breadcrumb[locale]}</span>
-            <span>/</span>
-            <span>{categoryTitle}</span>
+          <div className="text-muted-foreground mb-[35.01px] hidden min-w-0 flex-nowrap items-center gap-x-1 overflow-hidden text-xs tracking-[0.18em] uppercase lg:flex">
+            <span className="shrink-0 whitespace-nowrap">
+              {portfolio.breadcrumb[locale]}
+            </span>
+            <span className="shrink-0" aria-hidden>
+              /
+            </span>
+            <span className="min-w-0 truncate">{categoryTitle}</span>
           </div>
 
           {/* Mobile: one column, document order. */}

@@ -27,7 +27,7 @@ function IconSlot({
   return (
     <span
       className={cn(
-        "inline-flex h-[1em] shrink-0 items-center justify-center overflow-visible",
+        "inline-flex h-[1.06em] shrink-0 items-center justify-center overflow-visible",
         className,
       )}
       style={{ width: widthExpr }}
@@ -102,14 +102,7 @@ export function LanguageEngIcon({ selected, className }: IconProps) {
   );
 
   return (
-    <IconSlot
-      widthExpr={ENG_SLOT_W}
-      className={cn(
-        /** ~1px headroom vs LV so “G” descender isn’t cut on mobile/WebKit tight flex rows */
-        "h-[1.06em]",
-        className,
-      )}
-    >
+    <IconSlot widthExpr={ENG_SLOT_W} className={className}>
       {svg}
     </IconSlot>
   );

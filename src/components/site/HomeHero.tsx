@@ -131,11 +131,17 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
             <div className="relative z-10 flex h-full min-h-0 w-full min-[481px]:overflow-visible flex-col px-[clamp(1.5rem,calc(var(--hero-vw)*202/1920),202px)]">
               <span className="sr-only">{home.heroImageAlt}</span>
               <DotGrid className="pointer-events-none absolute z-20 hidden min-[481px]:block w-[clamp(140px,calc(231.48*var(--hero-vw)/1920),231.48px)] min-[481px]:top-[calc(33*var(--hero-vw)/1920)] min-[481px]:right-[calc(369*var(--hero-vw)/1920)] min-[481px]:left-auto" />
+              {/*
+                Hero canvas is uniformly scaled (--hero-scale). Language tabs must stay at the same
+                em size as other pages (`LanguageSwitch` default), so only the switch is counter-scaled.
+              */}
               <div
                 className="hidden lg:flex lg:items-start lg:justify-end"
                 style={{ paddingTop: HERO_ALIGN_TOP_PX }}
               >
-                <LanguageSwitch />
+                <div className="origin-top-right inline-flex transform-[scale(calc(1/var(--hero-scale)))]">
+                  <LanguageSwitch />
+                </div>
               </div>
 
               <div
@@ -182,12 +188,12 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
                       aspectRatio: `${HERO_LOCKUP_W} / ${HERO_LOCKUP_H}`,
                     }}
                   />
-              <div
-                className="max-[480px]:hidden [--hero-nav-mt-extra:0px] max-lg:min-[481px]:[--hero-nav-mt-extra:clamp(3rem,11vw,6.75rem)]"
-                style={{
-                  marginTop: `calc(max(2rem, calc(var(--hero-vw) * ${HERO_NAV_TOP_GAP} / ${HERO_REF_W})) + var(--hero-nav-mt-extra))`,
-                }}
-              >
+                  <div
+                    className="max-[480px]:hidden [--hero-nav-mt-extra:0px] max-lg:min-[481px]:[--hero-nav-mt-extra:clamp(3rem,11vw,6.75rem)]"
+                    style={{
+                      marginTop: `calc(max(2rem, calc(var(--hero-vw) * ${HERO_NAV_TOP_GAP} / ${HERO_REF_W})) + var(--hero-nav-mt-extra))`,
+                    }}
+                  >
                     <SiteNav
                       layout="row"
                       className="flex w-full justify-start"

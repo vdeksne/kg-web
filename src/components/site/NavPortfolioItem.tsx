@@ -5,22 +5,19 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { messages } from "@/i18n/messages";
-import { withLocale } from "@/lib/i18n-path";
-import { MainNavPortfolioIcon } from "@/components/site/MenuNavIcons";
+import { PrimaryNavText, primaryNavItemShellClass } from "@/components/site/PrimaryNavText";
 import { usePortfolioNavCategories } from "@/components/site/PortfolioNavProvider";
 import { fluidDropdownText } from "@/lib/fluid-type";
+import { withLocale } from "@/lib/i18n-path";
 import { cn } from "@/lib/utils";
 
 /** Darbi submenu — layout from design spec (px) */
 const DROPDOWN_GAP_TOP = 11.6;
 const DROPDOWN_FILL = "#F3C02D";
-/** Minimum width from design; panel grows with longest label */
 const DROPDOWN_MIN_W = 139.43;
 const DROPDOWN_H = 100.1;
 const DROPDOWN_PAD_X = 17.09;
-/** Mobile column drawer: extra right inset vs design left pad (reference layout). */
 const DROPDOWN_COL_PAD_RIGHT = 60;
-/** Vertical padding inside mobile submenu; keep tight to match main `SiteNav` column gaps. */
 const DROPDOWN_COL_PAD_Y = 10;
 const DROPDOWN_FONT_PX = 18;
 const DROPDOWN_ROW_GAP = 10;
@@ -29,23 +26,18 @@ export function NavPortfolioItem({
   locale,
   layout = "row",
   compact = false,
-  aboutBanner = false,
   dropdownOpenUp = false,
-  labelStyle = "icon",
   dropdown = true,
   showActiveState = true,
 }: {
   locale: Locale;
   layout?: "row" | "col";
   compact?: boolean;
-  aboutBanner?: boolean;
   /** Footer (etc.): open submenu above the label so it stays in view. */
   dropdownOpenUp?: boolean;
-  /** `text`: show `nav.portfolio` string instead of SVG (e.g. desktop footer). */
-  labelStyle?: "icon" | "text";
   /** `false`: single link to default portfolio category (no hover/tap submenu). */
   dropdown?: boolean;
-  /** `false`: never use stronger color / selected SVG for current route (e.g. footer). */
+  /** `false`: never underline / active styling for current route (e.g. footer). */
   showActiveState?: boolean;
 }) {
   const categories = usePortfolioNavCategories();
@@ -69,13 +61,17 @@ export function NavPortfolioItem({
   const wrapRef = useRef<HTMLLIElement>(null);
   const menuId = useId();
   const openRef = useRef(open);
-  openRef.current = open;
 
   useEffect(() => {
+    openRef.current = open;
+  }, [open]);
+
+  useEffect(() => {
+    // Flyout belongs to prior route/locale segment.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reset UI on pathname change only
     setOpen(false);
   }, [pathname]);
 
-  /** ≤700px: tap label toggles; ≥701px: hover/focus dropdown (matches subpage header). */
   const [isMobileRowNav, setIsMobileRowNav] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 700px)");
@@ -95,6 +91,11 @@ export function NavPortfolioItem({
 
   const close = useCallback(() => setOpen(false), []);
 
+  const colLinkClass = primaryNavItemShellClass(
+    compact ? "text-[#FFFFFF]" : "text-foreground",
+  );
+  const headerRowLinkClass = primaryNavItemShellClass("text-foreground");
+
   if (layout === "col") {
     return (
       <li
@@ -103,21 +104,15 @@ export function NavPortfolioItem({
       >
         <Link
           href={`${portfolioPrefix}/${activeSlug}`}
-          aria-label={t.portfolio}
           aria-expanded={open}
           aria-controls={open ? menuId : undefined}
-          className={cn(
-            "inline-flex w-max max-w-full items-center py-1 leading-none",
-            compact
-              ? "text-[#FFFFFF]"
-              : "text-foreground",
-          )}
+          className={colLinkClass}
           onClick={(e) => {
             e.preventDefault();
             setOpen((v) => !v);
           }}
         >
-          <MainNavPortfolioIcon locale={locale} selected={portfolioActive} />
+          <PrimaryNavText selected={portfolioActive}>{t.portfolio}</PrimaryNavText>
         </Link>
         {open ? (
           <ul
@@ -142,7 +137,7 @@ export function NavPortfolioItem({
                   <Link
                     href={`${portfolioPrefix}/${c.slug}`}
                     className={cn(
-                      "group/sub block w-full whitespace-nowrap text-left leading-tight font-light tracking-[0.2em] text-[#FFFFFF] uppercase outline-none",
+                      "group/sub block w-full whitespace-nowrap text-left leading-tight font-light tracking-[0.12em] text-[#FFFFFF] uppercase outline-none",
                       fluidDropdownText,
                     )}
                     onClick={close}
@@ -174,55 +169,28 @@ export function NavPortfolioItem({
       <li>
         <Link
           href={`${portfolioPrefix}/${activeSlug}`}
-          aria-label={labelStyle === "icon" ? t.portfolio : undefined}
-          className={cn(
-            "inline-flex items-center",
-            labelStyle === "text"
-              ? "shrink-0 whitespace-nowrap"
-              : "leading-none",
-            "text-foreground",
-          )}
+          className="shrink-0 whitespace-nowrap text-foreground"
         >
-          {labelStyle === "text" ? (
-            t.portfolio
-          ) : (
-            <MainNavPortfolioIcon
-              locale={locale}
-              selected={portfolioActive}
-              aboutBanner={aboutBanner}
-            />
-          )}
+          {t.portfolio}
         </Link>
       </li>
     );
   }
 
   return (
-    <li ref={wrapRef} className="group relative">
+    <li ref={wrapRef} className="group relative shrink-0">
       <Link
         href={`${portfolioPrefix}/${activeSlug}`}
-        aria-label={labelStyle === "icon" ? t.portfolio : undefined}
         aria-expanded={isMobileRowNav ? open : undefined}
         aria-controls={isMobileRowNav ? menuId : undefined}
-        className={cn(
-          "inline-flex items-center text-foreground",
-          labelStyle === "text" ? "shrink-0 whitespace-nowrap" : "leading-none",
-        )}
+        className={headerRowLinkClass}
         onClick={(e) => {
           if (!isMobileRowNav) return;
           e.preventDefault();
           setOpen((v) => !v);
         }}
       >
-        {labelStyle === "text" ? (
-          t.portfolio
-        ) : (
-          <MainNavPortfolioIcon
-            locale={locale}
-            selected={portfolioActive}
-            aboutBanner={aboutBanner}
-          />
-        )}
+        <PrimaryNavText selected={portfolioActive}>{t.portfolio}</PrimaryNavText>
       </Link>
       <ul
         id={menuId}
@@ -230,7 +198,6 @@ export function NavPortfolioItem({
         className={cn(
           "absolute left-0 z-50 box-border flex max-w-[calc(100vw-1.5rem)] flex-col items-stretch justify-center gap-[10px] py-3",
           dropdownOpenUp ? "bottom-full" : "top-full",
-          /* Bridge the margin gap so :hover isn’t lost between label and panel */
           dropdownOpenUp
             ? "before:pointer-events-auto before:absolute before:top-full before:left-0 before:h-[11.6px] before:w-full before:content-['']"
             : "before:pointer-events-auto before:absolute before:bottom-full before:left-0 before:h-[11.6px] before:w-full before:content-['']",
@@ -259,7 +226,7 @@ export function NavPortfolioItem({
               <Link
                 href={`${portfolioPrefix}/${c.slug}`}
                 className={cn(
-                  "group/sub block w-full whitespace-nowrap text-left leading-tight font-light tracking-[0.2em] text-white uppercase outline-none",
+                  "group/sub block w-full whitespace-nowrap text-left leading-tight font-light tracking-[0.12em] text-white uppercase outline-none",
                   fluidDropdownText,
                 )}
                 onClick={close}
