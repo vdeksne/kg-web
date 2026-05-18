@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, ChevronDown, ChevronUp, Copy, LogOut } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, Copy, LogOut, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -18,6 +18,7 @@ import {
 import { aspectRatioCssForPortfolioItem } from "@/lib/portfolio-item-frame";
 import type { LocalizedString, SiteContent } from "@/lib/site-content/types";
 import { portfolioCategorySlugSchema } from "@/lib/site-content/types";
+import { withSoftHyphenBreaks } from "@/lib/with-soft-hyphen-breaks";
 import { cn } from "@/lib/utils";
 
 const TABS = [
@@ -255,6 +256,9 @@ export function AdminDashboard() {
   const [copiedEmailMessageId, setCopiedEmailMessageId] = useState<
     string | null
   >(null);
+  const [deletingMessageId, setDeletingMessageId] = useState<string | null>(
+    null,
+  );
 
   const load = useCallback(async () => {
     setLoadError(null);
@@ -311,6 +315,42 @@ export function AdminDashboard() {
     if (tab !== "messages") return;
     void loadMessages();
   }, [tab, loadMessages]);
+
+  const deleteMessage = useCallback(
+    async (id: string) => {
+      if (
+        !window.confirm(
+          "Delete this submission permanently? This cannot be undone.",
+        )
+      ) {
+        return;
+      }
+      setDeletingMessageId(id);
+      setMessagesNote(null);
+      try {
+        const res = await fetch(
+          `/api/admin/contact-messages/${encodeURIComponent(id)}`,
+          { method: "DELETE", credentials: "include" },
+        );
+        if (res.status === 401) {
+          router.push("/admin/login?next=/admin");
+          return;
+        }
+        if (!res.ok) {
+          const body = (await res.json().catch(() => ({}))) as {
+            error?: string;
+          };
+          setMessagesNote(body.error ?? "Could not delete message.");
+          return;
+        }
+        setCopiedEmailMessageId((prev) => (prev === id ? null : prev));
+        await loadMessages();
+      } finally {
+        setDeletingMessageId(null);
+      }
+    },
+    [router, loadMessages],
+  );
 
   const uploadFile = async (file: File): Promise<string | null> => {
     const fd = new FormData();
@@ -393,7 +433,7 @@ export function AdminDashboard() {
   }
 
   return (
-    <div className="relative mx-auto flex min-h-dvh max-w-6xl flex-col px-5 py-10 sm:px-8">
+    <div className="relative mx-auto flex min-h-dvh max-w-6xl min-w-0 flex-col overflow-x-hidden px-5 py-10 sm:px-8">
       <Button
         type="button"
         variant="outline"
@@ -484,7 +524,7 @@ export function AdminDashboard() {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -10 }}
           transition={{ duration: 0.28 }}
-          className="mt-10 min-h-0 flex-1 pb-12"
+          className="mt-10 min-h-0 min-w-0 flex-1 pb-12"
         >
           {tab === "about" ? (
             <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:gap-12">
@@ -1491,7 +1531,7 @@ export function AdminDashboard() {
           ) : null}
 
           {tab === "messages" ? (
-            <div className="space-y-6">
+            <div className="min-w-0 w-full max-w-full space-y-6 overflow-x-hidden">
               {messagesNote ? (
                 <p className="rounded-md border border-amber-900/60 bg-amber-950/25 px-4 py-3 text-sm text-amber-200/90">
                   {messagesNote}
@@ -1507,19 +1547,21 @@ export function AdminDashboard() {
                 </p>
               ) : null}
               {messages && messages.length > 0 ? (
-                <ul className="space-y-4">
+                <ul className="min-w-0 w-full max-w-full list-none space-y-4 p-0">
                   {messages.map((m) => (
                     <li
                       key={m.id}
-                      className="rounded-lg border border-zinc-800 bg-zinc-900/35 p-4 sm:p-5"
+                      className="box-border min-w-0 w-full max-w-full overflow-x-hidden rounded-lg border border-zinc-800 bg-zinc-900/35 p-4 sm:p-5"
                     >
-                      <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-zinc-800/80 pb-3">
-                        <div>
-                          <p className="font-medium text-white">{m.name}</p>
-                          <div className="flex items-center gap-0.5">
+                      <div className="flex min-w-0 flex-wrap items-baseline justify-between gap-2 border-b border-zinc-800/80 pb-3">
+                        <div className="min-w-0 max-w-full flex-1 basis-0">
+                          <p className="wrap-anywhere font-medium text-white">
+                            {m.name}
+                          </p>
+                          <div className="flex min-w-0 items-center gap-0.5">
                             <a
                               href={`mailto:${m.email}`}
-                              className="font-mono text-xs text-[var(--kg-accent)] underline-offset-2 hover:underline"
+                              className="min-w-0 break-all font-mono text-xs text-[var(--kg-accent)] underline-offset-2 hover:underline"
                             >
                               {m.email}
                             </a>
@@ -1565,15 +1607,35 @@ export function AdminDashboard() {
                             </Button>
                           </div>
                         </div>
-                        <time
-                          className="text-xs text-zinc-500 tabular-nums"
-                          dateTime={m.created_at}
-                        >
-                          {new Date(m.created_at).toLocaleString(undefined, {
-                            dateStyle: "medium",
-                            timeStyle: "short",
-                          })}
-                        </time>
+                        <div className="flex shrink-0 flex-wrap items-center justify-end gap-1">
+                          <time
+                            className="text-xs text-zinc-500 tabular-nums"
+                            dateTime={m.created_at}
+                          >
+                            {new Date(m.created_at).toLocaleString(undefined, {
+                              dateStyle: "medium",
+                              timeStyle: "short",
+                            })}
+                          </time>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="size-8 shrink-0 rounded-none text-zinc-500 hover:bg-zinc-800/80 hover:text-red-400"
+                            aria-label="Delete submission"
+                            title="Delete submission"
+                            disabled={
+                              deletingMessageId === m.id || messagesLoading
+                            }
+                            onClick={() => void deleteMessage(m.id)}
+                          >
+                            <Trash2
+                              className="size-3.5"
+                              strokeWidth={2}
+                              aria-hidden
+                            />
+                          </Button>
+                        </div>
                       </div>
                       <div className="mt-2 flex flex-wrap gap-2">
                         {m.email_sent ? (
@@ -1592,12 +1654,12 @@ export function AdminDashboard() {
                         ) : null}
                       </div>
                       {m.error_detail ? (
-                        <p className="mt-2 font-mono text-xs text-amber-200/80">
-                          {m.error_detail}
+                        <p className="mt-2 hyphens-manual whitespace-pre-wrap wrap-anywhere font-mono text-xs text-amber-200/80">
+                          {withSoftHyphenBreaks(m.error_detail)}
                         </p>
                       ) : null}
-                      <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-zinc-300">
-                        {m.message}
+                      <p className="mt-3 w-full min-w-0 max-w-full hyphens-manual whitespace-pre-wrap wrap-anywhere text-sm leading-relaxed text-zinc-300">
+                        {withSoftHyphenBreaks(m.message)}
                       </p>
                     </li>
                   ))}

@@ -1,5 +1,7 @@
 import "server-only";
 
+import { z } from "zod";
+
 import { createServiceRoleClient } from "@/lib/supabase/admin";
 
 export type ContactMessageRow = {
@@ -71,6 +73,47 @@ export async function listContactMessagesForAdmin(
   } catch (e) {
     return {
       configured: true,
+      error: e instanceof Error ? e.message : "Unknown error",
+    };
+  }
+}
+
+export async function deleteContactMessageForAdmin(
+  id: string,
+): Promise<
+  | { ok: true }
+  | {
+      ok: false;
+      error: string;
+      notConfigured?: boolean;
+      notFound?: boolean;
+      badRequest?: boolean;
+    }
+> {
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY?.trim()) {
+    return {
+      ok: false,
+      error: "Database not configured",
+      notConfigured: true,
+    };
+  }
+  const parsed = z.string().uuid().safeParse(id);
+  if (!parsed.success) {
+    return { ok: false, error: "Invalid message id", badRequest: true };
+  }
+  try {
+    const supabase = createServiceRoleClient();
+    const { data, error } = await supabase
+      .from("contact_messages")
+      .delete()
+      .eq("id", parsed.data)
+      .select("id");
+    if (error) return { ok: false, error: error.message };
+    if (!data?.length) return { ok: false, error: "Not found", notFound: true };
+    return { ok: true };
+  } catch (e) {
+    return {
+      ok: false,
       error: e instanceof Error ? e.message : "Unknown error",
     };
   }

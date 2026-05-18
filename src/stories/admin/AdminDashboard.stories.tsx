@@ -38,6 +38,15 @@ function MockAdminApi({ children }: { children: React.ReactNode }) {
         return new Response(null, { status: 200 });
       }
       if (
+        url.includes("/api/admin/contact-messages/") &&
+        init?.method === "DELETE"
+      ) {
+        return new Response(JSON.stringify({ ok: true }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+      if (
         url.includes("/api/admin/contact-messages") &&
         (!init?.method || init.method === "GET")
       ) {
