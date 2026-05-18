@@ -6,7 +6,6 @@ import { LanguageSwitch } from "@/components/site/LanguageSwitch";
 import { LogoLockup } from "@/components/site/LogoLockup";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SocialLinks } from "@/components/site/SocialLinks";
-import { fluidHomeMobileLangCompactMax420 } from "@/lib/fluid-type";
 import { withLocale } from "@/lib/i18n-path";
 import { cn } from "@/lib/utils";
 
@@ -34,12 +33,9 @@ export function SiteHeaderInner({
 
   return (
     <header className={cn("relative box-border w-full", !isAbout && "pb-6")}>
-      <div className="relative z-20 flex w-full justify-end px-[22px] pt-[calc(68px+env(safe-area-inset-top,0))] pb-3 sm:px-9 md:px-12 lg:hidden pointer-events-none">
+      <div className="relative z-20 flex w-full justify-end px-[22px] pt-[calc(68px+env(safe-area-inset-top,0))] pb-3 lg:hidden pointer-events-none">
         <nav aria-label="Language" className="pointer-events-auto">
-          <LanguageSwitch
-            variant="homeMobile"
-            className={cn("shrink-0", fluidHomeMobileLangCompactMax420)}
-          />
+          <LanguageSwitch variant="homeMobile" className="shrink-0" />
         </nav>
       </div>
       {isAbout ? (
