@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { ContactSubmitGraphic } from "@/components/site/ContactSubmitGraphic";
 import {
   fluidContactDecorative,
   fluidContactLabel,
@@ -176,12 +176,12 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
         />
       </div>
 
-      <div className="flex w-full flex-col items-start gap-4">
+      <div className="flex w-full flex-col gap-4">
         {status === "sent" ? (
-          <p className="text-muted-foreground text-sm">{copy.sent}</p>
+          <p className="self-start text-muted-foreground text-sm">{copy.sent}</p>
         ) : null}
         {status === "error" ? (
-          <div className="max-w-prose space-y-2">
+          <div className="max-w-prose self-start space-y-2">
             <p className="text-destructive text-sm">
               {errorFeedback?.message ?? copy.error}
             </p>
@@ -201,7 +201,7 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
         >
           <div
             className={cn(
-              "min-h-0 min-w-0 w-full",
+              "min-h-0 w-full max-lg:max-w-none min-w-0",
               "lg:flex-1 lg:basis-0 lg:max-w-[min(1136px,calc(100vw*1136/1920))]",
             )}
           >
@@ -210,21 +210,28 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
               alt={copy.decorative}
               width={1136}
               height={41}
-              className="h-auto max-h-none w-full min-w-0 object-contain object-center lg:max-w-full lg:object-left"
+              sizes="(max-width: 1023px) 100vw, min(1136px, 60vw)"
+              className="block h-auto w-full min-w-0 max-lg:max-w-none! object-contain object-center lg:max-w-full lg:object-left"
               unoptimized
             />
           </div>
           <div className="flex w-full shrink-0 justify-end lg:w-auto">
-            <Button
+            <button
               type="submit"
               disabled={status === "sending"}
+              aria-label={copy.submit}
               className={cn(
-                "inline-flex max-w-full shrink-0 items-center justify-center rounded-none bg-brand px-0 py-0 font-sans font-normal tracking-[0.25em] uppercase text-white hover:brightness-95 min-h-0!",
-                "h-[clamp(52px,calc(100vw*84.706/1920),84.706px)] w-[min(100%,clamp(12.5rem,calc(100vw*276.956/1920),276.956px))] text-[clamp(14px,calc(100vw*16/1920),16px)]",
+                "shrink-0 border-0 bg-transparent p-0 outline-none transition-[filter]",
+                "rounded-none shadow-none ring-0",
+                "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                "disabled:pointer-events-none disabled:opacity-50",
+                "hover:brightness-95 active:brightness-95",
+                "flex max-lg:h-[40.985px] max-lg:w-[134.004px] max-lg:items-center max-lg:justify-center",
+                "lg:h-auto lg:max-w-full lg:w-[min(100%,clamp(12.5rem,calc(100vw*276.956/1920),276.956px))]",
               )}
             >
-              {copy.submit}
-            </Button>
+              <ContactSubmitGraphic />
+            </button>
           </div>
         </div>
       </div>

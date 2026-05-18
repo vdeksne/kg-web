@@ -210,7 +210,8 @@ export function SiteFooter() {
                   <div
                     className="flex min-h-0 min-w-0 items-center justify-end"
                     style={{
-                      paddingInlineStart: FOOTER_MOBILE_PAD_CONTACT_PAIR_TO_NEMIZ,
+                      paddingInlineStart:
+                        FOOTER_MOBILE_PAD_CONTACT_PAIR_TO_NEMIZ,
                     }}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element -- fluid box */}
