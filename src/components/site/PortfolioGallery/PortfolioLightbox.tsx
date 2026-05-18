@@ -165,14 +165,14 @@ export function PortfolioLightbox({
           <div className="shrink-0 border-t border-white/10 bg-zinc-950/40 px-4 py-4 sm:px-6 sm:py-5 md:px-8">
             <p
               id="portfolio-lightbox-title"
-              className="text-center text-[13px] font-light leading-relaxed tracking-[0.14em] text-white/85 uppercase sm:text-sm"
+              className="text-justify text-[13px] font-light leading-relaxed tracking-[0.14em] text-white/85 uppercase sm:text-sm"
             >
               {item.alt}
             </p>
             {descriptionText ? (
               <p
                 id="portfolio-lightbox-desc"
-                className="text-white/65 mt-3 text-center text-[13px] font-light leading-relaxed tracking-[0.04em] normal-case sm:text-sm"
+                className="text-white/65 mt-3 text-justify text-[13px] font-light leading-relaxed tracking-[0.04em] normal-case sm:text-sm"
                 lang={locale}
               >
                 {descriptionText}

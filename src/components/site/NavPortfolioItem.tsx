@@ -5,7 +5,10 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { messages } from "@/i18n/messages";
-import { PrimaryNavText, primaryNavItemShellClass } from "@/components/site/PrimaryNavText";
+import {
+  PrimaryNavText,
+  primaryNavItemShellClass,
+} from "@/components/site/PrimaryNavText";
 import { usePortfolioNavCategories } from "@/components/site/PortfolioNavProvider";
 import { fluidDropdownText } from "@/lib/fluid-type";
 import { withLocale } from "@/lib/i18n-path";
@@ -29,6 +32,8 @@ export function NavPortfolioItem({
   dropdownOpenUp = false,
   dropdown = true,
   showActiveState = true,
+  /** Passed when `dropdown={false}` (e.g. footer row typography). */
+  standaloneLinkClassName,
 }: {
   locale: Locale;
   layout?: "row" | "col";
@@ -39,6 +44,7 @@ export function NavPortfolioItem({
   dropdown?: boolean;
   /** `false`: never underline / active styling for current route (e.g. footer). */
   showActiveState?: boolean;
+  standaloneLinkClassName?: string;
 }) {
   const categories = usePortfolioNavCategories();
   const pathname = usePathname();
@@ -112,7 +118,9 @@ export function NavPortfolioItem({
             setOpen((v) => !v);
           }}
         >
-          <PrimaryNavText selected={portfolioActive}>{t.portfolio}</PrimaryNavText>
+          <PrimaryNavText selected={portfolioActive}>
+            {t.portfolio}
+          </PrimaryNavText>
         </Link>
         {open ? (
           <ul
@@ -137,7 +145,7 @@ export function NavPortfolioItem({
                   <Link
                     href={`${portfolioPrefix}/${c.slug}`}
                     className={cn(
-                      "group/sub block w-full whitespace-nowrap text-left leading-tight font-light tracking-[0.12em] text-[#FFFFFF] uppercase outline-none",
+                      "group/sub block w-full whitespace-nowrap text-justify leading-tight font-light tracking-[0.12em] text-[#FFFFFF] uppercase outline-none",
                       fluidDropdownText,
                     )}
                     onClick={close}
@@ -169,7 +177,10 @@ export function NavPortfolioItem({
       <li>
         <Link
           href={`${portfolioPrefix}/${activeSlug}`}
-          className="shrink-0 whitespace-nowrap text-foreground"
+          className={cn(
+            "shrink-0 whitespace-nowrap",
+            standaloneLinkClassName ?? "text-foreground",
+          )}
         >
           {t.portfolio}
         </Link>
@@ -190,7 +201,9 @@ export function NavPortfolioItem({
           setOpen((v) => !v);
         }}
       >
-        <PrimaryNavText selected={portfolioActive}>{t.portfolio}</PrimaryNavText>
+        <PrimaryNavText selected={portfolioActive}>
+          {t.portfolio}
+        </PrimaryNavText>
       </Link>
       <ul
         id={menuId}
@@ -226,7 +239,7 @@ export function NavPortfolioItem({
               <Link
                 href={`${portfolioPrefix}/${c.slug}`}
                 className={cn(
-                  "group/sub block w-full whitespace-nowrap text-left leading-tight font-light tracking-[0.12em] text-white uppercase outline-none",
+                  "group/sub block w-full whitespace-nowrap text-justify leading-tight font-light tracking-[0.12em] text-white uppercase outline-none",
                   fluidDropdownText,
                 )}
                 onClick={close}

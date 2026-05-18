@@ -82,7 +82,7 @@ export default async function AboutPage({
             className={cn(
               "order-3 max-w-full space-y-5 sm:max-lg:max-w-[789px] sm:max-lg:space-y-6 lg:order-0",
               "lg:max-w-[min(100%,calc(100vw*789/1920),789px)] lg:space-y-[clamp(1.25rem,calc(100vw*24/1920),24px)]",
-              "text-left lg:text-justify",
+              "text-justify",
               "font-sans font-light not-italic text-foreground",
               fluidAboutBody,
               "leading-[1.65] lg:leading-[179%]",
@@ -105,7 +105,7 @@ export default async function AboutPage({
             alt=""
             width={210}
             height={142}
-            className="order-4 mx-auto block h-auto w-[min(210px,72vw)] max-w-full sm:max-lg:w-[200px] lg:col-start-1 lg:row-start-3 lg:order-0 lg:ml-auto lg:mr-0 lg:w-[clamp(156px,calc(100vw*210/1920),210px)] lg:self-end"
+            className="order-4 ml-auto mr-0 block h-auto w-[min(120px,40vw)] max-w-full sm:max-lg:w-[140px] lg:col-start-1 lg:row-start-3 lg:order-0 lg:ml-auto lg:mr-0 lg:w-[clamp(156px,calc(100vw*210/1920),210px)] lg:self-end"
           />
         </div>
       </main>

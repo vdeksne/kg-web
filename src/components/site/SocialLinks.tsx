@@ -26,20 +26,29 @@ export function SocialLinks({
   hrefs: hrefsProp,
   /** Scale icon hit-area and gaps with 1920 reference (about-header desktop). */
   fluid = false,
+  /** Smaller square icons + tight gap (mobile footer). */
+  compact = false,
 }: {
   className?: string;
   hrefs?: SocialLinksHrefMap;
   fluid?: boolean;
+  compact?: boolean;
 }) {
   const fromContext = useSocialLinkHrefsOptional();
   const hrefs = hrefsProp ?? fromContext ?? DEFAULT_SOCIAL_LINK_HREFS;
 
-  const gap = fluid
-    ? "gap-[clamp(10px,calc(22*100vw/1920),22px)]"
-    : "gap-[22px]";
-  const iconBox = fluid
-    ? "size-[clamp(28px,calc(40*100vw/1920),40px)]"
-    : "size-10";
+  const gap = compact
+    ? "gap-[8.2px]"
+    : fluid
+      ? "gap-[clamp(10px,calc(22*100vw/1920),22px)]"
+      : "gap-[22px]";
+  const iconBox = compact
+    ? "size-[1.5rem]"
+    : fluid
+      ? "size-[clamp(28px,calc(40*100vw/1920),40px)]"
+      : "size-10";
+
+  const imgPx = compact ? 24 : ICON;
 
   return (
     <div className={className}>
@@ -57,10 +66,14 @@ export function SocialLinks({
               <Image
                 src={src}
                 alt=""
-                width={ICON}
-                height={ICON}
+                width={imgPx}
+                height={imgPx}
                 className={cn(
-                  fluid ? "h-full w-full object-contain" : "size-10",
+                  compact
+                    ? "size-[1.5rem] object-contain"
+                    : fluid
+                      ? "h-full w-full object-contain"
+                      : "size-10",
                 )}
                 unoptimized
               />

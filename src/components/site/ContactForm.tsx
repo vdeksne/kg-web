@@ -93,7 +93,7 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
 
       <div
         className={cn(
-          "flex flex-col gap-6 sm:gap-8",
+          "flex flex-col gap-8",
           "lg:flex-row lg:items-end lg:justify-between lg:gap-[clamp(2rem,calc(100vw*40/1920),2.5rem)]",
         )}
       >
@@ -105,19 +105,16 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
         <div
           className={cn(
             fluidContactLabel,
-            "flex min-w-0 max-w-full shrink-0 flex-wrap items-center gap-x-4 gap-y-2 sm:flex-nowrap",
+            "flex max-w-full min-w-0 shrink-0 flex-nowrap items-center gap-x-2 lg:gap-x-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
           )}
         >
           <a
             href="mailto:info@kasparsgroza.lv"
-            className="text-inherit shrink-0 transition-opacity hover:opacity-80"
+            className="text-inherit shrink-0 whitespace-nowrap transition-opacity hover:opacity-80"
           >
             info@kasparsgroza.lv
           </a>
-          <div
-            className="hidden h-10 w-px shrink-0 bg-brand lg:block"
-            aria-hidden
-          />
+          <div className="h-10 w-px shrink-0 bg-brand" aria-hidden />
           <span className="shrink-0 whitespace-nowrap">
             {copy.phoneLabel} +371 20370077
           </span>
@@ -126,8 +123,8 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
 
       <div
         className={cn(
-          "grid gap-10 md:grid-cols-2",
-          "lg:gap-[clamp(2.25rem,calc(100vw*40/1920),2.5rem)]",
+          "grid grid-cols-1 gap-10",
+          "lg:grid-cols-2 lg:gap-[clamp(2.25rem,calc(100vw*40/1920),2.5rem)]",
         )}
       >
         <div className="space-y-2">
@@ -173,7 +170,7 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
           name="message"
           rows={4}
           className={cn(
-            "border-foreground/40 placeholder:text-muted-foreground focus-visible:border-foreground w-full resize-none border-0 border-b bg-transparent px-0 py-2 text-sm outline-none focus-visible:ring-0",
+            "border-foreground/40 placeholder:text-muted-foreground focus-visible:border-foreground w-full resize-none border-0 border-b bg-transparent px-0 py-2 text-sm outline-none focus-visible:ring-0 text-justify",
             "lg:text-[clamp(16px,calc(100vw*18/1920),18px)]",
           )}
         />
@@ -195,25 +192,40 @@ export function ContactForm({ copy }: { copy: Messages["contact"] }) {
             ) : null}
           </div>
         ) : null}
-        <div className="flex w-full max-w-full flex-wrap items-center justify-between gap-4 sm:gap-8 lg:gap-[clamp(1.5rem,calc(100vw*32/1920),2rem)]">
-          <Image
-            src="/icons/create.svg"
-            alt={copy.decorative}
-            width={1136}
-            height={41}
-            className="h-auto w-full max-w-full shrink object-contain object-left lg:max-w-[min(1136px,calc(100vw*1136/1920))]"
-            unoptimized
-          />
-          <Button
-            type="submit"
-            disabled={status === "sending"}
+        <div
+          className={cn(
+            "flex w-full max-w-full gap-8",
+            "flex-col lg:flex-row lg:flex-nowrap lg:items-center lg:justify-between",
+            "lg:gap-[clamp(1.5rem,calc(100vw*32/1920),2rem)]",
+          )}
+        >
+          <div
             className={cn(
-              "inline-flex max-w-full shrink-0 items-center justify-center rounded-none bg-brand px-0 py-0 font-sans font-normal tracking-[0.25em] uppercase text-white hover:brightness-95 min-h-0!",
-              "h-[clamp(52px,calc(100vw*84.706/1920),84.706px)] w-[min(100%,clamp(12.5rem,calc(100vw*276.956/1920),276.956px))] text-[clamp(14px,calc(100vw*16/1920),16px)]",
+              "min-h-0 min-w-0 w-full",
+              "lg:flex-1 lg:basis-0 lg:max-w-[min(1136px,calc(100vw*1136/1920))]",
             )}
           >
-            {copy.submit}
-          </Button>
+            <Image
+              src="/icons/create.svg"
+              alt={copy.decorative}
+              width={1136}
+              height={41}
+              className="h-auto max-h-none w-full min-w-0 object-contain object-center lg:max-w-full lg:object-left"
+              unoptimized
+            />
+          </div>
+          <div className="flex w-full shrink-0 justify-end lg:w-auto">
+            <Button
+              type="submit"
+              disabled={status === "sending"}
+              className={cn(
+                "inline-flex max-w-full shrink-0 items-center justify-center rounded-none bg-brand px-0 py-0 font-sans font-normal tracking-[0.25em] uppercase text-white hover:brightness-95 min-h-0!",
+                "h-[clamp(52px,calc(100vw*84.706/1920),84.706px)] w-[min(100%,clamp(12.5rem,calc(100vw*276.956/1920),276.956px))] text-[clamp(14px,calc(100vw*16/1920),16px)]",
+              )}
+            >
+              {copy.submit}
+            </Button>
+          </div>
         </div>
       </div>
     </form>

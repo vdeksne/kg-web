@@ -118,7 +118,7 @@ export function PortfolioGalleryTile({ item }: { item: PortfolioItem }) {
     >
       <button
         type="button"
-        className="block w-full cursor-zoom-in text-left focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
+        className="block w-full cursor-zoom-in text-justify focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
         onClick={() => open(item)}
         aria-haspopup="dialog"
         aria-label={`Open preview: ${item.alt}`}

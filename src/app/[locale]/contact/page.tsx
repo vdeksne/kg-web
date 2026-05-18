@@ -25,8 +25,7 @@ export default async function ContactPage({
       <main
         className={cn(
           "relative mx-auto w-full max-w-[1920px] flex-1 min-w-0 overflow-x-clip",
-          "max-lg:px-[22px] max-lg:pb-16 max-lg:pt-6 max-lg:sm:pt-8",
-          "sm:max-lg:px-9 md:max-lg:px-12",
+          "max-lg:px-[22px] max-lg:pb-16 max-lg:pt-6",
           "lg:px-[clamp(1.5rem,calc(100vw*202/1920),202px)]",
           "lg:pb-[clamp(3rem,calc(100vw*64/1920),4rem)] lg:pt-[clamp(0.5rem,calc(100vw*16/1920),24px)]",
         )}

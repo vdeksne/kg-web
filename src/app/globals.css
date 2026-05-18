@@ -204,6 +204,6 @@
     @apply overscroll-none font-sans;
   }
   body {
-    @apply bg-background text-foreground overscroll-none;
+    @apply bg-background text-foreground overscroll-none text-justify;
   }
 }

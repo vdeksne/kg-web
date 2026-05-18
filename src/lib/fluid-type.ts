@@ -93,11 +93,11 @@ export const fluidAboutBody =
   "text-[clamp(1rem,calc(16px+(100vw-320px)*0.0025),20px)] lg:text-[length:clamp(16px,calc(100vw*20/1920),20px)]";
 
 /**
- * Contact page H2 — same 1920 cap as {@link fluidAboutTitle}; below `lg` stays one line (both LV/EN
- * headings) via nowrap + tighter floor fluid scale for narrow widths.
+ * Contact page H2 — same 1920 cap as {@link fluidAboutTitle}; `whitespace-nowrap` at all breakpoints
+ * so the headline stays one line; `text-start` avoids global `text-justify` widening word gaps when space is tight.
  */
 export const fluidContactTitle =
-  "font-sans font-bold not-italic uppercase leading-none tracking-tight text-foreground max-lg:whitespace-nowrap max-lg:tracking-normal max-lg:text-[length:clamp(16px,calc(16px+(100vw-320px)*0.065),52px)] lg:text-[length:clamp(2.25rem,calc(100vw*65.55/1920),65.55px)]";
+  "font-sans font-bold not-italic uppercase leading-none tracking-tight text-foreground text-start whitespace-nowrap max-lg:tracking-normal max-lg:text-[length:clamp(16px,calc(16px+(100vw-320px)*0.065),52px)] lg:text-[length:clamp(2.25rem,calc(100vw*65.55/1920),65.55px)]";
 
 /**
  * Contact labels, email/phone row, message label — matches previous aside ramp below `lg`;

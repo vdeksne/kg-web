@@ -179,7 +179,7 @@ export function HomeHero({ home }: { home: Messages["home"] }) {
               <span className="sr-only">{home.sideTextAlt}</span>
 
               <div className="grid flex-1 gap-10 pt-10 max-[480px]:pt-5 lg:items-center lg:pt-0">
-                <div className="relative flex min-h-0 flex-col items-start justify-center text-left max-[480px]:min-h-[36vh] lg:min-h-[753px]">
+                <div className="relative flex min-h-0 flex-col items-start justify-center text-justify max-[480px]:min-h-[36vh] lg:min-h-[753px]">
                   <div
                     className="w-full shrink-0"
                     aria-hidden
